@@ -60,8 +60,8 @@ namespace ArtProject2016.Controllers
                     var artistToUpdate = context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
                     
-                    userToUpdate.firstName = model.UserAccount.firstName;
-                    userToUpdate.lastName = model.UserAccount.lastName;
+                    userToUpdate.firstName = model.UserAccount.firstName.ToUpper();
+                    userToUpdate.lastName = model.UserAccount.lastName.ToUpper();
                     userToUpdate.userType = model.UserAccount.userType;
                     userToUpdate.nickName = model.UserAccount.nickName;
                     //push to designated user type (section)

@@ -16,11 +16,10 @@
      
             <div class="col-md-12 box">
                 <div class="col-md-5" id="text-page">
-                    @foreach (ForSaleAlbum pix in Model.ForSaleAlbums.Take(3))
-                    {
+                  
                         <span style="float: left; padding: 10px">
-                            <img src="@Url.Content(pix.Path)"  width="140px" class="img-responsive"/></span>
-                    }
+                            <img src="@Url.Content(Model.Path)"  width="140px" class="img-responsive"/></span>
+                    
                 </div>
                 <div class="col-md-5" id="order-summary">
                     <h3>Title:   @Html.DisplayFor(model => model.Title)</h3>
@@ -30,16 +29,14 @@
                             <tbody>
                                 <tr>
                                     <td>Size: </td>
-                                    <th>@Html.DisplayFor(model => model.Size)</th>
+                                    <th>@Html.DisplayFor(model => model.wSize)W X @Html.DisplayFor(model => model.hSize) H</th>
                                     <td>Medium Used: </td>
                                     <th>@Html.DisplayFor(model => model.mediumUsed)</th>
                                 </tr>
                                 <tr>
                                     <td>Price:</td>
                                     <th>@Html.DisplayFor(model => model.Price)</th>
-                                    <td>Discount:</td>
-                                    <th>@Html.DisplayFor(model => model.Discount)</th>
-                                </tr>
+                                    </tr>
                                 <tr>
                                     <td>Date Posted:</td>
                                     <th>@Html.DisplayFor(model => model.datePosted)</th>

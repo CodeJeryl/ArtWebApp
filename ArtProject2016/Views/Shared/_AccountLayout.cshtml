@@ -15,6 +15,8 @@
 
         </div>
 
+      
+
         <div class="col-md-3">
             <!-- *** CUSTOMER MENU ***
             _________________________________________________________ -->
@@ -33,9 +35,9 @@
                         <li class="@(ViewBag.Current == "updateProfile" ? "active" : "")">
                             @Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "text-center" })
                         </li>
-                          <li  class="@(ViewBag.Current == "Collections" ? "active" : "")">
-                                @Html.ActionLink("My Collections", "Index", "Art", null, new { @class = "text-center" })
-                            </li>
+                        <li  class="@(ViewBag.Current == "Collections" ? "active" : "")">
+                            @Html.ActionLink("My Collections", "Index", "Art", null, new { @class = "text-center" })
+                        </li>
 
                         @if (User.IsInRole("Artist"))
                         {
@@ -45,7 +47,7 @@
                             <li class="@(ViewBag.Current == "Upload" ? "active" : "")">
                                 @Html.ActionLink("Upload Art", "Upload", "Art", null, new { @class = "text-center" })
                             </li>
-                         }
+                        }
                         <li  class="@(ViewBag.Current == "Orders" ? "active" : "")">
                             @Html.ActionLink("Art Orders", "Orders", "Art", null, new { @class = "text-center" })
                         </li>

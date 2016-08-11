@@ -69,9 +69,9 @@
                     <!-- /.row -->
 
                     <div class="row">
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-4">
                             <div class="form-group">
-                                <label for="street">Street</label>
+                                <label for="street">Street and Barangay</label>
                                 @Html.EditorFor(model => model.UserProfile.street, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.UserProfile.street)
                             </div>
@@ -90,7 +90,7 @@
                                 @Html.ValidationMessageFor(model => model.UserProfile.province)
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-2">
                             <div class="form-group">
                                 <label for="postalCode">Postal Code</label>
                                 @Html.EditorFor(model => model.UserProfile.postalCode,  new { htmlAttributes = new { @class = "form-control" } })

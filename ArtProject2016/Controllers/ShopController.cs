@@ -53,7 +53,7 @@ namespace ArtProject2016.Controllers
         //    {
         //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         //    }
-           
+
         //    if (related == null)
         //    {
         //        return HttpNotFound();
@@ -91,10 +91,10 @@ namespace ArtProject2016.Controllers
         {
             var cartItems = new Cart()
                                 {
-                                 Qty = 1,
-                                 ForSaleId = id,
-                                 UserAccountId = WebSecurity.CurrentUserId,
-                                 dateCreated = DateTime.Now
+                                    Qty = 1,
+                                    ForSaleId = id,
+                                    UserAccountId = WebSecurity.CurrentUserId,
+                                    dateCreated = DateTime.Now
                                 };
 
             db.Carts.Add(cartItems);
@@ -102,8 +102,8 @@ namespace ArtProject2016.Controllers
 
             ViewBag.Success = "Added to Cart Successfully!";
 
-           // var model = db.Carts.Where(buy => buy.UserAccountId == WebSecurity.CurrentUserId).ToList();
-            
+            // var model = db.Carts.Where(buy => buy.UserAccountId == WebSecurity.CurrentUserId).ToList();
+
             return RedirectToAction("Cart");
         }
 
@@ -111,7 +111,7 @@ namespace ArtProject2016.Controllers
         public ActionResult RemoveFromCart(int id)
         {
             var itemToRemove = db.Carts.Single(item => item.Id == id && item.UserAccountId == WebSecurity.CurrentUserId);
-           // var cart = new Cart();
+            // var cart = new Cart();
 
             db.Carts.Remove(itemToRemove);
             db.SaveChanges();
@@ -119,11 +119,11 @@ namespace ArtProject2016.Controllers
             var cart = new CartControls();
             var results = new CartRemoveViewModel
             {
-              //  Message = Server.HtmlEncode(albumName) +
-              //      " has been removed from your shopping cart.",
+                //  Message = Server.HtmlEncode(albumName) +
+                //      " has been removed from your shopping cart.",
                 CartTotal = "₱" + cart.GetTotal().ToString("0.00"),
-                  CartCount = cart.GetCount(),
-             //   ItemCount = itemCount,
+                CartCount = cart.GetCount(),
+                //   ItemCount = itemCount,
                 DeleteId = id
             };
             return Json(results);
@@ -134,15 +134,15 @@ namespace ArtProject2016.Controllers
         {
             var code = db.VoucherCodes.SingleOrDefault(v => v.VoucherName == voucher);
 
-            if(code.VoucherName.Any())
+            if (code.VoucherName.Any())
             {
-                  var cart = new CartControls();
+                var cart = new CartControls();
 
-                if(cart.GetTotal() >= code.VoucherMinOrder)
+                if (cart.GetTotal() >= code.VoucherMinOrder)
                 {
                     var results = new CheckoutViewModel
                     {
-                      // CartTotal = cart.GetTotal() - code.VoucherDeduction
+                        // CartTotal = cart.GetTotal() - code.VoucherDeduction
                         //  DeleteId = id
                         VoucherDeduction = code.VoucherDeduction,
                         Total = cart.GetTotal() - code.VoucherDeduction
@@ -164,27 +164,27 @@ namespace ArtProject2016.Controllers
         {
             try
             {
-            var wishArt = new WishList()
-                                {
-                                 ForSaleId = id,
-                                 UserAccountId = WebSecurity.CurrentUserId,
-                                 dateAdded = DateTime.Now
-                                };
+                var wishArt = new WishList()
+                                    {
+                                        ForSaleId = id,
+                                        UserAccountId = WebSecurity.CurrentUserId,
+                                        dateAdded = DateTime.Now
+                                    };
 
-            db.WishLists.Add(wishArt);
-            db.SaveChanges();
+                db.WishLists.Add(wishArt);
+                db.SaveChanges();
 
-            ViewBag.Success = "Added to Wish List";
+                ViewBag.Success = "Added to Wish List";
 
-            return Json(ViewBag.Success);
+                return Json(ViewBag.Success);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        
-     
+
+
 
         [HttpGet]
         public ActionResult CheckoutDetails()
@@ -209,7 +209,7 @@ namespace ArtProject2016.Controllers
             var cart = new CartControls();
             if (TempData["vDeduction"] != null)
             {
-                viewModel.VoucherDeduction = (decimal) TempData["vDeduction"];
+                viewModel.VoucherDeduction = (decimal)TempData["vDeduction"];
                 viewModel.CartTotal = cart.GetTotal() - viewModel.VoucherDeduction;
             }
             else
@@ -218,14 +218,14 @@ namespace ArtProject2016.Controllers
             }
             //  viewModel.DetailsChecked = true;
             viewModel.SubTotal = cart.GetTotal();
-           
-           
+
+
             //ForSale forsale = db.ForSales.Find(id);
             //if (forsale == null)
             //{
             //    return HttpNotFound();
             //}
-                    
+
             return View(viewModel);
         }
 
@@ -233,25 +233,29 @@ namespace ArtProject2016.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckoutDetails(checkoutDetailsViewModel model)
         {
-            var userToUpdate = db.UserAccounts.Find(WebSecurity.CurrentUserId);
-            var profileToUpdate = db.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
+            if (ModelState.IsValid)
+            {
+                var userToUpdate = db.UserAccounts.Find(WebSecurity.CurrentUserId);
+                var profileToUpdate = db.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
 
-            userToUpdate.firstName = model.FirstName;
-            userToUpdate.lastName = model.LastName;
+                userToUpdate.firstName = model.FirstName.ToUpper();
+                userToUpdate.lastName = model.LastName.ToUpper();
 
-            profileToUpdate.city = model.City;
-            profileToUpdate.landLine = model.LandLine;
-            profileToUpdate.mobileNo = model.MobileNo;
-            profileToUpdate.postalCode = model.PostalCode;
-            profileToUpdate.province = model.Province;
-            profileToUpdate.street = model.Street;
+                profileToUpdate.city = model.City;
+                profileToUpdate.landLine = model.LandLine;
+                profileToUpdate.mobileNo = model.MobileNo;
+                profileToUpdate.postalCode = model.PostalCode;
+                profileToUpdate.province = model.Province;
+                profileToUpdate.street = model.Street;
 
-            TempData["vDeduction"] = model.VoucherDeduction;
+                TempData["vDeduction"] = model.VoucherDeduction;
 
-            db.SaveChanges();
+                db.SaveChanges();
 
-            return RedirectToAction("CheckOutSummary");
+                return RedirectToAction("CheckOutSummary");
+            }
+            return View(model);
         }
 
 
@@ -283,7 +287,7 @@ namespace ArtProject2016.Controllers
             //viewModel.Street = userProfile.street;
 
             viewModel.SubTotal = controls.GetTotal();
-           
+
             if (TempData["vDeduction"] != null)
             {
                 viewModel.VoucherDeduction = (decimal)TempData["vDeduction"];
@@ -306,13 +310,15 @@ namespace ArtProject2016.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckOutSummary(CheckoutViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var delCart = new CartControls();
+                delCart.EmptyCart();
 
+                return RedirectToAction("Done");
+            }
 
-
-            var delCart = new CartControls();
-            delCart.EmptyCart();
-
-            return RedirectToAction("Done");
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,8 +1,8 @@
 /** Your theme modifications here **/
 
 #content .product .text .buttonsR {
-  clear: both;
-  text-align: right;
+    clear: both;
+    text-align: right;
 }
 
 
@@ -17,59 +17,58 @@ a.buttonC {
 }
 
 .formlabel {
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 5px;
-
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
 }
 
 .titletd {
     text-align: center;
     font-style: italic;
     font-size: 15px;
-
 }
 
 
 #content .product .text p.title {
-  font-size: 20px;
-  text-align: center;
-  font-weight: 300;
-  margin: 0px;
-   padding: 0px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
 }
+
 #content .product .text p.subtitle {
-  font-size: 14px;
-  text-align: center;
+    font-size: 14px;
+    text-align: center;
     font-style: italic;
-  font-weight: 300;
-  margin: 0px;
-   padding: 0px;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
 }
 
 #content .product .text p.name {
-  font-size: 16px;
-  text-align: left;
-  font-weight: 300;
-  margin: 0px;
-   padding: 0px;
+    font-size: 16px;
+    text-align: left;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
 }
 
 #content .product .text p.price {
-  font-size: 16px;
+    font-size: 16px;
     text-align: center;
-  font-weight: 300;
-   margin: 0px;
-   padding: 0px;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
 }
 
 #content .product .text p.sub {
-  font-size: 14px;
-  text-align: left;
-  font-weight: 300;
+    font-size: 14px;
+    text-align: left;
+    font-weight: 300;
     font-style: italic;
     margin: 0px;
-   padding: 0px;
+    padding: 0px;
 }
 
 /* styles for validation helpers */
@@ -102,26 +101,36 @@ table td {
 }
 
 table th {
-     text-align: center;
+    text-align: center;
 }
 
 .checkoutAddress p {
     font-size: 18px;
-  font-weight: 300;
-  margin: 0px;
-   padding: 0px;
+    font-weight: 300;
+    margin: 0px;
+    padding: 0px;
     text-align: center;
 }
 
 
 .checkoutAddress .namee {
     font-size: 22px;
-  font-weight: 400;
+    font-weight: 400;
 }
 
 .box .box-headerCheckout {
-  background: #f7f7f7;
-  margin: -20px -20px 20px;
-  border-bottom: solid 1px #eeeeee;
-  text-align: center
+    background: #f7f7f7;
+    margin: -20px -20px 20px;
+    border-bottom: solid 1px #eeeeee;
+    text-align: center;
+}
+
+
+.alert {
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    font-size: 20px;
+    text-align: center;
 }

@@ -24,34 +24,22 @@ namespace ArtProject2016.Controllers
             {
                 var model = db.ForSales.Where(fs => fs.SellerId == WebSecurity.CurrentUserId).ToList();
 
-                if (TempData["Success"] != null)
-                {
-                    ViewBag.Success = TempData["Success"].ToString();
-                }
+                //if (TempData["Success"] != null)
+                //{
+                //    ViewBag.Success = TempData["Success"].ToString();
+                //}
+                //if (TempData["Error"] != null)
+                //{
+                //    ViewBag.Error = TempData["Error"].ToString();
+                //}
+
                 return View(model);
             }
             
             ViewBag.error = "No results found";
             return (ViewBag);
         }
-
-        // GET: /Art/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ForSale forsale = db.ForSales.Find(id);
-            if (forsale == null)
-            {
-                return HttpNotFound();
-            }
-            return View(forsale);
-        }
-
-        // GET: /Art/Create
-        //
+        
         // GET: Upload Picture
         public ActionResult Upload()
         {
@@ -142,10 +130,10 @@ namespace ArtProject2016.Controllers
                 return HttpNotFound();
             }
 
-            if (TempData["Success"] != null)
-            {
-                ViewBag.Success = TempData["Success"].ToString();
-            }
+            //if (TempData["Success"] != null)
+            //{
+            //    ViewBag.Success = TempData["Success"].ToString();
+            //}
 
             uploadViewModel viewModel = new uploadViewModel();
             viewModel.ForSale = forsale;
@@ -194,6 +182,7 @@ namespace ArtProject2016.Controllers
 
                 //   db.Entry(forsale).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Success"] = "Successfuly Updated!";
                 return RedirectToAction("Index");
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "Id", "name", model.ForSale.CategoryID);
@@ -243,11 +232,17 @@ namespace ArtProject2016.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ForSale forsale =
-                db.ForSales.SingleOrDefault(i => i.SellerId == WebSecurity.CurrentUserId && i.Id == id && i.Sold == false);
-
+                db.ForSales.SingleOrDefault(i => i.SellerId == WebSecurity.CurrentUserId && i.Id == id);
+            
             if (forsale == null)
             {
                 return HttpNotFound();
+            }
+
+            if(forsale.Sold)
+            {
+                TempData["Error"] = "Art cannot be deleted. It's already sold";
+                return RedirectToAction("Index");
             }
             return View(forsale);
         }
@@ -257,11 +252,19 @@ namespace ArtProject2016.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteArt(int id)
         {
-            ForSale forsale = db.ForSales.Find(id);
-            db.ForSales.Remove(forsale);
-            db.SaveChanges();
-            TempData["Success"] = "Art successfully deleted!";
+            var forsale = db.ForSales.Single(art => art.Id == id && art.Sold == false);
+            if(forsale == null)
+            {
+              //  TempData["Error"] = "Art cannot be deleted";
+                return HttpNotFound();
+            }
+           
+                db.ForSales.Remove(forsale);
+                db.SaveChanges();
+                TempData["Success"] = "Art successfully deleted!";
+          
             return RedirectToAction("Index");
+          
         }
 
         protected override void Dispose(bool disposing)

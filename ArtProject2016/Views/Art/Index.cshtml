@@ -15,14 +15,14 @@
             @Html.ActionLink("Add new Art for sale", "Upload", null, new { @class = "btn btn-primary" })
         </p>
         
-        @if(ViewBag.Success != null)
+       @* @if(ViewBag.Success != null)
         {
             <div class="alert alert-success" role="alert"> @ViewBag.Success </div>
         }
           @if(ViewBag.Error != null)
         {
             <div class="alert alert-danger" role="alert"> @ViewBag.Error </div>
-        }
+        }*@
     </div>
     @foreach (var item in Model)
     {

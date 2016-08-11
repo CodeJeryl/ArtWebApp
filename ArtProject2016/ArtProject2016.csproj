@@ -481,7 +481,6 @@
     <Content Include="Views\test\Edit.cshtml" />
     <Content Include="Views\test\Index.cshtml" />
     <Content Include="Views\Shop\Gallery.cshtml" />
-    <Content Include="Views\Art\Details.cshtml" />
     <Content Include="Views\Shop\ArtDetails.cshtml" />
     <Content Include="Views\Shared\_ShopLayout.cshtml" />
     <Content Include="Views\Shop\_ViewStart.cshtml" />
@@ -490,6 +489,7 @@
     <Content Include="Views\Shop\CheckoutDetails.cshtml" />
     <Content Include="Views\Shop\_CheckOutDetails.cshtml" />
     <Content Include="Views\Shop\CheckOutSummary.cshtml" />
+    <Content Include="Views\Shared\_confirmation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
