@@ -1,0 +1,214 @@
+﻿@model ArtProject2016.ViewModel.uploadViewModel
+
+@{
+    ViewBag.Title = "Upload Masterpiece Page";
+    ViewBag.Current = "Upload";
+}
+<style type="text/css">
+    .thumb-image {
+        float: left;
+        width: 300px;
+        position: relative;
+        padding: 20px;
+    }
+</style>
+
+<script>
+    $(function () {
+        $('#chkbxArtist').click(function () {
+            if ($(this).is(':checked')) {
+                $("#hideOther").show();
+                $("#hideOtherA").show();
+            } else {
+                $("#hideOther").hide();
+                $("#hideOtherA").hide();
+            }
+        });
+    });
+</script>
+
+
+<div class="col-md-9">
+    <div class="box">
+        <h1>Sell your Art</h1>
+        <p class="lead">Upload art</p>
+        <p class="text-muted">Please read the terms and condition in selling art</p>
+        <h3>Art Details</h3>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.Error </div>
+        }
+
+        @using (Html.BeginForm("Upload", "Art", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="firstName">Title</label>
+                        @Html.EditorFor(model => model.ForSale.Title, "", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.Title)
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
+                        <label for="city">Category</label>
+                        @Html.DropDownListFor(model => model.selectedCategoryId, Model.Categories, "Choose Category", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedCategoryId)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="birthDay">Medium Used ex. Watercolor, Glossy Paper. Use Comma(,)</label>
+                        @Html.EditorFor(model => model.ForSale.mediumUsed, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.mediumUsed)
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="size">Size in Inches : Width x Height</label>
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.ForSale.wSize, new { htmlAttributes = new { @class = "form-control", placeholder = "Width in inches" } })
+                            @Html.ValidationMessageFor(model => model.ForSale.wSize)
+                            <span class="input-group-addon">x</span>
+                            @Html.EditorFor(model => model.ForSale.hSize, new { htmlAttributes = new { @class = "form-control", placeholder = "Height in inches" } })
+                            @Html.ValidationMessageFor(model => model.ForSale.hSize)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            //   @Html.DropDownList("Year", Enumerable.Range(DateTime.Now.Year, 10).ToList(), "-- Select Year --")
+            
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="form-group">
+                        <label for="street">Year Created:</label>
+                        @Html.DropDownListFor(model => model.selectedYear, Model.Years, "--Select Year--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedYear)
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <div class="form-group">
+                        <label for="street">Artwork Framed?</label>
+                        @Html.EditorFor(model => model.ForSale.Framed, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.Framed)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="form-group">
+                        <label for="street">Created by other Artist?</label>
+                        @Html.EditorFor(model => model.ForSale.otherArtist, new { htmlAttributes = new { @class = "form-control", id = "chkbxArtist" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.otherArtist)
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group" id="hideOther" style="display: none">
+                        <label for="street">if yes, provide artist name</label>
+                        @Html.EditorFor(model => model.ForSale.otherArtistName, new { htmlAttributes = new { @class = "form-control", placeholder = "Artist Created the Art" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.otherArtistName)
+                    </div>
+                </div>
+                <div class="col-sm-5 col-md-5">
+                    <div class="form-group" id="hideOtherA" style="display: none">
+                        <label for="street">provide artist address</label>
+                        @Html.EditorFor(model => model.ForSale.otherArtistAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.otherArtistAddress)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <span class="lead" style="font-weight: 500">Price computation:</span>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="lastName">Price - inclusive of shipping fee (ex: 10,000 + 500sf= 10,500)</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">₱</div>
+                            @Html.EditorFor(model => model.ForSale.Price, new { htmlAttributes = new { @class = "form-control" } })
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ForSale.Price)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <span class="lead" style="font-weight: 500">Add art description. Tell a story about your art</span>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.ForSale.artDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Tell us about your art" } })
+                        @Html.ValidationMessageFor(model => model.ForSale.artDescription)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <span class="lead" style="font-weight: 500">Upload pictures of your masterpiece</span>
+                    <p class="text-muted">Make sure to upload high quality images (Size will automatically adjusted after upload)</p>
+                </div>
+
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <input id="ups" type="file" name="files" enctype="multipart/form-data" />
+                    </div>
+                    <div id="image-holder"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save changes</button>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#ups").on('change', function () {
+            //Get count of selected files
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("<img />", {
+                                "src": e.target.result,
+                                "class": "thumb-image"
+                            }).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
+    });
+</script>
+
+

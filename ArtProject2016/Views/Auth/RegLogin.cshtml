@@ -1,0 +1,32 @@
+﻿@model ArtProject2016.Models.UserAccount
+@{
+    ViewBag.Title = "Login";
+}
+
+
+ <div id="content">
+            <div class="container">
+
+                <div class="col-md-12">
+
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a>
+                        </li>
+                        <li>New account / Sign in</li>
+                    </ul>
+
+                </div>
+
+                <div class="col-md-6">
+                @Html.Partial("_Register")
+                </div>
+
+                <div class="col-md-6">
+                   @Html.Partial("_Login")
+                </div>
+
+
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->

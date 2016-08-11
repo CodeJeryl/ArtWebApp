@@ -1,0 +1,59 @@
+﻿@model ArtProject2016.ViewModel.registerViewModel
+
+
+<div class="box">
+    <h1>New account</h1>
+
+    <p class="lead">Not our registered customer yet?</p>
+    <p>With registration with us new world of fashion, fantastic discounts and much more opens to you! The whole process will not take you more than a minute!</p>
+    <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
+
+    <hr>
+
+    @using (Html.BeginForm("_Register", "Auth", new { returnUrl = ViewBag.ReturnUrl }))
+    {
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="name">First Name</label>
+            @Html.TextBoxFor(m => m.firstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.firstName)
+        </div>
+        <div class="form-group">
+            <label for="name">Last Name</label>
+            @Html.TextBoxFor(m => m.lastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.lastName)
+        </div>
+        <div class="form-group">
+            <label for="name">Nick Name</label>
+            @Html.TextBoxFor(m => m.nickName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.nickName)
+        </div>
+        <div class="form-group">
+            <label for="email">User Name:</label>
+            @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.userName)
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+        <div class="form-group">
+            <label for="password">Retype Password</label>
+            @Html.PasswordFor(m => m.RetypePassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RetypePassword)
+        </div>
+        <div class="form-group">
+            <label class="text-large">User Type:</label>
+            <label style="padding-left: 100px; font-weight: 700">@Html.RadioButtonFor(m => m.userType, "Artist", new { @class = "form-control" }) Artist</label>
+            <label style="padding-left: 100px; font-weight: 700">@Html.RadioButtonFor(m => m.userType, "Collector", new { @class = "form-control" }) Collector</label>
+            @Html.ValidationMessageFor(model => model.userType)
+
+        </div>
+                          
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i>Register</button>
+        </div>
+    }
+</div>

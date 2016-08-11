@@ -1,0 +1,247 @@
+﻿@model ArtProject2016.ViewModel.galleryViewModel
+
+@{
+    ViewBag.Title = "ArtDetails";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#wish').click(function () {
+            var add = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: '/Shop/AddWishlist',
+                data: { id: add },
+                success: function (data) {
+                    // alert("success");
+                    $('#suc').show();
+                    $('#wish').hide();
+                    $('#suc').text("Wish List Added!");
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
+    });
+</script>
+
+<div class="row" id="productMain">
+    <div class="col-sm-6">
+
+        <div id="mainImage">
+            <img src="@Url.Content(Model.ForSale.Path)" alt="" class="img-responsive">
+        </div>
+
+        @if (Model.ForSale.Sold)
+        {
+            <div class="ribbon new">
+                <div class="theribbon">SOLD</div>
+                <div class="ribbon-background"></div>
+            </div>
+            <!-- /.ribbon -->
+        }
+
+    </div>
+    <div class="col-sm-6">
+        <div class="box">
+            <h1 class="text-center">@Html.DisplayFor(model => model.ForSale.Title)</h1>
+            <p class="goToDescription">
+                <a href="#details" class="scroll-to">Scroll to Art details, material & Artist</a>
+            </p>
+            <p class="price">@Html.DisplayFor(model => model.ForSale.Price)</p>
+            <div class="alert alert-success" role="alert" id="suc" style="display: none"></div>
+            <p class="text-center buttons">
+                @*  @using (Html.BeginForm("AddtoCart", "Shop", FormMethod.Post))
+                   { }   @using (Html.BeginForm("AddtoWishlist", "Shop", FormMethod.Post))
+                { }*@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (!Model.ForSale.Carts.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
+                    {
+                         @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
+                    }
+                    else
+                    {
+                         @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
+                    }
+
+                    if (!Model.ForSale.WishLists.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == Model.ForSale.BuyerId || se.UserAccountId == Model.ForSale.SellerId))
+                    {
+                            <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
+                    }
+                    else
+                    {
+                         <span href="#" class="btn btn-default">Already Added to Wishlist</span>
+                    }
+                }
+                else
+                {
+                     @Html.ActionLink("Please Login to Add to Cart/Wishlist", "RegLogin", "Auth", new { returnUrl = ViewBag.ReturnUrl }, new { @class = "btn btn-primary" })
+                }
+@*@Html.ActionLink("Add to Wishlist", "Wishlist", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-default" })*@
+
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="box" id="details">
+    <h4>Art description</h4>
+    <p>@Html.DisplayFor(model => model.ForSale.artDescription)</p>
+    <h4>Size / Dimensions</h4>
+    <ul>
+        <li>@Html.DisplayFor(model => model.ForSale.hSize)" Height X @Html.DisplayFor(model => model.ForSale.wSize)" Width</li>
+    </ul>
+    <h4>Medium Used</h4>
+    <ul>
+        <li>@Html.DisplayFor(model => model.ForSale.mediumUsed)</li>
+
+    </ul>
+
+    <h4>Artist details</h4>
+    @if (Model.ForSale.otherArtist)
+    {
+        <ul>
+            <li>
+                <p class="name">@Html.DisplayFor(modelItem => modelItem.ForSale.otherArtistName) from  <em>@Html.DisplayFor(modelItem => modelItem.ForSale.otherArtistAddress)</em></p>
+            </li>
+
+        </ul>
+    }
+    else
+    {
+        <ul>
+            <li>
+                <p class="name">@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.nickName) from <em>@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)</em></p>
+            </li>
+
+        </ul>
+       
+        <blockquote>
+            <p>
+                <em>@Model.ForSale.SellerAccount.UserProfiles.SingleOrDefault().profileDesc</em>
+            </p>
+        </blockquote>
+    }
+
+    <hr>
+    <div class="social">
+        <h4>Show it to your friends</h4>
+        <p>
+            <a href="#" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+            <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+        </p>
+    </div>
+</div>
+
+<div class="row same-height-row">
+
+    <div class="col-md-3 col-sm-6">
+        <div class="box same-height">
+            <h3>You may also like these products from
+                <br />
+                <br />
+                @Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.nickName)  </h3>
+        </div>
+    </div>
+
+    @Html.Partial("_RelatedArt", Model.relatedForSale)
+
+
+</div>
+
+<div class="row same-height-row">
+    <div class="col-md-3 col-sm-6">
+        <div class="box same-height">
+            <h3>Products viewed recently</h3>
+        </div>
+    </div>
+
+
+    <div class="col-md-3 col-sm-6">
+        <div class="product same-height">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <a href="detail.html">
+                            <img src="img/product2.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                    <div class="back">
+                        <a href="detail.html">
+                            <img src="img/product2_2.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="detail.html" class="invisible">
+                <img src="img/product2.jpg" alt="" class="img-responsive">
+            </a>
+            <div class="text">
+                <h3>Fur coat</h3>
+                <p class="price">$143</p>
+            </div>
+        </div>
+        <!-- /.product -->
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="product same-height">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <a href="detail.html">
+                            <img src="img/product1.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                    <div class="back">
+                        <a href="detail.html">
+                            <img src="img/product1_2.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="detail.html" class="invisible">
+                <img src="img/product1.jpg" alt="" class="img-responsive">
+            </a>
+            <div class="text">
+                <h3>Fur coat</h3>
+                <p class="price">$143</p>
+            </div>
+        </div>
+        <!-- /.product -->
+    </div>
+
+
+    <div class="col-md-3 col-sm-6">
+        <div class="product same-height">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <a href="detail.html">
+                            <img src="img/product3.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                    <div class="back">
+                        <a href="detail.html">
+                            <img src="img/product3_2.jpg" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="detail.html" class="invisible">
+                <img src="img/product3.jpg" alt="" class="img-responsive">
+            </a>
+            <div class="text">
+                <h3>Fur coat</h3>
+                <p class="price">$143</p>
+
+            </div>
+        </div>
+        <!-- /.product -->
+    </div>
+
+</div>

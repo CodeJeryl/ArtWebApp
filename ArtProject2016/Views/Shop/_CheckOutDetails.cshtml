@@ -1,0 +1,100 @@
+﻿@model ArtProject2016.ViewModel.checkOutPartialViewModel
+
+
+ @using (Html.BeginForm())
+                        {
+                          
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            @Html.EditorFor(model => model.FirstName, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.FirstName)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Lastname</label>
+                                            @Html.EditorFor(model => model.LastName, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.LastName)
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="company">Email Address/Username</label>
+                                            @Html.EditorFor(model => model.UserName, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.UserName)
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="street">Street and Address</label>
+                                            @Html.EditorFor(model => model.Street, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Street)
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="street">City</label>
+                                            @Html.EditorFor(model => model.City, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.City)
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="street">Province</label>
+                                            @Html.EditorFor(model => model.Province, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Province)
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="street">Postal Code</label>
+                                            @Html.EditorFor(model => model.PostalCode, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.PostalCode)
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label for="street">Land Line</label>
+                                            @Html.EditorFor(model => model.LandLine, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.LandLine)
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="street">Mobile Number</label>
+                                            @Html.EditorFor(model => model.MobileNo, "", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.MobileNo)
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="email">wala pa</label>
+                                            <input type="text" class="form-control" id="email">
+                                        </div>
+                                    </div>
+
+                                </div>
+                         
+
+                        }

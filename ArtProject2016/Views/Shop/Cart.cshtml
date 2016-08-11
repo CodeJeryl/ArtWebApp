@@ -1,0 +1,201 @@
+﻿@model ArtProject2016.ViewModel.CartViewModel
+
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.removeItem').click(function () {
+            var del = $(this).attr('data-id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/Shop/RemoveFromCart',
+                data: { id: del },
+                success: function (data) {
+                    $('#row-' + data.DeleteId).fadeOut('slow');
+                    $('#suc').text("Deleted Item");
+                    $('.cart-total').text(data.CartTotal);
+                    $('#cart-count').text(data.CartCount);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
+    });
+</script>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success" role="alert">@ViewBag.Success </div>
+}
+
+
+<div id="content">
+    <div class="container">
+
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a>
+                </li>
+                <li>Shopping cart</li>
+            </ul>
+        </div>
+
+
+
+        <div class="col-md-9" id="basket">
+
+            <div class="box">
+                <h1>Shopping cart</h1>
+                <p class="text-muted">You currently have <span id="cart-count">@Model.CartCount</span> item(s) in your cart.</p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Painting</th>
+                                <th>Title & Artist</th>
+                                <th>Quantity</th>
+                                <th>Unit price</th>
+                                <th>Size (Height x Width)</th>
+                                <th colspan="2">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <tr id="row-@item.Id">
+                                    <td>
+                                        <a href="#">
+                                            <img src="@Url.Content(item.ForSale.Path)" style="width: 200px">
+                                        </a>
+                                    </td>
+                                    @if (item.ForSale.otherArtist)
+                                    {
+                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
+                                                 <br />
+                                            by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                            from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
+                                                <br />
+                                            by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                            <br />
+                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                        </td>
+
+                                    }
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Qty)
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ForSale.hSize)" H X @Html.DisplayFor(modelItem => item.ForSale.wSize)" W</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
+                                    <td><a href="#" data-id="@item.Id" class="removeItem"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">Total</th>
+                                <th colspan="2" class="cart-total">@Html.DisplayFor(modelItem => modelItem.SubTotal)</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+                <!-- /.table-responsive -->
+                <div class="box-footer">
+                    <div class="pull-left">
+                        <a href="category.html" class="btn btn-default"><i class="fa fa-chevron-left"></i>Continue shopping</a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+
+        <!-- /.col-md-9 -->
+
+        <div class="col-md-3">
+            <div class="box" id="order-summary">
+                <div class="box-header">
+                    <h3>Order summary</h3>
+                </div>
+                <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Order subtotal</td>
+                                <th class="cart-total">@Html.DisplayFor(modelItem => modelItem.SubTotal)</th>
+                            </tr>
+                            <tr>
+                                <td>Shipping and handling</td>
+                                <th>Free</th>
+                            </tr>
+
+                            <tr class="total">
+                                <td>Total</td>
+                                <th class="cart-total">@Html.DisplayFor(modelItem => modelItem.CartTotal)</th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="box-footer">
+
+                        <div class="text-center">
+                            @*     <button class="btn btn-default"><i class="fa fa-refresh"></i>Update basket</button>*@
+                            <a href="@Url.Action("CheckoutDetails", "Shop")" class="btn btn-primary">Proceed to Checkout 
+                             <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                            </a>
+                         </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+        <!-- /.col-md-3 -->
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#content -->
+
+
+
+@*      <tr>
+         <td>
+             @Html.DisplayFor(modelItem => item.ForSale.Title)
+         </td>
+         <td>
+             @Html.DisplayFor(modelItem => item.ForSale.Price)
+         </td>
+         <td>
+             @Html.DisplayFor(modelItem => item.Qty)
+         </td>
+         <td>
+             @Html.DisplayFor(modelItem => item.dateCreated)
+         </td>
+         <td>
+             @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+             @Html.ActionLink("Details", "Details", new {id = item.Id}) |
+             @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+         </td>
+     </tr>
+ }*@

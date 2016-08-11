@@ -1,0 +1,138 @@
+﻿@model ArtProject2016.Models.ForSale
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ForSale</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BuyerAccount.userName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuyerAccount.userName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SellerAccount.userName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SellerAccount.userName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mediumUsed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mediumUsed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.hSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Framed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Framed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.yearCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.yearCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.artDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.artDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datePosted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datePosted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dateUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateUpdated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ForPosting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ForPosting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sold)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sold)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

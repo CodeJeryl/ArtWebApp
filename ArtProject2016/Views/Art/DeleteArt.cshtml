@@ -1,0 +1,67 @@
+﻿@using ArtProject2016.Models
+@model ArtProject2016.Models.ForSale
+
+@{
+    ViewBag.Title = "Delete Art";
+    ViewBag.Current = "Collections";
+}
+
+
+<div class="col-md-9" id="wishlist">
+
+    <div class="box">
+        <h3>Are you sure you want to delete this Art?</h3>
+    </div>
+
+     
+            <div class="col-md-12 box">
+                <div class="col-md-5" id="text-page">
+                    @foreach (ForSaleAlbum pix in Model.ForSaleAlbums.Take(3))
+                    {
+                        <span style="float: left; padding: 10px">
+                            <img src="@Url.Content(pix.Path)"  width="140px" class="img-responsive"/></span>
+                    }
+                </div>
+                <div class="col-md-5" id="order-summary">
+                    <h3>Title:   @Html.DisplayFor(model => model.Title)</h3>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Size: </td>
+                                    <th>@Html.DisplayFor(model => model.Size)</th>
+                                    <td>Medium Used: </td>
+                                    <th>@Html.DisplayFor(model => model.mediumUsed)</th>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                    <th>@Html.DisplayFor(model => model.Price)</th>
+                                    <td>Discount:</td>
+                                    <th>@Html.DisplayFor(model => model.Discount)</th>
+                                </tr>
+                                <tr>
+                                    <td>Date Posted:</td>
+                                    <th>@Html.DisplayFor(model => model.datePosted)</th>
+                                    <td>For Posting?</td>
+                                    <th>@Html.DisplayTextFor(model => model.ForPosting)</th>
+                                </tr>
+                                <tr class="total">
+                                    <th>Controls:</th>
+                                    @using (Html.BeginForm())
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <td>
+                                            <input type="submit" value="Delete" class="btn-lg btn-danger" />
+                                        </td>
+                                        <td colspan="3">@Html.ActionLink("Back to List", "Index",null, new { @class = "btn btn-success"})   </td>
+                                  }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+   

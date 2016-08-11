@@ -1,0 +1,82 @@
+﻿@using ArtProject2016.Models
+@model IEnumerable<ArtProject2016.Models.ForSale>
+
+@{
+    ViewBag.Title = "Art Collections Page";
+    ViewBag.Current = "Collections";
+}
+<div class="col-md-9" id="wishlist">
+
+    <div class="box">
+        <h1>My Art Collections</h1>
+        <p class="lead">Update your Art Collections information.</p>
+        <p>
+        @*  Hide this action link if collector - brb*@
+            @Html.ActionLink("Add new Art for sale", "Upload", null, new { @class = "btn btn-primary" })
+        </p>
+        
+        @if(ViewBag.Success != null)
+        {
+            <div class="alert alert-success" role="alert"> @ViewBag.Success </div>
+        }
+          @if(ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert"> @ViewBag.Error </div>
+        }
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row products">
+            <div class="col-md-12 col-sm-12 box"> 
+              
+                
+                <div class="col-md-5" id="text-page">
+                   
+                        <span style="float: left; padding: 10px">
+                            <img src="@Url.Content(item.Path)"  width="140px" class="img-responsive"/></span>
+                    
+                </div>
+                <div class="col-md-5" id="order-summary">
+                    <h3>Title:   @Html.DisplayFor(modelItem => item.Title)</h3>
+                    
+                       <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Size: </td>
+                                        <th>@Html.DisplayFor(modelItem => item.wSize) x @Html.DisplayFor(modelItem => item.hSize)</th>
+                                         <td>Medium Used: </td>
+                                        <th>@Html.DisplayFor(modelItem => item.mediumUsed)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Price:</td>
+                                        <th>@Html.DisplayFor(modelItem => item.Price)</th>
+                                        <td>free:</td>
+                                        <th>space</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Posted:</td>
+                                        <th>@Html.DisplayFor(modelItem => item.datePosted)</th>
+                                         <td>For Posting?</td>
+                                        <th>@Html.DisplayTextFor(modelItem => item.ForPosting)</th>
+                                    </tr>
+                                    <tr class="total">
+                                        <th>Controls:</th>
+                                        <td>   @Html.ActionLink("Update Art Info", "Edit","Art", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                        </td>
+                                        <td>   @Html.ActionLink("Delete Art", "DeleteArt","Art", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+                
+            </div> 
+        </div>
+        <!-- /.products buttonsR -->   
+    }
+
+</div>
+
+

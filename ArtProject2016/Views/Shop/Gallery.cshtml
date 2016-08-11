@@ -1,0 +1,145 @@
+﻿@using ArtProject2016.Models
+@model IEnumerable<ArtProject2016.Models.ForSale>
+
+
+@{
+    ViewBag.Title = "Shop Gallery";
+}
+          <div class="box">
+                <h1>Paintings</h1>
+                <p>We offer wide selection of the best artworks and uploaded by local artist.</p>
+            </div>
+
+            <div class="box info-bar">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 products-showing">
+                        Showing <strong>12</strong> of <strong>25</strong> products
+                    </div>
+
+                    <div class="col-sm-12 col-md-8  products-number-sort">
+                        <div class="row">
+                            <form class="form-inline">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="products-number">
+                                        <strong>Show</strong>  <a href="#" class="btn btn-default btn-sm btn-primary">12</a>  <a href="#" class="btn btn-default btn-sm">24</a>  <a href="#" class="btn btn-default btn-sm">All</a> products
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="products-sort-by">
+                                        <strong>Sort by</strong>
+                                        <select name="sort-by" class="form-control">
+                                            <option>Price</option>
+                                            <option>Name</option>
+                                            <option>Sales first</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row products">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 col-sm-6">
+
+                        <div class="product">
+                           
+                                <div class="flip-container">
+                                    <div class="flipper">
+
+                                        <div class="front">
+
+                                            <a href="/Shop/ArtDetails/@item.Id">
+                                                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                                            </a>
+                                        </div>
+                                        <div class="back">
+                                            <a href="/Shop/ArtDetails/@item.Id">
+                                                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <a href="/Shop/ArtDetails/@item.Id" class="invisible">
+                                    <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                                </a>  
+                           
+                            <div class="text">
+                                <p class="title"><a href="/Shop/ArtDetails/@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></p>
+                                <p class="subtitle">@Html.DisplayFor(modelItem => item.hSize)" Height x @Html.DisplayFor(modelItem => item.wSize)" Width </p>
+                                <br />
+                                <div class="col-md-6 col-sm-6">
+
+                                    @if (item.otherArtist)
+                                    {
+                                        <p class="name">@Html.DisplayFor(modelItem => item.otherArtistName)</p>
+                                        <p class="name">@Html.DisplayFor(modelItem => item.otherArtistAddress)</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="name">@Html.DisplayFor(modelItem => item.SellerAccount.nickName)</p>
+                                         <p class="sub">@Html.DisplayFor(modelItem => item.SellerAccount.UserProfiles.SingleOrDefault().province)</p>
+                                    }
+                                   
+                                </div>
+
+                                <div class="col-md-6 col-sm-6">
+
+                                    <p class="price">@Html.DisplayFor(modelItem => item.Price)</p>
+                                </div>
+
+                          
+                                <p class="buttons">
+                                    <hr/>
+                                        @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.Id }, new { @class = "btn-lg btn-primary buttonC"})
+                                 </p>
+                            </div>
+                            <!-- /.text -->
+                            @if (item.Sold)
+                            {
+                                <div class="ribbon new">
+                                    <div class="theribbon">SOLD!</div>
+                                    <div class="ribbon-background"></div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- /.product -->
+                    </div>
+                }
+            </div>
+
+            <!-- /.products -->
+
+            <div class="pages">
+
+                <p class="loadMore">
+                    <a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i>Load more</a>
+                </p>
+
+                <ul class="pagination">
+                    <li><a href="#">&laquo;</a>
+                    </li>
+                    <li class="active"><a href="#">1</a>
+                    </li>
+                    <li><a href="#">2</a>
+                    </li>
+                    <li><a href="#">3</a>
+                    </li>
+                    <li><a href="#">4</a>
+                    </li>
+                    <li><a href="#">5</a>
+                    </li>
+                    <li><a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+
+
+

@@ -1,0 +1,127 @@
+/** Your theme modifications here **/
+
+#content .product .text .buttonsR {
+  clear: both;
+  text-align: right;
+}
+
+
+#content .product .text a.buttonC {
+    clear: both;
+    margin-left: 14%;
+}
+
+a.buttonC {
+    clear: both;
+    margin-left: 16%;
+}
+
+.formlabel {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+
+}
+
+.titletd {
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+
+}
+
+
+#content .product .text p.title {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 300;
+  margin: 0px;
+   padding: 0px;
+}
+#content .product .text p.subtitle {
+  font-size: 14px;
+  text-align: center;
+    font-style: italic;
+  font-weight: 300;
+  margin: 0px;
+   padding: 0px;
+}
+
+#content .product .text p.name {
+  font-size: 16px;
+  text-align: left;
+  font-weight: 300;
+  margin: 0px;
+   padding: 0px;
+}
+
+#content .product .text p.price {
+  font-size: 16px;
+    text-align: center;
+  font-weight: 300;
+   margin: 0px;
+   padding: 0px;
+}
+
+#content .product .text p.sub {
+  font-size: 14px;
+  text-align: left;
+  font-weight: 300;
+    font-style: italic;
+    margin: 0px;
+   padding: 0px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+table td {
+    text-align: center;
+}
+
+table th {
+     text-align: center;
+}
+
+.checkoutAddress p {
+    font-size: 18px;
+  font-weight: 300;
+  margin: 0px;
+   padding: 0px;
+    text-align: center;
+}
+
+
+.checkoutAddress .namee {
+    font-size: 22px;
+  font-weight: 400;
+}
+
+.box .box-headerCheckout {
+  background: #f7f7f7;
+  margin: -20px -20px 20px;
+  border-bottom: solid 1px #eeeeee;
+  text-align: center
+}

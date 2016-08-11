@@ -16,9 +16,9 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,7 +38,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.2.3\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -48,6 +63,33 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -55,45 +97,399 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.3\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.3\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages.Deployment">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Helpers">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\animate.min.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\custom.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\fonts\flexslider-icon.svg" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\css\owl.carousel.css" />
+    <Content Include="Content\css\owl.theme.css" />
+    <Content Include="Content\css\owl.transitions.css" />
+    <Content Include="Content\css\style.blue.css" />
+    <Content Include="Content\css\style.default.css" />
+    <Content Include="Content\css\style.green.css" />
+    <Content Include="Content\css\style.mono.css" />
+    <Content Include="Content\css\style.pink.css" />
+    <Content Include="Content\css\style.violet.css" />
+    <Content Include="Content\Images\Slider\einstein.jpg" />
+    <Content Include="Content\Images\Logo.png" />
+    <Content Include="Content\Images\Products\Art1.jpg" />
+    <Content Include="Content\Images\Products\Art2.jpg" />
+    <Content Include="Content\Images\Products\Art3.jpg" />
+    <Content Include="Content\Images\Products\Art4.jpg" />
+    <Content Include="Content\Images\Slider\slide 2.jpg" />
+    <Content Include="Content\Images\Slider\slide 3.jpg" />
+    <Content Include="Content\Images\Slider\slide 4.jpg" />
+    <Content Include="Content\Images\Slider\Slide1.jpg" />
+    <Content Include="Content\img\AjaxLoader.gif" />
+    <Content Include="Content\img\banner.jpg" />
+    <Content Include="Content\img\banner2.jpg" />
+    <Content Include="Content\img\basketsquare.jpg" />
+    <Content Include="Content\img\blog-avatar.jpg" />
+    <Content Include="Content\img\blog-avatar2.jpg" />
+    <Content Include="Content\img\blog.jpg" />
+    <Content Include="Content\img\blog2.jpg" />
+    <Content Include="Content\img\detailbig1.jpg" />
+    <Content Include="Content\img\detailbig2.jpg" />
+    <Content Include="Content\img\detailbig3.jpg" />
+    <Content Include="Content\img\detailsquare.jpg" />
+    <Content Include="Content\img\detailsquare2.jpg" />
+    <Content Include="Content\img\detailsquare3.jpg" />
+    <Content Include="Content\img\getinspired1.jpg" />
+    <Content Include="Content\img\getinspired2.jpg" />
+    <Content Include="Content\img\getinspired3.jpg" />
+    <Content Include="Content\img\grabbing.png" />
+    <Content Include="Content\img\logo-small.png" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\main-slider1.jpg" />
+    <Content Include="Content\img\main-slider2.jpg" />
+    <Content Include="Content\img\main-slider3.jpg" />
+    <Content Include="Content\img\main-slider4.jpg" />
+    <Content Include="Content\img\product1.jpg" />
+    <Content Include="Content\img\product1_2.jpg" />
+    <Content Include="Content\img\product2.jpg" />
+    <Content Include="Content\img\product2_2.jpg" />
+    <Content Include="Content\img\product3.jpg" />
+    <Content Include="Content\img\product3_2.jpg" />
+    <Content Include="Content\img\slider1.jpg" />
+    <Content Include="Content\img\slider2.jpg" />
+    <Content Include="Content\img\slider3.jpg" />
+    <Content Include="Content\img\slider4.jpg" />
+    <Content Include="Content\jquery.steps.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="img\AjaxLoader.gif" />
+    <Content Include="img\banner.jpg" />
+    <Content Include="img\banner2.jpg" />
+    <Content Include="img\basketsquare.jpg" />
+    <Content Include="img\blog-avatar.jpg" />
+    <Content Include="img\blog-avatar2.jpg" />
+    <Content Include="img\blog.jpg" />
+    <Content Include="img\blog2.jpg" />
+    <Content Include="img\detailbig1.jpg" />
+    <Content Include="img\detailbig2.jpg" />
+    <Content Include="img\detailbig3.jpg" />
+    <Content Include="img\detailsquare.jpg" />
+    <Content Include="img\detailsquare2.jpg" />
+    <Content Include="img\detailsquare3.jpg" />
+    <Content Include="img\getinspired1.jpg" />
+    <Content Include="img\getinspired2.jpg" />
+    <Content Include="img\getinspired3.jpg" />
+    <Content Include="img\grabbing.png" />
+    <Content Include="img\logo-small.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\main-slider1.jpg" />
+    <Content Include="img\main-slider2.jpg" />
+    <Content Include="img\main-slider3.jpg" />
+    <Content Include="img\main-slider4.jpg" />
+    <Content Include="img\product1.jpg" />
+    <Content Include="img\product1_2.jpg" />
+    <Content Include="img\product2.jpg" />
+    <Content Include="img\product2_2.jpg" />
+    <Content Include="img\product3.jpg" />
+    <Content Include="img\product3_2.jpg" />
+    <Content Include="img\slider1.jpg" />
+    <Content Include="img\slider2.jpg" />
+    <Content Include="img\slider3.jpg" />
+    <Content Include="img\slider4.jpg" />
+    <Content Include="Scripts\jquery.steps.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\jquery.steps.min.js" />
+    <Content Include="Scripts\js\bootstrap-hover-dropdown.js" />
+    <Content Include="Scripts\js\bootstrap.min.js" />
+    <Content Include="Scripts\js\front.js" />
+    <Content Include="Scripts\js\jquery-1.11.0.min.js" />
+    <Content Include="Scripts\js\jquery.cookie.js" />
+    <Content Include="Scripts\js\jquery.flexslider.js" />
+    <Content Include="Scripts\js\jquery.flexslider.min.js" />
+    <Content Include="Scripts\js\main.js" />
+    <Content Include="Scripts\js\modernizr.js" />
+    <Content Include="Scripts\js\owl.carousel.min.js" />
+    <Content Include="Scripts\js\respond.min.js" />
+    <Content Include="Scripts\js\waypoints.min.js" />
+    <Content Include="zTemp\404.html" />
+    <Content Include="zTemp\basket.html" />
+    <Content Include="zTemp\blog.html" />
+    <Content Include="zTemp\category-full.html" />
+    <Content Include="zTemp\category-right.html" />
+    <Content Include="zTemp\category.html" />
+    <Content Include="zTemp\checkout1.html" />
+    <Content Include="zTemp\checkout2.html" />
+    <Content Include="zTemp\checkout3.html" />
+    <Content Include="zTemp\checkout4.html" />
+    <Content Include="zTemp\contact.html" />
+    <Content Include="zTemp\css\animate.min.css" />
+    <Content Include="zTemp\css\bootstrap.css" />
+    <Content Include="zTemp\css\bootstrap.min.css" />
+    <Content Include="zTemp\css\custom.css" />
+    <Content Include="zTemp\css\font-awesome.css" />
+    <Content Include="zTemp\css\fonts\flexslider-icon.svg" />
+    <Content Include="zTemp\css\fonts\fontawesome-webfont.svg" />
+    <Content Include="zTemp\css\owl.carousel.css" />
+    <Content Include="zTemp\css\owl.theme.css" />
+    <Content Include="zTemp\css\owl.transitions.css" />
+    <Content Include="zTemp\css\style.blue.css" />
+    <Content Include="zTemp\css\style.default.css" />
+    <Content Include="zTemp\css\style.green.css" />
+    <Content Include="zTemp\css\style.mono.css" />
+    <Content Include="zTemp\css\style.pink.css" />
+    <Content Include="zTemp\css\style.violet.css" />
+    <Content Include="zTemp\customer-account.html" />
+    <Content Include="zTemp\customer-order.html" />
+    <Content Include="zTemp\customer-orders.html" />
+    <Content Include="zTemp\customer-wishlist.html" />
+    <Content Include="zTemp\detail.html" />
+    <Content Include="zTemp\faq.html" />
+    <Content Include="zTemp\favicon.png" />
+    <Content Include="zTemp\img\AjaxLoader.gif" />
+    <Content Include="zTemp\img\banner.jpg" />
+    <Content Include="zTemp\img\banner2.jpg" />
+    <Content Include="zTemp\img\basketsquare.jpg" />
+    <Content Include="zTemp\img\blog-avatar.jpg" />
+    <Content Include="zTemp\img\blog-avatar2.jpg" />
+    <Content Include="zTemp\img\blog.jpg" />
+    <Content Include="zTemp\img\blog2.jpg" />
+    <Content Include="zTemp\img\detailbig1.jpg" />
+    <Content Include="zTemp\img\detailbig2.jpg" />
+    <Content Include="zTemp\img\detailbig3.jpg" />
+    <Content Include="zTemp\img\detailsquare.jpg" />
+    <Content Include="zTemp\img\detailsquare2.jpg" />
+    <Content Include="zTemp\img\detailsquare3.jpg" />
+    <Content Include="zTemp\img\getinspired1.jpg" />
+    <Content Include="zTemp\img\getinspired2.jpg" />
+    <Content Include="zTemp\img\getinspired3.jpg" />
+    <Content Include="zTemp\img\grabbing.png" />
+    <Content Include="zTemp\img\logo-small.png" />
+    <Content Include="zTemp\img\logo.png" />
+    <Content Include="zTemp\img\main-slider1.jpg" />
+    <Content Include="zTemp\img\main-slider2.jpg" />
+    <Content Include="zTemp\img\main-slider3.jpg" />
+    <Content Include="zTemp\img\main-slider4.jpg" />
+    <Content Include="zTemp\img\product1.jpg" />
+    <Content Include="zTemp\img\product1_2.jpg" />
+    <Content Include="zTemp\img\product2.jpg" />
+    <Content Include="zTemp\img\product2_2.jpg" />
+    <Content Include="zTemp\img\product3.jpg" />
+    <Content Include="zTemp\img\product3_2.jpg" />
+    <Content Include="zTemp\img\slider1.jpg" />
+    <Content Include="zTemp\img\slider2.jpg" />
+    <Content Include="zTemp\img\slider3.jpg" />
+    <Content Include="zTemp\img\slider4.jpg" />
+    <Content Include="zTemp\index.html" />
+    <Content Include="zTemp\js\bootstrap-hover-dropdown.js" />
+    <Content Include="zTemp\js\bootstrap.min.js" />
+    <Content Include="zTemp\js\front.js" />
+    <Content Include="zTemp\js\jquery-1.11.0.min.js" />
+    <Content Include="zTemp\js\jquery.cookie.js" />
+    <Content Include="zTemp\js\jquery.flexslider.js" />
+    <Content Include="zTemp\js\jquery.flexslider.min.js" />
+    <Content Include="zTemp\js\main.js" />
+    <Content Include="zTemp\js\modernizr.js" />
+    <Content Include="zTemp\js\owl.carousel.min.js" />
+    <Content Include="zTemp\js\respond.min.js" />
+    <Content Include="zTemp\js\waypoints.min.js" />
+    <Content Include="zTemp\post.html" />
+    <Content Include="zTemp\register.html" />
+    <Content Include="zTemp\steps.html" />
+    <Content Include="zTemp\text-right.html" />
+    <Content Include="zTemp\text.html" />
+    <Content Include="Views\Home\img\AjaxLoader.gif" />
+    <Content Include="Views\Home\img\banner.jpg" />
+    <Content Include="Views\Home\img\banner2.jpg" />
+    <Content Include="Views\Home\img\basketsquare.jpg" />
+    <Content Include="Views\Home\img\blog-avatar.jpg" />
+    <Content Include="Views\Home\img\blog-avatar2.jpg" />
+    <Content Include="Views\Home\img\blog.jpg" />
+    <Content Include="Views\Home\img\blog2.jpg" />
+    <Content Include="Views\Home\img\detailbig1.jpg" />
+    <Content Include="Views\Home\img\detailbig2.jpg" />
+    <Content Include="Views\Home\img\detailbig3.jpg" />
+    <Content Include="Views\Home\img\detailsquare.jpg" />
+    <Content Include="Views\Home\img\detailsquare2.jpg" />
+    <Content Include="Views\Home\img\detailsquare3.jpg" />
+    <Content Include="Views\Home\img\getinspired1.jpg" />
+    <Content Include="Views\Home\img\getinspired2.jpg" />
+    <Content Include="Views\Home\img\getinspired3.jpg" />
+    <Content Include="Views\Home\img\grabbing.png" />
+    <Content Include="Views\Home\img\logo-small.png" />
+    <Content Include="Views\Home\img\logo.png" />
+    <Content Include="Views\Home\img\main-slider1.jpg" />
+    <Content Include="Views\Home\img\main-slider2.jpg" />
+    <Content Include="Views\Home\img\main-slider3.jpg" />
+    <Content Include="Views\Home\img\main-slider4.jpg" />
+    <Content Include="Views\Home\img\product1.jpg" />
+    <Content Include="Views\Home\img\product1_2.jpg" />
+    <Content Include="Views\Home\img\product2.jpg" />
+    <Content Include="Views\Home\img\product2_2.jpg" />
+    <Content Include="Views\Home\img\product3.jpg" />
+    <Content Include="Views\Home\img\product3_2.jpg" />
+    <Content Include="Views\Home\img\slider1.jpg" />
+    <Content Include="Views\Home\img\slider2.jpg" />
+    <Content Include="Views\Home\img\slider3.jpg" />
+    <Content Include="Views\Home\img\slider4.jpg" />
+    <Content Include="Views\Shared\img\AjaxLoader.gif" />
+    <Content Include="Views\Shared\img\banner.jpg" />
+    <Content Include="Views\Shared\img\banner2.jpg" />
+    <Content Include="Views\Shared\img\basketsquare.jpg" />
+    <Content Include="Views\Shared\img\blog-avatar.jpg" />
+    <Content Include="Views\Shared\img\blog-avatar2.jpg" />
+    <Content Include="Views\Shared\img\blog.jpg" />
+    <Content Include="Views\Shared\img\blog2.jpg" />
+    <Content Include="Views\Shared\img\detailbig1.jpg" />
+    <Content Include="Views\Shared\img\detailbig2.jpg" />
+    <Content Include="Views\Shared\img\detailbig3.jpg" />
+    <Content Include="Views\Shared\img\detailsquare.jpg" />
+    <Content Include="Views\Shared\img\detailsquare2.jpg" />
+    <Content Include="Views\Shared\img\detailsquare3.jpg" />
+    <Content Include="Views\Shared\img\getinspired1.jpg" />
+    <Content Include="Views\Shared\img\getinspired2.jpg" />
+    <Content Include="Views\Shared\img\getinspired3.jpg" />
+    <Content Include="Views\Shared\img\grabbing.png" />
+    <Content Include="Views\Shared\img\logo-small.png" />
+    <Content Include="Views\Shared\img\logo.png" />
+    <Content Include="Views\Shared\img\main-slider1.jpg" />
+    <Content Include="Views\Shared\img\main-slider2.jpg" />
+    <Content Include="Views\Shared\img\main-slider3.jpg" />
+    <Content Include="Views\Shared\img\main-slider4.jpg" />
+    <Content Include="Views\Shared\img\product1.jpg" />
+    <Content Include="Views\Shared\img\product1_2.jpg" />
+    <Content Include="Views\Shared\img\product2.jpg" />
+    <Content Include="Views\Shared\img\product2_2.jpg" />
+    <Content Include="Views\Shared\img\product3.jpg" />
+    <Content Include="Views\Shared\img\product3_2.jpg" />
+    <Content Include="Views\Shared\img\slider1.jpg" />
+    <Content Include="Views\Shared\img\slider2.jpg" />
+    <Content Include="Views\Shared\img\slider3.jpg" />
+    <Content Include="Views\Shared\img\slider4.jpg" />
+    <Content Include="Views\Shared\index.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArtController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ShopController.cs" />
+    <Compile Include="Controllers\testController.cs" />
+    <Compile Include="Functions\AccountControls.cs" />
+    <Compile Include="Functions\ArtControls.cs" />
+    <Compile Include="Functions\CartControls.cs" />
+    <Compile Include="Functions\Membership.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ArtContext.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\VoucherCode.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\ForSale.cs" />
+    <Compile Include="Models\ForSaleAlbum.cs" />
+    <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\WishList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CartRemoveViewModel.cs" />
+    <Compile Include="ViewModel\CartViewModel.cs" />
+    <Compile Include="ViewModel\checkoutDetailsViewModel.cs" />
+    <Compile Include="ViewModel\CheckoutViewModel.cs" />
+    <Compile Include="ViewModel\galleryViewModel.cs" />
+    <Compile Include="ViewModel\loginViewModel.cs" />
+    <Compile Include="ViewModel\registerViewModel.cs" />
+    <Compile Include="ViewModel\UpdateArtistViewModel.cs" />
+    <Compile Include="ViewModel\uploadViewModel.cs" />
+    <Compile Include="ViewModel\VerificationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Content\css\bootstrap.css.map" />
+    <Content Include="Content\css\fonts\flexslider-icon.eot" />
+    <Content Include="Content\css\fonts\flexslider-icon.ttf" />
+    <Content Include="Content\css\fonts\flexslider-icon.woff" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\css\fonts\FontAwesome.otf" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Auth\RegLogin.cshtml" />
+    <Content Include="Views\Auth\_Login.cshtml" />
+    <Content Include="Views\Auth\_Register.cshtml" />
+    <Content Include="Views\Account\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_AccountLayout.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Account\UpdateProfile.cshtml" />
+    <Content Include="Views\Art\Upload.cshtml" />
+    <Content Include="Views\Art\Index.cshtml" />
+    <Content Include="zTemp\css\bootstrap.css.map" />
+    <Content Include="zTemp\css\fonts\flexslider-icon.eot" />
+    <Content Include="zTemp\css\fonts\flexslider-icon.ttf" />
+    <Content Include="zTemp\css\fonts\flexslider-icon.woff" />
+    <Content Include="zTemp\css\fonts\fontawesome-webfont.eot" />
+    <Content Include="zTemp\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="zTemp\css\fonts\fontawesome-webfont.woff" />
+    <Content Include="zTemp\css\fonts\FontAwesome.otf" />
+    <Content Include="zTemp\readme.md" />
+    <Content Include="Views\Art\DeleteArt.cshtml" />
+    <Content Include="Views\Art\Edit.cshtml" />
+    <Content Include="Views\Art\_ViewStart.cshtml" />
+    <Content Include="Views\Account\Verification.cshtml" />
+    <Content Include="Views\Art\DeleteImage.cshtml" />
+    <Content Include="Views\test\Create.cshtml" />
+    <Content Include="Views\test\Delete.cshtml" />
+    <Content Include="Views\test\Details.cshtml" />
+    <Content Include="Views\test\Edit.cshtml" />
+    <Content Include="Views\test\Index.cshtml" />
+    <Content Include="Views\Shop\Gallery.cshtml" />
+    <Content Include="Views\Art\Details.cshtml" />
+    <Content Include="Views\Shop\ArtDetails.cshtml" />
+    <Content Include="Views\Shared\_ShopLayout.cshtml" />
+    <Content Include="Views\Shop\_ViewStart.cshtml" />
+    <Content Include="Views\Shop\_RelatedArt.cshtml" />
+    <Content Include="Views\Shop\Cart.cshtml" />
+    <Content Include="Views\Shop\CheckoutDetails.cshtml" />
+    <Content Include="Views\Shop\_CheckOutDetails.cshtml" />
+    <Content Include="Views\Shop\CheckOutSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -103,8 +499,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+    <Folder Include="Upload\Pics\" />
+    <Folder Include="Upload\VerificationID\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -119,7 +515,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>9972</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:60817/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

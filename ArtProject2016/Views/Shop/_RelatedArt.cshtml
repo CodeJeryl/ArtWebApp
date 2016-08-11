@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ArtProject2016.Models.ForSale>
+
+@foreach (var item in Model)
+{ 
+    <div class="col-md-3 col-sm-6">
+        <div class="product same-height">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <a href="/Shop/ArtDetails/@item.Id">
+                            <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                    <div class="back">
+                        <a href="/Shop/ArtDetails/@item.Id">
+                            <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="/Shop/ArtDetails/@item.Id" class="invisible">
+                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+            </a>
+            <div class="text">
+                <p class="title">@Html.DisplayFor(modelItem => item.Title)</p>
+                <p class="subtitle">@Html.DisplayFor(modelItem => item.Price)</p>
+            </div>
+            <p class="buttons">
+                <hr />
+                @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.Id }, new { @class = "btn btn-primary buttonC" })
+            </p>
+        </div>
+        <!-- /.product -->
+    </div>
+    
+}

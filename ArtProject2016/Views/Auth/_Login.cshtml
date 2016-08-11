@@ -1,0 +1,31 @@
+﻿@model ArtProject2016.ViewModel.loginViewModel
+
+ <div class="box">
+                        <h1>Login</h1>
+
+                        <p class="lead">Already our customer?</p>
+                        <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies
+                            mi vitae est. Mauris placerat eleifend leo.</p>
+
+                        <hr>
+
+                     @using (Html.BeginForm("_Login", "Auth", new { returnUrl = ViewBag.ReturnUrl }))
+                   {
+                           @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                
+                                <label for="email">Email</label>
+                              
+                                @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
+                                   @Html.ValidationMessageFor(model => model.userName)
+                             </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                   @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.password)
+                            </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                        </div>
+                        }
+                    </div>
