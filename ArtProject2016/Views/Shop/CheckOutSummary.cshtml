@@ -7,14 +7,32 @@
 
 
 
-@*
-hellllllllllllllloooo
-dwadadwada
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#voucherBtn').click(function () {
+            var voucherCode = $("#voucherTxtbox").val();
 
-*@
+            $.ajax({
+                type: 'POST',
+                url: '/Shop/AddVoucher',
+                data: { voucher: voucherCode },
+                success: function (data) {
+                    //$('#row-' + data.DeleteId).fadeOut('slow');
+                    //$('#suc').text("Deleted Item");
+                  //  $('#totalDisplay').text(data.Total);
+                    $('#total').text('₱' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+                    $('#total').fadeTo('slow');
+                    $('#voucherDed').text('₱' + parseFloat(data.VoucherDeduction, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()); //('$' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
+    });
+</script>
 <div id="content">
     <div class="container">
-
         <div class="col-md-12">
             <ul class="breadcrumb">
                 <li><a href="#">Home</a>
@@ -120,9 +138,6 @@ dwadadwada
                                  </div>
                                 <div class="col-md-6">
                                     
-
-                                    
-                                    
                                     
 
                                 </div>
@@ -171,11 +186,12 @@ dwadadwada
                             </tr>
                             <tr>
                                 <td>Voucher</td>
-                                <th>0.00</th>
+                                <th id="voucherDed">@Html.DisplayFor(item => item.VoucherDeduction)</th>
+                                    @Html.HiddenFor(item => item.VoucherDeduction)
                             </tr>
                             <tr class="total">
                                 <td>Total</td>
-                                <th>@Html.DisplayFor(item => item.Total)</th>
+                                <th id="total">@Html.DisplayFor(item => item.Total)</th>
                             </tr>
                         </tbody>
                     </table>
@@ -184,7 +200,7 @@ dwadadwada
 
                         <div class="text-center">
                             @*     <button class="btn btn-default"><i class="fa fa-refresh"></i>Update basket</button>*@
-                            <a href="@Url.Action("awww", "Shop")" class="btn btn-primary">Place an Order
+                            <a href="@Url.Action("AddVoucher", "Shop")" class="btn btn-primary">Place an Order
                              <i class="fa fa-chevron-right" aria-hidden="true"></i>
                             </a>
                          </div>
@@ -201,11 +217,11 @@ dwadadwada
                 <form>
                     <div class="input-group">
 
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="voucherTxtbox">
 
                         <span class="input-group-btn">
 
-                            <button class="btn btn-primary" type="button"><i class="fa fa-gift"></i></button>
+                            <button class="btn btn-primary" type="button" id="voucherBtn"><i class="fa fa-gift"></i></button>
 
                         </span>
                     </div>

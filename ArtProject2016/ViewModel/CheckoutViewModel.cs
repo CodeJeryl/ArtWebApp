@@ -9,6 +9,12 @@ namespace ArtProject2016.ViewModel
 {
     public class CheckoutViewModel
     {
+        public CheckoutViewModel()
+        {
+            VoucherDeduction = 0;
+           
+        }
+        
         public virtual UserAccount UserAccount { get; set; }
         public virtual UserProfile  UserProfile { get; set; }
 
@@ -34,6 +40,7 @@ namespace ArtProject2016.ViewModel
         public decimal Total { get; set; }
 
         public int VoucherCodeId { get; set; }
+         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal VoucherDeduction { get; set; }
         [Required]
         public string PaymentType { get; set; }

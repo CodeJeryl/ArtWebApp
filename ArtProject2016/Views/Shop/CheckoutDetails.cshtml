@@ -33,7 +33,7 @@
                     <ul class="nav nav-pills nav-justified">
                         <li class="active"><a href="#"><i class="fa fa-map-marker"></i><i class="fa fa-truck"></i>
                             <br>
-                             Personal details and Shipping address</a>
+                            Personal details and Shipping address</a>
                         </li>
 
                         @*  <li class="disabled"><a href="#"><i class="fa fa-money"></i>
@@ -73,9 +73,9 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="company">Email Address/Username</label>
-                                    @Html.EditorFor(model => model.UserName, "", new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.UserName)
+                                    <label for="street">Mobile Number</label>
+                                    @Html.EditorFor(model => model.MobileNo, "", new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MobileNo)
 
                                 </div>
                             </div>
@@ -124,20 +124,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="street">Mobile Number</label>
-                                    @Html.EditorFor(model => model.MobileNo, "", new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.MobileNo)
 
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="email">wala pa</label>
-                                    <input type="text" class="form-control" id="email">
-                                </div>
-                            </div>
 
                         </div>
 
@@ -149,11 +136,14 @@
 
                     <div class="box-footer">
                         <div class="pull-left">
-                            <a href="basket.html" class="btn btn-default"><i class="fa fa-chevron-left"></i>Back to basket</a>
+                            <a href="@Url.Action("Cart", "Shop")" class="btn btn-default"><i class="fa fa-chevron-left"></i>Back to Art Basket</a>
+                            @*   @Html.ActionLink("Continue to Order Summary","CheckoutDetails","Shop",null, new { @class = "btn-lg btn-primary"})
+                        *@
                         </div>
                         <div class="pull-right">
-                            @Html.ActionLink("Continue to Order Summary","CheckoutSummary","Shop",null, new { @class = "btn-lg btn-primary"})
-                           @* <button type="submit" class="btn-lg btn-primary">
+                            <button type="submit" class="btn-lg btn-primary">Continue to Order Summary<i class="fa fa-chevron-right"></i></button>
+
+                            @* <button type="submit" class="btn-lg btn-primary">
                                 Continue to Order Summary<i class="fa fa-chevron-right"></i>
                             </button>*@
                         </div>
@@ -176,7 +166,7 @@
                             <tbody>
                                 <tr>
                                     <td>Order subtotal</td>
-                                    <th>@Html.DisplayFor(item => item.CartTotal) </th>
+                                    <th>@Html.DisplayFor(item => item.SubTotal) </th>
                                 </tr>
                                 <tr>
                                     <td>Shipping and handling</td>
@@ -184,7 +174,8 @@
                                 </tr>
                                 <tr>
                                     <td>Voucher</td>
-                                    <th>You can add voucher to last step</th>
+                                    <th>@Html.DisplayFor(item => item.VoucherDeduction)</th>
+                                    @Html.HiddenFor(item => item.VoucherDeduction)
                                 </tr>
                                 <tr class="total">
                                     <td>Total</td>
@@ -196,7 +187,7 @@
 
                 </div>
 
-         @*       <div class="box">
+                @*       <div class="box">
                     <div class="box-header">
                         <h4>Coupon code</h4>
                     </div>

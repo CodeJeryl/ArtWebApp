@@ -140,12 +140,15 @@ namespace ArtProject2016.Controllers
 
                 if(cart.GetTotal() >= code.VoucherMinOrder)
                 {
-                    var results = new CartRemoveViewModel
+                    var results = new CheckoutViewModel
                     {
                       // CartTotal = cart.GetTotal() - code.VoucherDeduction
                         //  DeleteId = id
-
+                        VoucherDeduction = code.VoucherDeduction,
+                        Total = cart.GetTotal() - code.VoucherDeduction
                     };
+
+                    TempData["vDeduction"] = code.VoucherDeduction;
                     return Json(results);
                 }
                 return Json(false);
@@ -181,7 +184,7 @@ namespace ArtProject2016.Controllers
             }
         }
         
-      
+     
 
         [HttpGet]
         public ActionResult CheckoutDetails()
@@ -203,10 +206,20 @@ namespace ArtProject2016.Controllers
             viewModel.Province = userProfile.province;
             viewModel.Street = userProfile.street;
 
-          //  viewModel.DetailsChecked = true;
-
             var cart = new CartControls();
-            viewModel.CartTotal = cart.GetTotal();
+            if (TempData["vDeduction"] != null)
+            {
+                viewModel.VoucherDeduction = (decimal) TempData["vDeduction"];
+                viewModel.CartTotal = cart.GetTotal() - viewModel.VoucherDeduction;
+            }
+            else
+            {
+                viewModel.CartTotal = cart.GetTotal();
+            }
+            //  viewModel.DetailsChecked = true;
+            viewModel.SubTotal = cart.GetTotal();
+           
+           
             //ForSale forsale = db.ForSales.Find(id);
             //if (forsale == null)
             //{
@@ -233,6 +246,8 @@ namespace ArtProject2016.Controllers
             profileToUpdate.postalCode = model.PostalCode;
             profileToUpdate.province = model.Province;
             profileToUpdate.street = model.Street;
+
+            TempData["vDeduction"] = model.VoucherDeduction;
 
             db.SaveChanges();
 
@@ -268,8 +283,17 @@ namespace ArtProject2016.Controllers
             //viewModel.Street = userProfile.street;
 
             viewModel.SubTotal = controls.GetTotal();
-            viewModel.Total = controls.GetTotal();
+           
+            if (TempData["vDeduction"] != null)
+            {
+                viewModel.VoucherDeduction = (decimal)TempData["vDeduction"];
+                viewModel.Total = controls.GetTotal() - (decimal)TempData["vDeduction"];
+            }
+            else
+            {
+                viewModel.Total = controls.GetTotal();
 
+            }
             //ForSale forsale = db.ForSales.Find(id);
             //if (forsale == null)
             //{

@@ -10,8 +10,10 @@ namespace ArtProject2016.ViewModel
     {
         public checkoutDetailsViewModel()
         {
-         //   DetailsChecked = false;
+            VoucherDeduction = 0;
+            //   DetailsChecked = false;
         }
+
 
        //dsdssd
         [Required]
@@ -34,6 +36,11 @@ namespace ArtProject2016.ViewModel
         public string MobileNo { get; set; }
         [DataType(DataType.PhoneNumber)]
         public string LandLine { get; set; }
+         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal VoucherDeduction { get; set; }
+
+         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+         public decimal SubTotal { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal CartTotal { get; set; }
