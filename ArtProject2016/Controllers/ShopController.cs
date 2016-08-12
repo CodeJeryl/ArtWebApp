@@ -176,14 +176,27 @@ namespace ArtProject2016.Controllers
 
                 ViewBag.Success = "Added to Wish List";
 
-                return Json(ViewBag.Success);
+                return Json(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
         }
 
+        [HttpPost]
+        public ActionResult RemoveWishlist(int id)
+        {
+            var removeWish =
+                db.WishLists.Single(wish => wish.ForSaleId == id && wish.UserAccountId == WebSecurity.CurrentUserId);
+
+
+            db.WishLists.Remove(removeWish);
+            db.SaveChanges();
+
+           // ViewBag.Success = "Wishlist removed";
+            return Json(true);
+        }
 
 
         [HttpGet]
@@ -195,7 +208,7 @@ namespace ArtProject2016.Controllers
 
             checkoutDetailsViewModel viewModel = new checkoutDetailsViewModel();
 
-            viewModel.UserName = userAccount.userName;
+            //viewModel.UserName = userAccount.userName;
             viewModel.FirstName = userAccount.firstName;
             viewModel.LastName = userAccount.lastName;
             //userprofile

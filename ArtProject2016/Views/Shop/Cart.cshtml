@@ -12,7 +12,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/Shop/RemoveFromCart',
+                url: '@Url.Action("RemoveFromCart","Shop")',
                 data: { id: del },
                 success: function (data) {
                     $('#row-' + data.DeleteId).fadeOut('slow');

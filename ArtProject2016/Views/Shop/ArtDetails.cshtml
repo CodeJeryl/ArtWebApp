@@ -6,23 +6,46 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        
         $('#wish').click(function () {
             var add = $(this).attr('data-id');
             $.ajax({
                 type: 'POST',
-                url: '/Shop/AddWishlist',
+                url: '@Url.Action("AddWishlist", "Shop")',
                 data: { id: add },
                 success: function (data) {
                     // alert("success");
                     $('#suc').show();
                     $('#wish').hide();
-                    $('#suc').text("Wish List Added!");
+                    $('#removeWish').show();
+                    $('#suc').text("Added to Wishlist!");
                 },
                 error: function () {
                     alert("error");
                 }
             });
         });
+        
+        $('#removeWish').click(function () {
+            var remove = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("RemoveWishlist", "Shop")',
+                data: { id: remove },
+                success: function (data) {
+                    // alert("success");
+                    $('#suc').show();
+                    $('#removeWish').hide();
+                    $('#wish').show();
+                    $('#suc').text("Removed from Wishlist.");
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
+
+
     });
 </script>
 
@@ -57,22 +80,29 @@
                 { }*@
                 @if (User.Identity.IsAuthenticated)
                 {
-                    if (!Model.ForSale.Carts.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
+                    if (!Model.ForSale.Sold)
                     {
+                        if (!Model.ForSale.Carts.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
+                        {
                          @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                          @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
-                    }
+                        }
 
-                    if (!Model.ForSale.WishLists.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == Model.ForSale.BuyerId || se.UserAccountId == Model.ForSale.SellerId))
-                    {
+                        if (!Model.ForSale.WishLists.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
+                        {
                             <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
+                        }
+                        else
+                        {
+                         <span href="#" class="btn btn-danger" id="removeWish" data-id="@Model.ForSale.Id">Remove to Wishlist?</span>
+                        }
                     }
                     else
                     {
-                         <span href="#" class="btn btn-default">Already Added to Wishlist</span>
+                         <a href="@Url.Action("Gallery","Shop")" class="btn btn-danger">Art not Available, Go back to Gallery</a>
                     }
                 }
                 else

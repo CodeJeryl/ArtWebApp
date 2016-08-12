@@ -490,6 +490,7 @@
     <Content Include="Views\Shop\_CheckOutDetails.cshtml" />
     <Content Include="Views\Shop\CheckOutSummary.cshtml" />
     <Content Include="Views\Shared\_confirmation.cshtml" />
+    <Content Include="Views\Art\Wishlist.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

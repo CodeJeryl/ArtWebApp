@@ -15,9 +15,6 @@ namespace ArtProject2016.ViewModel
         }
 
 
-       //dsdssd
-        [Required]
-        public string UserName { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

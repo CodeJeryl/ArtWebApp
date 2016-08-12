@@ -260,12 +260,28 @@ namespace ArtProject2016.Controllers
             }
            
                 db.ForSales.Remove(forsale);
+
+            //delete wishlist associated with the Art that will be deleted
+            //onCascade delete is set to false
+            var wish = db.WishLists.Where(list => list.ForSaleId == id);
+
+            db.WishLists.RemoveRange(wish);
+
                 db.SaveChanges();
                 TempData["Success"] = "Art successfully deleted!";
           
             return RedirectToAction("Index");
-          
         }
+
+        [HttpGet]
+        public ActionResult Wishlist()
+        {
+            var wishlist = db.WishLists.Where(wish => wish.UserAccountId == WebSecurity.CurrentUserId).ToList();
+
+            
+            return View(wishlist);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
