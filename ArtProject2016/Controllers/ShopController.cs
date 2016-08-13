@@ -130,7 +130,7 @@ namespace ArtProject2016.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddVoucher(string voucher)
+        public JsonResult AddVoucher(string voucher)
         {
             var code = db.VoucherCodes.SingleOrDefault(v => v.VoucherName == voucher);
 
@@ -140,16 +140,19 @@ namespace ArtProject2016.Controllers
 
                 if (cart.GetTotal() >= code.VoucherMinOrder)
                 {
-                    var results = new CheckoutViewModel
-                    {
+                    CheckoutViewModel viewModel = new CheckoutViewModel();
+                    
                         // CartTotal = cart.GetTotal() - code.VoucherDeduction
                         //  DeleteId = id
-                        VoucherDeduction = code.VoucherDeduction,
-                        Total = cart.GetTotal() - code.VoucherDeduction
-                    };
+                    viewModel.VoucherDeduction = code.VoucherDeduction;
+                    viewModel.Total = cart.GetTotal() - code.VoucherDeduction;
+                    
+                    
 
                     TempData["vDeduction"] = code.VoucherDeduction;
-                    return Json(results);
+                    //     return Json(results); 
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+   
                 }
                 return Json(false);
             }
@@ -194,7 +197,7 @@ namespace ArtProject2016.Controllers
             db.WishLists.Remove(removeWish);
             db.SaveChanges();
 
-           // ViewBag.Success = "Wishlist removed";
+            // ViewBag.Success = "Wishlist removed";
             return Json(true);
         }
 
@@ -309,7 +312,6 @@ namespace ArtProject2016.Controllers
             else
             {
                 viewModel.Total = controls.GetTotal();
-
             }
             //ForSale forsale = db.ForSales.Find(id);
             //if (forsale == null)
@@ -321,17 +323,29 @@ namespace ArtProject2016.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckOutSummary(CheckoutViewModel model)
+        public ActionResult CheckOutSummary(CheckoutViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var delCart = new CartControls();
-                delCart.EmptyCart();
+            //    var delCart = new CartControls();
+             //   delCart.EmptyCart();
 
+                TempData["s"] = viewModel.SubTotal;
+                TempData["d"] = viewModel.Total;
                 return RedirectToAction("Done");
             }
+            //else
+            //{
+            //    var message = string.Join(" | ", ModelState.Values
+            //         .SelectMany(v => v.Errors)
+            //         .Select(e => e.ErrorMessage));
 
-            return View(model);
+            //    TempData["Error"] = message;
+            //    return View(model);
+            //}
+           // var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
+        //model.CartItems = cartItems;
+            return View(viewModel);
         }
 
         protected override void Dispose(bool disposing)

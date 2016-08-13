@@ -42,7 +42,7 @@ namespace ArtProject2016.ViewModel
         public int VoucherCodeId { get; set; }
          [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal VoucherDeduction { get; set; }
-        [Required]
+     
         public string PaymentType { get; set; }
 
         public virtual List<Cart> CartItems { get; set; }
