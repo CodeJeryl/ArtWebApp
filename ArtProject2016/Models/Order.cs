@@ -31,7 +31,7 @@ namespace ArtProject2016.Models
         public decimal Total { get; set; }
         public DateTime OrderDate { get; set; }
 
-        public int VoucherCodeId { get; set; }
+        public int? VoucherCodeId { get; set; }
         public virtual VoucherCode VoucherCode { get; set; }
 
         public virtual List<OrderDetail> OrderDetails { get; set; }

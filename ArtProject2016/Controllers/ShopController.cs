@@ -14,11 +14,13 @@ using WebMatrix.WebData;
 
 namespace ArtProject2016.Controllers
 {
+    [Authorize]
     public class ShopController : Controller
     {
         private ArtContext db = new ArtContext();
 
         // GET: /Shop/Gallery
+        [AllowAnonymous]
         public ActionResult Gallery()
         {
             var forsales = db.ForSales.Include(f => f.BuyerAccount).Include(f => f.Category).Include(f => f.SellerAccount)
@@ -27,6 +29,7 @@ namespace ArtProject2016.Controllers
         }
 
         // GET: /Shop/Details/5
+        [AllowAnonymous]
         public ActionResult ArtDetails(int? id)
         {
             if (id == null)
@@ -68,7 +71,6 @@ namespace ArtProject2016.Controllers
         //}
 
         [HttpGet]
-        [Authorize]
         public ActionResult Cart()
         {
             var model = db.Carts.Where(buy => buy.UserAccountId == WebSecurity.CurrentUserId).ToList();
@@ -130,37 +132,39 @@ namespace ArtProject2016.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddVoucher(string voucher)
+        public ActionResult AddVoucher(string voucher)
         {
-            var code = db.VoucherCodes.SingleOrDefault(v => v.VoucherName == voucher);
+            var code = db.VoucherCodes.SingleOrDefault(v => v.VoucherName == voucher.Trim() && v.VoucherEnabled);
 
-            if (code.VoucherName.Any())
+            if (code != null)
             {
                 var cart = new CartControls();
 
                 if (cart.GetTotal() >= code.VoucherMinOrder)
                 {
                     CheckoutViewModel viewModel = new CheckoutViewModel();
-                    
-                        // CartTotal = cart.GetTotal() - code.VoucherDeduction
-                        //  DeleteId = id
+
+                    decimal subTotal = cart.GetTotal();
+                    // CartTotal = cart.GetTotal() - code.VoucherDeduction
+                    //  DeleteId = id
+                    viewModel.SubTotal = subTotal;
+                    viewModel.VoucherCodeId = code.Id;
                     viewModel.VoucherDeduction = code.VoucherDeduction;
-                    viewModel.Total = cart.GetTotal() - code.VoucherDeduction;
-                    
-                    
+                    viewModel.Total = subTotal - code.VoucherDeduction;
 
                     TempData["vDeduction"] = code.VoucherDeduction;
                     //     return Json(results); 
-                    return Json(viewModel, JsonRequestBehavior.AllowGet);
-   
+                    // return Json(viewModel, JsonRequestBehavior.AllowGet);
+                    return PartialView("_summary", viewModel);
+                    //  return Json(new { success = true, message = PartialView("Evil", viewModel) });
                 }
-                return Json(false);
+
+                return Json(new { vouchAdd = "false", Error = "Need a Minimum of " + code.VoucherMinOrder.ToString() + " to use this voucher" });
             }
-            else
-            {
-                return Json(false);
-            }
+            return Json(new { vouchAdd = "false", Error = "Voucher is not valid anymore!" });
+
         }
+
 
         [HttpPost]
         public ActionResult AddWishlist(int id)
@@ -205,6 +209,13 @@ namespace ArtProject2016.Controllers
         [HttpGet]
         public ActionResult CheckoutDetails()
         {
+            var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
+            if (!cartItems.Any())
+            {
+                TempData["error"] = "you dont have any items in cart";
+                return RedirectToAction("Gallery");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             var userAccount = db.UserAccounts.Single(user => user.Id == WebSecurity.CurrentUserId);
             var userProfile = db.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
@@ -281,6 +292,7 @@ namespace ArtProject2016.Controllers
             var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
             if (!cartItems.Any())
             {
+                TempData["error"] = "you dont have any items in cart";
                 return RedirectToAction("Gallery");
                 //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -325,27 +337,89 @@ namespace ArtProject2016.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckOutSummary(CheckoutViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-            //    var delCart = new CartControls();
-             //   delCart.EmptyCart();
+                var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
+                var userAccount = db.UserAccounts.Single(user => user.Id == WebSecurity.CurrentUserId);
+                var userProfile = db.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
 
-                TempData["s"] = viewModel.SubTotal;
-                TempData["d"] = viewModel.Total;
-                return RedirectToAction("Done");
+                viewModel.UserAccount = userAccount;
+                viewModel.UserProfile = userProfile;
+                viewModel.CartItems = cartItems;
+
+                //if(viewModel.VoucherCodeId == 0)
+                //{
+                //    viewModel.VoucherCodeId = null;
+                //}
+                if (ModelState.IsValid)
+                {
+                    var newOrder = new Order()
+                                       {
+                                           Username = userAccount.userName,
+                                           FirstName = userAccount.firstName,
+                                           LastName = userAccount.lastName,
+
+                                           //address
+                                           Street = userProfile.street,
+                                           City = userProfile.city,
+                                           Province = userProfile.province,
+                                           PostalCode = userProfile.postalCode,
+                                           MobileNo = userProfile.mobileNo,
+                                           LandLine = userProfile.landLine,
+
+
+                                           VoucherCodeId = viewModel.VoucherCodeId,
+                                           VoucherDeduction = viewModel.VoucherDeduction,
+
+                                           SubTotal = viewModel.SubTotal,
+                                           Total = viewModel.Total,
+
+                                           PaymentType = "wala pa",
+
+                                           OrderDate = DateTime.Now
+
+                                       };
+
+                    db.Orders.Add(newOrder);
+
+                    foreach (Cart cartItem in cartItems)
+                    {
+                        var newOrderDetails = new OrderDetail()
+                                                  {
+                                                      Quantity = cartItem.Qty,
+                                                      UnitPrice = cartItem.ForSale.Price,
+                                                      ForSaleId = cartItem.ForSaleId,
+                                                      OrderId = newOrder.Id
+                                                  };
+                        db.OrderDetails.Add(newOrderDetails);
+
+                        var updateArt = db.ForSales.Find(cartItem.ForSaleId);
+                        updateArt.Sold = true;
+                        updateArt.BuyerId = WebSecurity.CurrentUserId;
+                    } 
+                    db.SaveChanges();
+
+                    dbContextTransaction.Commit();
+                    //  TempData["s"] = viewModel.SubTotal;
+                    //  TempData["d"] = viewModel.Total;
+                    //        var delCart = new CartControls();
+                    //     delCart.EmptyCart();
+                    TempData["success"] = "Success. ID no: " + newOrder.Id.ToString();
+                    return RedirectToAction("Cart");
+                }
+                //else
+                //{
+                //    var message = string.Join(" | ", ModelState.Values
+                //         .SelectMany(v => v.Errors)
+                //         .Select(e => e.ErrorMessage));
+
+                //    TempData["Error"] = message;
+                //    return View(model);
+                //}
+                // var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
+                //model.CartItems = cartItems;
+                return View(viewModel);
             }
-            //else
-            //{
-            //    var message = string.Join(" | ", ModelState.Values
-            //         .SelectMany(v => v.Errors)
-            //         .Select(e => e.ErrorMessage));
-
-            //    TempData["Error"] = message;
-            //    return View(model);
-            //}
-           // var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
-        //model.CartItems = cartItems;
-            return View(viewModel);
         }
 
         protected override void Dispose(bool disposing)

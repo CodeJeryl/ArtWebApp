@@ -39,7 +39,8 @@ namespace ArtProject2016.ViewModel
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal Total { get; set; }
 
-        public int VoucherCodeId { get; set; }
+        public int? VoucherCodeId { get; set; }
+
          [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal VoucherDeduction { get; set; }
      

@@ -9,26 +9,33 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#voucherAlert").hide();
         $('#voucherBtn').click(function () {
             var voucherCode = $("#voucherTxtbox").val();
 
             $.ajax({
                 type: 'POST',
                 url: '/Shop/AddVoucher',
-                dataType: "json",
-                data: { voucher: voucherCode },
+               data: { voucher: voucherCode },
                 success: function (data) {
                     //$('#row-' + data.DeleteId).fadeOut('slow');
-                    //$('#suc').text("Deleted Item");
-                    //  $('#totalDisplay').text(data.Total);
-                //    $('#total').text('₱' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+                  //    $('#total').text('₱' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
                 //    $('#voucherDed').text('₱' + parseFloat(data.VoucherDeduction, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()); //('$' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
-
-                    $('#total').html("₱" + data.Total);
-                    $('#voucherDed').html("₱" + data.VoucherDeduction);
+                    if (data.vouchAdd == "false") {
+                        $("#voucherAlert").show();
+                        $("#voucherAlert").text(data.Error);
+                    } else {
+                        $("#summaryTable").html(data);
+                       // $("#voucherAlert").addClass("alert alert-success");
+                        $("#voucherAlert").text("Voucher Discount added").show();
+                    }
+                  
+                    
+                    //$('#total').html("₱" + data.Total);
+                    //$('#voucherDed').html("₱" + data.VoucherDeduction); 
                 },
-                error: function () {
-                    alert("error");
+                error: function (data) {
+                   alert("error");
                 }
             });
         });
@@ -177,33 +184,12 @@
                     <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
 
                     <div class="table-responsive">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>Order subtotal</td>
-                                    <th>@Html.DisplayFor(item => item.SubTotal) </th>
-                                    @Html.HiddenFor(item => item.SubTotal)
-                            
-                                 
-                                </tr>
-                                <tr>
-                                    <td>Shipping and handling</td>
-                                    <th>FREE</th>
-                                </tr>
-                                <tr>
-                                    <td>Voucher</td>
-                                    <th id="voucherDed">@Html.DisplayFor(item => item.VoucherDeduction)</th>
-                                    @Html.HiddenFor(item => item.VoucherDeduction)
-                                </tr>
-                                <tr class="total">
-                                    <td>Total</td>
-                                    <th id="total">@Html.DisplayFor(item => item.Total)</th>
-                                       @Html.HiddenFor(item => item.Total)
-                                </tr>
-                            </tbody>
-                        </table>
-
+                      
+                        
+                        @Html.Partial("_summary", Model)
+                        
                         <div class="box-footer">
+                            <div class="alert alert-danger" role="alert" id="voucherAlert"> </div>
                             <p class="text-muted">If you have a voucher code, please enter it in the box below.</p>
                             <div class="input-group">
 

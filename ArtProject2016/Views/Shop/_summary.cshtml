@@ -1,0 +1,27 @@
+﻿ @model ArtProject2016.ViewModel.CheckoutViewModel
+
+<table class="table" id="summaryTable">
+                            <tbody>
+                                <tr>
+                                    <td>Order subtotal</td>
+                                    <th>@Html.DisplayFor(item => item.SubTotal) </th>
+                                    @Html.HiddenFor(item => item.SubTotal)
+                            
+                                 
+                                </tr>
+                                <tr>
+                                    <td>Shipping and handling</td>
+                                    <th>FREE</th>
+                                </tr>
+                                <tr>
+                                    <td>Voucher</td>
+                                    <th id="voucherDed">@Html.DisplayFor(item => item.VoucherDeduction)</th>
+                                    @Html.HiddenFor(item => item.VoucherCodeId)  @Html.HiddenFor(item => item.VoucherDeduction)
+                                </tr>
+                                <tr class="total">
+                                    <td>Total</td>
+                                    <th id="total">@Html.DisplayFor(item => item.Total)</th>
+                                       @Html.HiddenFor(item => item.Total)
+                                </tr>
+                            </tbody>
+                        </table>
