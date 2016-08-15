@@ -64,7 +64,7 @@ namespace ArtProject2016.Migrations
                 }
 
                 context.Categories.AddOrUpdate(
-                    c => c.Id, new Category()
+                    c => c.name, new Category()
                     {
                         name = "Painting",
                         dateAdded = DateTime.Now

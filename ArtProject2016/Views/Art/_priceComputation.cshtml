@@ -1,0 +1,35 @@
+﻿@model ArtProject2016.ViewModel.uploadViewModel
+
+<table class="table text-center" id="summaryTable">
+    <tbody>
+        <tr>
+            <td>Painting Price</td>
+
+            <th>
+                <div class="input-group">
+                    <div class="input-group-addon">₱</div>
+                    @Html.EditorFor(model => model.ForSale.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="input-group-addon">.00</div>
+                </div>
+            </th>
+            @Html.ValidationMessageFor(model => model.ForSale.Price)
+
+        </tr>
+        <tr>
+            <td>Your Profit (80%)</td>
+            <th id="profit" style="color: green">@Html.DisplayFor(model => model.ForSale.Profit, new { @placeholder = "P123" })</th>
+            @Html.HiddenFor(model => model.ForSale.Profit)
+        </tr>
+        <tr>
+            <td>Shipping to be paid by Buyer</td>
+            <th id="shipping">@Html.DisplayFor(model => model.ForSale.ShippingFee)</th>
+            @Html.HiddenFor(model => model.ForSale.ShippingFee)
+        </tr>
+        <tr class="total">
+            <td>Total</td>
+            <th id="totalprice">@Html.DisplayFor(model => model.ForSale.Price)</th>
+            @Html.HiddenFor(model => model.ForSale.Price)
+        </tr>
+    </tbody>
+</table>
+

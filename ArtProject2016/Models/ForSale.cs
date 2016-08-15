@@ -9,12 +9,12 @@ namespace ArtProject2016.Models
 {
     public class ForSale
     {
-        //public ForSale()
-        //{
-        //    Discount = 0;
-        //    Sold = false;
-        //    ForPosting = false;
-        //}
+        public ForSale()
+        {
+           // Sold = false;
+           // ForPosting = false;
+            Profit = 0;
+        }
 
         public int Id { get; set; }
 
@@ -33,6 +33,21 @@ namespace ArtProject2016.Models
         [Required]
         [Display(Name = "Height")]
         public string hSize { get; set; }
+       
+        [Required]
+        [Display(Name = "Art Price")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal ArtistPrice { get; set; }
+
+        [Required]
+        [Display(Name = "Profit")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal Profit { get; set; }
+
+        [Required]
+        [Display(Name = "Shipping Fee")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal ShippingFee { get; set; }
 
         [Required]
         [Display(Name = "Price")]

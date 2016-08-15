@@ -18,10 +18,10 @@
         $('#chkbxArtist').click(function () {
             if ($(this).is(':checked')) {
                 $("#hideOther").show();
-                $("#hideOtherA").show();
+                //   $("#hideOtherA").show();
             } else {
                 $("#hideOther").hide();
-                $("#hideOtherA").hide();
+                //  $("#hideOtherA").hide();
             }
         });
     });
@@ -94,15 +94,13 @@
                         @Html.ValidationMessageFor(model => model.selectedYear)
                     </div>
                 </div>
-                <div class="col-sm-2 col-md-2">
+                <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <label for="street">Artwork Framed?</label>
                         @Html.EditorFor(model => model.ForSale.Framed, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ForSale.Framed)
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <label for="street">Created by other Artist?</label>
@@ -110,16 +108,21 @@
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtist)
                     </div>
                 </div>
+            </div>
+            <div class="row box" id="hideOther" style="display: none; background-color: #cccc">
                 <div class="col-sm-4 col-md-4">
-                    <div class="form-group" id="hideOther" style="display: none">
-                        <label for="street">if yes, provide artist name</label>
+                    <h4>Other Artist details: </h4>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label for="street">provide artist name</label>
                         @Html.EditorFor(model => model.ForSale.otherArtistName, new { htmlAttributes = new { @class = "form-control", placeholder = "Artist Created the Art" } })
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtistName)
                     </div>
                 </div>
-                <div class="col-sm-5 col-md-5">
-                    <div class="form-group" id="hideOtherA" style="display: none">
-                        <label for="street">provide artist address</label>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label for="street">provide artist City or Province</label>
                         @Html.EditorFor(model => model.ForSale.otherArtistAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtistAddress)
                     </div>
@@ -127,21 +130,21 @@
             </div>
             
             <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <span class="lead" style="font-weight: 500">Price computation:</span>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="lastName">Price - inclusive of shipping fee (ex: 10,000 + 500sf= 10,500)</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">₱</div>
-                            @Html.EditorFor(model => model.ForSale.Price, new { htmlAttributes = new { @class = "form-control" } })
-                            <div class="input-group-addon">.00</div>
+               
+                <div class="col-md-10 center-block" style="float: none">
+                    <div class="box" id="order-summary">
+                        <div class="box-header text-center">
+                            <h3>Price Computation</h3>
                         </div>
-                        @Html.ValidationMessageFor(model => model.ForSale.Price)
+                        <p class="text-muted">See the all-in price and Shipping costs are calculated based on the values you have entered.</p>
+
+                        <div class="table-responsive">
+                            @Html.Partial("_priceComputation", Model)
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                </div>
             
             <div class="row">
                 <div class="col-sm-12 col-md-12">

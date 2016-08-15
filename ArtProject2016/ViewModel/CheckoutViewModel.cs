@@ -26,7 +26,6 @@ namespace ArtProject2016.ViewModel
         //public string Province { get; set; }
         //[Required]
         //public string PostalCode { get; set; }
-
         //[Required]
         //public string MobileNo { get; set; }
         //[DataType(DataType.PhoneNumber)]
