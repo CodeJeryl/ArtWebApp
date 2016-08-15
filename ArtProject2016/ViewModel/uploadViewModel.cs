@@ -16,7 +16,7 @@ namespace ArtProject2016.ViewModel
         }
 
         public virtual ForSale ForSale { get; set; }
-        public virtual ForSaleAlbum ForSaleAlbum { get; set; }
+       // public virtual ForSaleAlbum ForSaleAlbum { get; set; }
       //  public virtual ICollection<ForSaleAlbum> ForSaleAlbumCollection { get; set; }
 
         [Required]

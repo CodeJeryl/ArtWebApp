@@ -53,6 +53,8 @@ namespace ArtProject2016.Controllers
             {
                 uploadViewModel viewModel = new uploadViewModel();
                 viewModel._Categories = db.Categories.ToList();
+              //  viewModel.ForSale.Profit = 0;
+              //  viewModel.ForSale.ShippingFee = 0;
                 return View(viewModel);
             }
         }

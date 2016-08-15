@@ -134,3 +134,7 @@ table th {
     font-size: 20px;
     text-align: center;
 }
+
+.table td {
+    width: 50%;
+  }

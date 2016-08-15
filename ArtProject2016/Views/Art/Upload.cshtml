@@ -14,7 +14,7 @@
 </style>
 
 <script>
-    $(function () {
+    $(document).ready(function () {
         $('#chkbxArtist').click(function () {
             if ($(this).is(':checked')) {
                 $("#hideOther").show();
@@ -24,6 +24,17 @@
                 //  $("#hideOtherA").hide();
             }
         });
+        //ForSale_Price
+        $('#computeBtn').click(function () {
+            var artPrice = $('#ForSale_ArtistPrice').val();
+            var profit = artPrice * .8;
+            var total = parseInt(artPrice) + 500;
+            $('#profit').text('₱' + parseFloat(profit, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+            $('#shipping').text('₱' + parseFloat(500, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+            $('#totalprice').text('₱' + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+
+        });
+
     });
 </script>
 
@@ -130,7 +141,7 @@
             </div>
             
             <div class="row">
-               
+
                 <div class="col-md-10 center-block" style="float: none">
                     <div class="box" id="order-summary">
                         <div class="box-header text-center">
@@ -139,12 +150,49 @@
                         <p class="text-muted">See the all-in price and Shipping costs are calculated based on the values you have entered.</p>
 
                         <div class="table-responsive">
-                            @Html.Partial("_priceComputation", Model)
+                            <table class="table text-center" id="summaryTable">
+                                <tbody>
+                                    <tr>
+                                        <td>Art Price</td>
+
+                                        <th>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">₱</div>
+                                                @Html.EditorFor(model => model.ForSale.ArtistPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                                <div class="input-group-addon">.00</div>
+                                            </div>
+                                        </th>
+                                        @Html.ValidationMessageFor(model => model.ForSale.ArtistPrice)
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500; vertical-align: middle; color: red">Please click the button to compute prices</td>
+                                        <th>
+                                            <button id="computeBtn" type="button" class="btn btn-danger">Compute Profit</button></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Your Profit (80%)</td>
+                                        <th id="profit" style="color: green">@Html.DisplayFor(model => model.ForSale.Profit)</th>
+                                        @Html.HiddenFor(model => model.ForSale.Profit)
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping to be paid by Buyer</td>
+                                        <th id="shipping">@Html.DisplayFor(model => model.ForSale.ShippingFee)</th>
+                                        @Html.HiddenFor(model => model.ForSale.ShippingFee)
+                                    </tr>
+                                    <tr class="total" style="margin-bottom: 5px">
+                                        <td>Total</td>
+                                        <th id="totalprice">@Html.DisplayFor(model => model.ForSale.Price)</th>
+                                        @Html.HiddenFor(model => model.ForSale.Price)
+                                    </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>
-                
-                </div>
+
+            </div>
             
             <div class="row">
                 <div class="col-sm-12 col-md-12">
@@ -155,7 +203,9 @@
                         @Html.EditorFor(model => model.ForSale.artDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Tell us about your art" } })
                         @Html.ValidationMessageFor(model => model.ForSale.artDescription)
                     </div>
+
                 </div>
+
             </div>
             
             <div class="row">
