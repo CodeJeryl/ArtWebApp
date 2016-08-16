@@ -375,6 +375,7 @@ namespace ArtProject2016.Controllers
                                            Total = viewModel.Total,
 
                                            PaymentType = "wala pa",
+                                           OrderStatus = "Processing...",
 
                                            OrderDate = DateTime.Now
 
