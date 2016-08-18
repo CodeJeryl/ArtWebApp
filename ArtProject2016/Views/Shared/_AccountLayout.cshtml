@@ -41,8 +41,8 @@
 
                         @if (User.IsInRole("Artist"))
                         {
-                            <li  class="@(ViewBag.Current == "Sales" ? "active" : "")">
-                                @Html.ActionLink("Sales transaction", "Index", "Sale", null, new { @class = "text-center" })
+                            <li  class="@(ViewBag.Current == "Sell" ? "active" : "")">
+                                @Html.ActionLink("Sales transaction", "Index", "Sell", null, new { @class = "text-center" })
                             </li>
                             <li class="@(ViewBag.Current == "Upload" ? "active" : "")">
                                 @Html.ActionLink("Upload Art", "Upload", "Art", null, new { @class = "text-center" })

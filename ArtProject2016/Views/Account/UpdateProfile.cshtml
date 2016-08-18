@@ -22,20 +22,20 @@
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary()
                         <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                  <label for="firstName">First Name</label>
-                                @Html.EditorFor(model => model.UserAccount.firstName, "", new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserAccount.firstName)
+                                @Html.EditorFor(model => model.firstName, "", new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.firstName)
                             </div>
                         </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="lastName">Last Name</label>
-                                    @Html.EditorFor(model => model.UserAccount.lastName,new { htmlAttributes = new { @class = "form-control" } } )
-                                    @Html.ValidationMessageFor(model => model.UserAccount.lastName)
+                                    @Html.EditorFor(model => model.lastName,new { htmlAttributes = new { @class = "form-control" } } )
+                                    @Html.ValidationMessageFor(model => model.lastName)
                                 </div>
                             </div>
                               
@@ -46,8 +46,8 @@
                          <div class="col-sm-4">
                             <div class="form-group">
                                  <label for="nickName">Nick Name</label>
-                                @Html.EditorFor(model => model.UserAccount.nickName,new { htmlAttributes = new { @class = "form-control" } } )
-                                @Html.ValidationMessageFor(model => model.UserAccount.nickName)
+                                @Html.EditorFor(model => model.nickName,new { htmlAttributes = new { @class = "form-control" } } )
+                                @Html.ValidationMessageFor(model => model.nickName)
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -115,8 +115,8 @@
                             <div class="col-sm-4">
                          <div class="form-group">
                                 <label class="userType">User Type:</label>
-                                <label style="padding-left:20px; font-weight: 500">   @Html.RadioButtonFor(m => m.UserProfile,"Artist", new { @class = "form-control" }) Artist</label>
-                                <label style="padding-left:20px; font-weight: 500">    @Html.RadioButtonFor(m => m.UserProfile,"Collector", new { @class = "form-control" }) Collector</label>
+                                <label style="padding-left:20px; font-weight: 500">   @Html.RadioButtonFor(m => m.userType,"Artist", new { @class = "form-control" }) Artist</label>
+                                <label style="padding-left:20px; font-weight: 500">    @Html.RadioButtonFor(m => m.userType,"Collector", new { @class = "form-control" }) Collector</label>
                             </div>
                         </div>
                   

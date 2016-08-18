@@ -400,6 +400,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SellController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\testController.cs" />
     <Compile Include="Functions\AccountControls.cs" />
@@ -495,6 +496,8 @@
     <Content Include="Views\Art\_priceComputation.cshtml" />
     <Content Include="Views\Art\Orders.cshtml" />
     <Content Include="Views\Art\OrderDetails.cshtml" />
+    <Content Include="Views\Sell\Index.cshtml" />
+    <Content Include="Views\Sell\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

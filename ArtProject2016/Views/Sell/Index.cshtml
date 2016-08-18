@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<ArtProject2016.Models.OrderDetail>
 
 @{
-    ViewBag.Title = "My Orders";
-    ViewBag.Current = "Orders";
+    ViewBag.Title = "Sold Art";
+    ViewBag.Current = "Sell";
 }
 
 
 
 <div class="col-md-9" id="customer-order">
     <div class="box">
-        <h1>Order #@Model.First().OrderId</h1>
+        <h1>Sold Arts</h1>
 
-        <p class="lead">Order #@Model.First().OrderId was placed on <strong>@Model.First().Order.OrderDate.ToShortDateString()</strong> and is currently <strong>@Model.First().Order.OrderStatus</strong>.</p>
+        <p class="lead">Please prepare the art and ship it</p>
         <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
 
         <hr>
@@ -69,7 +69,7 @@
                     }
 
                 </tbody>
-                <tfoot>
+                @*<tfoot>
                     <tr>
                         <th colspan="5" class="text-right">Order subtotal</th>
                         <th>@Model.First().Order.SubTotal</th>
@@ -87,39 +87,12 @@
                         <th colspan="5" class="text-right">Total</th>
                         <th>@Model.First().Order.Total</th>
                     </tr>
-                </tfoot>
+                </tfoot>*@
             </table>
 
         </div>
         <!-- /.table-responsive -->
 
-        <div class="row addresses">
-            <div class="col-md-6">
-                <h2>Payment Method</h2>
-                <p>@Model.First().Order.PaymentType
-                    <br>
-                    13/25 New Avenue
-                                    <br>
-                    New Heaven
-                                    <br>
-                    45Y 73J
-                                    <br>
-                    England
-                                    <br>
-                    Great Britain
-                </p>
-            </div>
-            <div class="col-md-6">
-                <h2>Shipping address</h2>
-                <p>@Model.First().Order.FirstName @Model.First().Order.LastName
-                    <br>@Model.First().Order.Street
-                    <br>@Model.First().Order.City
-                    <br>@Model.First().Order.Province
-                    <br>@Model.First().Order.MobileNo
-                    <br>@Model.First().Order.LandLine
-                </p>
-            </div>
-        </div>
 
     </div>
 </div>

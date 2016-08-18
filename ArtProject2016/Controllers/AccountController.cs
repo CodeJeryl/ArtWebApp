@@ -42,7 +42,10 @@ namespace ArtProject2016.Controllers
             artist = context.UserProfiles.First(ar => ar.UserAccountId == WebSecurity.CurrentUserId);
 
             UpdateArtistViewModel viewModel = new UpdateArtistViewModel();
-            viewModel.UserAccount = user;
+            viewModel.firstName = user.firstName;
+            viewModel.lastName = user.lastName;
+            viewModel.nickName = user.nickName;
+            viewModel.userType = user.userType;
             viewModel.UserProfile = artist;
             //a => a.UserAccountId == WebSecurity.CurrentUserId).First();
             return View(viewModel);
@@ -59,11 +62,20 @@ namespace ArtProject2016.Controllers
                     var userToUpdate = context.UserAccounts.Find(WebSecurity.CurrentUserId);
                     var artistToUpdate = context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
-                    
-                    userToUpdate.firstName = model.UserAccount.firstName.ToUpper();
-                    userToUpdate.lastName = model.UserAccount.lastName.ToUpper();
-                    userToUpdate.userType = model.UserAccount.userType;
-                    userToUpdate.nickName = model.UserAccount.nickName;
+           
+                    userToUpdate.firstName = model.firstName.ToUpper();
+                    userToUpdate.lastName = model.lastName.ToUpper();
+                    string[] lastRole = Roles.GetRolesForUser(WebSecurity.CurrentUserName);
+
+                    if(!Roles.IsUserInRole(model.userType))
+                    {
+                        Roles.RemoveUserFromRole(WebSecurity.CurrentUserName, lastRole[0]);
+                       
+                        userToUpdate.userType = model.userType;
+                        Roles.AddUserToRole(WebSecurity.CurrentUserName, model.userType);
+                    }
+
+                    userToUpdate.nickName = model.nickName;
                     //push to designated user type (section)
 
                     artistToUpdate.birthDay = model.UserProfile.birthDay;
@@ -79,6 +91,7 @@ namespace ArtProject2016.Controllers
 
                     context.SaveChanges();
                     ViewBag.Success = "Profile updated!";
+                   // Roles.DeleteCookie();
                     return View();
                     //    return RedirectToAction("Index");
                 }
