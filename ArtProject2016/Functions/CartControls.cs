@@ -56,5 +56,6 @@ namespace ArtProject2016.Functions
             
             return total ?? decimal.Zero;
         }
+
     }
 }

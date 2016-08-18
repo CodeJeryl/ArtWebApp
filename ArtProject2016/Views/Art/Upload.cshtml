@@ -37,8 +37,6 @@
             $('#ForSale_Profit').val(parseFloat(profit, 10));
             $('#ForSale_ShippingFee').val("500");
             $('#ForSale_Price').val(total);
-
-            alert($("#ForSale_Price").val());
         });
 
         $('#ForSale_ArtistPrice').keyup(function () {
@@ -163,7 +161,7 @@
                         <p class="text-muted">See the all-in price and Shipping costs are calculated based on the values you have entered.</p>
 
                         <div class="table-responsive">
-                            <table class="table text-center" id="summaryTable">
+                            <table class="table text-center priceTd" id="summaryTable">
                                 <tbody>
                                     <tr>
                                         <td>Art Price</td>

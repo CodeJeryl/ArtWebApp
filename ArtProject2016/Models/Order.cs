@@ -36,6 +36,9 @@ namespace ArtProject2016.Models
         public int? VoucherCodeId { get; set; }
         public virtual VoucherCode VoucherCode { get; set; }
 
+        public int UserAccountId { get; set; }
+        public virtual UserAccount UserAccount { get; set; }
+
         public virtual List<OrderDetail> OrderDetails { get; set; }
 
     }

@@ -11,7 +11,7 @@ namespace ArtProject2016.Models
        
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
-        
+        public string OrderDetailStatus { get; set; }
 
         public int ForSaleId { get; set; }
         public virtual ForSale ForSale { get; set; }

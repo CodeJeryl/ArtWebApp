@@ -96,13 +96,7 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-table td {
-    text-align: center;
-}
 
-table th {
-    text-align: center;
-}
 
 .checkoutAddress p {
     font-size: 18px;
@@ -135,6 +129,14 @@ table th {
     text-align: center;
 }
 
-.table td {
-    width: 50%;
+.priceTd td {
+   width: 50%;
   }
+
+table td {
+    text-align: center;
+}
+
+table th {
+    text-align: center;
+}

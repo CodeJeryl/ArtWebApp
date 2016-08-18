@@ -284,6 +284,21 @@ namespace ArtProject2016.Controllers
             return View(wishlist);
         }
 
+        [HttpGet]
+        public ActionResult Orders()
+        {
+            var MyOrders = db.Orders.Where(order => order.UserAccountId == WebSecurity.CurrentUserId).ToList();
+            return View(MyOrders);
+        }
+
+        [HttpGet]
+        public ActionResult OrderDetails(int id)
+        {
+             var orderDets = db.OrderDetails.Where(order => order.OrderId == id && order.ForSale.BuyerId == WebSecurity.CurrentUserId).OrderByDescending(ord => ord.Order.OrderDate).ToList();
+
+             return View(orderDets);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

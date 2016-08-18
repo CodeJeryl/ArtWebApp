@@ -20,21 +20,13 @@
         <!-- styles -->
         
         @Styles.Render("~/Content/Css/allCss")
-
-        
         @Scripts.Render("~/Scripts/js/Top")
         
   
         <link rel="shortcut icon" href="~/Content/Images/Logo.png">
-       
-      
-    </head>
-    
-    
-    
+       </head>
     <body>
        
-
     <div id="all">
         
     <!-- *** TOPBAR ***
@@ -46,8 +38,9 @@
             </div>
             <div class="col-md-6" data-animate="fadeInDown">
                 <ul class="menu">
-                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                    </li>
+                    <li>@Html.ActionLink("Login","RegLogin","Auth")</li>
+              @*      <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                    </li>*@
                     <li><a href="register.html">Register</a>
                     </li>
                     <li><a href="contact.html">Contact</a>

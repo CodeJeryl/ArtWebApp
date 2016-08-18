@@ -493,6 +493,8 @@
     <Content Include="Views\Art\Wishlist.cshtml" />
     <Content Include="Views\Shop\_summary.cshtml" />
     <Content Include="Views\Art\_priceComputation.cshtml" />
+    <Content Include="Views\Art\Orders.cshtml" />
+    <Content Include="Views\Art\OrderDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

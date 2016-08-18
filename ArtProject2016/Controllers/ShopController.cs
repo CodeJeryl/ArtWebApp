@@ -377,7 +377,9 @@ namespace ArtProject2016.Controllers
                                            PaymentType = "wala pa",
                                            OrderStatus = "Processing...",
 
-                                           OrderDate = DateTime.Now
+                                           OrderDate = DateTime.Now,
+
+                                           UserAccountId = WebSecurity.CurrentUserId
 
                                        };
 
@@ -389,6 +391,7 @@ namespace ArtProject2016.Controllers
                                                   {
                                                       Quantity = cartItem.Qty,
                                                       UnitPrice = cartItem.ForSale.Price,
+                                                      OrderDetailStatus = "Processing...",
                                                       ForSaleId = cartItem.ForSaleId,
                                                       OrderId = newOrder.Id
                                                   };
