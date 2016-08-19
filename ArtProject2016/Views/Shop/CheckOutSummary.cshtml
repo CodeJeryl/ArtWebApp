@@ -80,7 +80,7 @@
                                         <th>Title & Artist</th>
                                         <th>Quantity</th>
                                         <th>Unit price</th>
-                                        <th>Size (Height x Width)</th>
+                                        <th>Size (Width X Height)</th>
                                         <th colspan="2">Total</th>
                                     </tr>
                                 </thead>
@@ -116,7 +116,7 @@
                                                 @Html.DisplayFor(modelItem => item.Qty)
                                             </td>
                                             <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.ForSale.hSize)" H X @Html.DisplayFor(modelItem => item.ForSale.wSize)" W</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ForSale.wSize)" W X @Html.DisplayFor(modelItem => item.ForSale.hSize)" H</td>
                                             <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
                                          </tr>
                                     }

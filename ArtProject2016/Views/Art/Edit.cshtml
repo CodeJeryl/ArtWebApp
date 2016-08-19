@@ -8,36 +8,56 @@
 
 <style type="text/css">
     .thumb-image {
-        width: 200px;
+        width: 250px;
         padding: 20px;
     }
 </style>
 
 
 <script>
-    $(function () {
-
-
-        @if (Model.ForSale.otherArtist)
+    $(document).ready(function () {
+     @if (Model.ForSale.otherArtist)
         {
             @:$("#hideOther").show();
-           @: $("#hideOtherA").show();
+         //  @: $("#hideOtherA").show();
         }
         else
         {
             @:$("#hideOther").hide();
-                    @:$("#hideOtherA").hide();
+         //   @:$("#hideOtherA").hide();
         }
 
 
         $('#chkbxArtist').click(function () {
             if ($(this).is(':checked')) {
                 $("#hideOther").show();
-                $("#hideOtherA").show();
+                //   $("#hideOtherA").show();
             } else {
                 $("#hideOther").hide();
-                $("#hideOtherA").hide();
+                //  $("#hideOtherA").hide();
             }
+        });
+        //
+        $('#computeBtn').click(function () {
+
+            var artPrice = $('#ForSale_ArtistPrice').val();
+            var profit = artPrice * .8;
+            var total = parseFloat(artPrice) + 500;
+            $('#profit').text('₱' + parseFloat(profit, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+            $('#shipping').text('₱' + parseFloat(500, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+            $('#totalprice').text('₱' + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+
+
+            $('#ForSale_Profit').val(parseFloat(profit, 10));
+            $('#ForSale_ShippingFee').val("500");
+            $('#ForSale_Price').val(total);
+        });
+
+        $('#ForSale_ArtistPrice').keyup(function () {
+            $('#profit').text("please click the compute button");
+            $('#totalprice').text("please click the compute button");
+            $('#ForSale_Profit').val('');
+            $('#ForSale_Price').val('');
         });
     });
 
@@ -57,10 +77,10 @@
         {
             <div class="alert alert-success" role="alert">@ViewBag.Success </div>
         }
-        @using (Html.BeginForm("Edit", "Art", FormMethod.Post))
+        @using (Html.BeginForm("Edit", "Art", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+            @Html.ValidationSummary()
             @Html.HiddenFor(model => model.ForSale.Id)
 
             <div class="row">
@@ -114,7 +134,7 @@
 
             <div class="row">
 
-                <div class="col-sm-2 col-md-2">
+                <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <label for="street">Year Created:</label>
                         @Html.DropDownListFor(model => model.selectedYear, Model.Years, new { @class = "form-control" })
@@ -128,50 +148,86 @@
                         @Html.ValidationMessageFor(model => model.ForSale.Framed)
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col-sm-2 col-md-2">
+                
+                   <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <label for="street">Created by other Artist?</label>
                         @Html.EditorFor(model => model.ForSale.otherArtist, new { htmlAttributes = new { @class = "form-control", id = "chkbxArtist" } })
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtist)
                     </div>
                 </div>
-
-                <div class="col-sm-5 col-md-5">
-                    <div class="form-group" id="hideOther">
-                        <label for="street">if yes, provide artist name</label>
+            </div>
+            <div class="row box" id="hideOther" style="display: none; background-color: #cccc">
+                <div class="col-sm-4 col-md-4">
+                    <h4>Other Artist details: </h4>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label for="street">provide artist name</label>
                         @Html.EditorFor(model => model.ForSale.otherArtistName, new { htmlAttributes = new { @class = "form-control", placeholder = "Artist Created the Art" } })
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtistName)
                     </div>
                 </div>
-
-                <div class="col-sm-5 col-md-5">
-                    <div class="form-group" id="hideOtherA">
-                        <label for="street">provide artist Address</label>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label for="street">provide artist City or Province</label>
                         @Html.EditorFor(model => model.ForSale.otherArtistAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
                         @Html.ValidationMessageFor(model => model.ForSale.otherArtistAddress)
                     </div>
                 </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <span class="lead" style="font-weight: 500">Price computation:</span>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="lastName">Price - inclusive of shipping fee (ex: 10,000 + 500sf= 10,500)</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">₱</div>
-                            @Html.EditorFor(model => model.ForSale.Price, new { htmlAttributes = new { @class = "form-control" } })
-                            <div class="input-group-addon">.00</div>
+            </div>  
+           <div class="row">
+
+                <div class="col-md-10 center-block" style="float: none">
+                    <div class="box" id="order-summary">
+                        <div class="box-header text-center">
+                            <h3>Price Computation</h3>
                         </div>
-                        @Html.ValidationMessageFor(model => model.ForSale.Price)
+                        <p class="text-muted">See the all-in price and Shipping costs are calculated based on the values you have entered.</p>
+
+                        <div class="table-responsive">
+                            <table class="table text-center priceTd" id="summaryTable">
+                                <tbody>
+                                    <tr>
+                                        <td>Art Price</td>
+
+                                        <th>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">₱</div>
+                                                @Html.EditorFor(model => model.ForSale.ArtistPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                                @*<div class="input-group-addon">.00</div>*@
+                                            </div>
+                                        </th>
+                                        @Html.ValidationMessageFor(model => model.ForSale.ArtistPrice)
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 500; vertical-align: middle; color: red">Please click the button to compute prices</td>
+                                        <th>
+                                            <button id="computeBtn" type="button" class="btn btn-danger">Compute price</button></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Your Profit (80%)</td>
+                                        <th id="profit" style="color: green">@Html.DisplayFor(model => model.ForSale.Profit)</th>
+                                        @Html.HiddenFor(model => model.ForSale.Profit)
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping to be paid by Buyer</td>
+                                        <th id="shipping">@Html.DisplayFor(model => model.ForSale.ShippingFee)</th>
+                                        @Html.HiddenFor(model => model.ForSale.ShippingFee)
+                                    </tr>
+                                    <tr class="total" style="margin-bottom: 5px">
+                                        <td>Total Price</td>
+                                        <th id="totalprice">@Html.DisplayFor(model => model.ForSale.Price)</th>
+                                        @Html.HiddenFor(model => model.ForSale.Price)
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-12">
@@ -179,34 +235,78 @@
                         <label for="street">Art Description:</label>
                         @Html.EditorFor(model => model.ForSale.artDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Tell us about your art" } })
                         @Html.ValidationMessageFor(model => model.ForSale.artDescription)
+                        
                     </div>
                 </div>
             </div>
                     
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save changes</button>
-
-                </div>
-            </div>
+            
       
-            <div class="row">
+            <div class="row box">
 
-                <div class="col-sm-3 text-center-sm">
-                    <img class="thumb-image" src="@Url.Content(Model.ForSale.Path)"  width="140px" class="img-responsive"/>
-
+                <div class="col-sm-5 col-md-5 text-center-sm">
+                      <div id="image-holder"> <img class="thumb-image" src="@Url.Content(Model.ForSale.Path)"  width="140px" class="img-responsive"/>
+                   </div>
                     @*Html.ActionLink("Delete this Image", "DeleteImage", "Art", new { id = pix.Id }, new { @class = "btn btn-danger" })*@
+                </div>
+                
+                
+                <div class="col-sm-7 col-md-7">
+                    <h3>Change Art Picture</h3>
+                    <span class="text-primary">click the Choose File button</span>
+                    <div class="form-group">
+                         <br/>
+                        <input id="ups" type="file" name="files" enctype="multipart/form-data" />
+                    </div>
+                  
                 </div>
                 @*<button class="btn btn-danger" name="command" value="delete:@pix.Id" type="submit">Delete this Image</button>*@
 
             </div>
-            <div>
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-success right" })
+                </div>
+                    <div class="col-sm-6 text-center">
+                        <button type="submit" class="btn-lg btn-primary"><i class="fa fa-save"></i>Save changes</button>
 
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-success right" })
-            </div>
-        }
+                    </div>
+                </div>
+           }
 
     </div>
 </div>
 
 
+<script>
+    $(document).ready(function () {
+        $("#ups").on('change', function () {
+            //Get count of selected files
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("<img />", {
+                                "src": e.target.result,
+                                "class": "thumb-image"
+                            }).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
+    });
+</script>

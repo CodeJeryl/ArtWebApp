@@ -38,7 +38,7 @@ namespace ArtProject2016.Controllers
             }
             galleryViewModel viewModel = new galleryViewModel();
             ForSale forsale = db.ForSales.Find(id);
-            var related = db.ForSales.Where(ar => ar.SellerId == forsale.SellerId && ar.Id != id).Take(3).ToList();
+            var related = db.ForSales.Where(ar => ar.SellerId == forsale.SellerId && ar.Id != id && ar.ForPosting).Take(3).ToList();
 
             viewModel.ForSale = forsale;
             viewModel.relatedForSale = related;

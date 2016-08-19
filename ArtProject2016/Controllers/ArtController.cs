@@ -35,11 +35,11 @@ namespace ArtProject2016.Controllers
 
                 return View(model);
             }
-            
+
             ViewBag.error = "No results found";
             return (ViewBag);
         }
-        
+
         // GET: Upload Picture
         public ActionResult Upload()
         {
@@ -53,8 +53,8 @@ namespace ArtProject2016.Controllers
             {
                 uploadViewModel viewModel = new uploadViewModel();
                 viewModel._Categories = db.Categories.ToList();
-              //  viewModel.ForSale.Profit = 0;
-              //  viewModel.ForSale.ShippingFee = 0;
+                //  viewModel.ForSale.Profit = 0;
+                //  viewModel.ForSale.ShippingFee = 0;
                 return View(viewModel);
             }
         }
@@ -78,27 +78,29 @@ namespace ArtProject2016.Controllers
                             {
                                 if (file.ContentLength < 4000000)
                                 {
-
+                                    if (Functions.ArtControls.UploadArt(model, files))
+                                    {
+                                        ViewBag.Success = "Art Uploaded Successfully!";
+                                        return RedirectToAction("Index");
+                                    }
                                 }
                                 else
                                 {
-                                    ViewBag.Error = "Image file exceed 4mb.";
-                                    return View();
+                                    //  ViewBag.Error = "Image file exceed 4mb.";
+                                    ModelState.AddModelError("", "Image file exceed 4mb.");
+                                    //  [Required(ErrorMessage = "Please upload a picture of your art.")]
+                                    return View(model);
                                 }
                             }
                             else
                             {
-                                ViewBag.Error = ".jpg / .jpeg / .png file extensions only.";
-                                return View();
+                                ModelState.AddModelError("", "Image - .jpg / .jpeg / .png file extensions only.");
+                                return View(model);
                             }
                         }
                     }
 
-                    if (Functions.ArtControls.UploadArt(model, files))
-                    {
-                        ViewBag.Success = "Art Uploaded Successfully!";
-                        return RedirectToAction("Index");
-                    }
+
                 }
                 else
                 {
@@ -163,17 +165,29 @@ namespace ArtProject2016.Controllers
         // POST: /Art/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, uploadViewModel model)
+        public ActionResult Edit(int id, uploadViewModel model, IEnumerable<HttpPostedFileBase> files)
         {
+            var category = db.Categories.ToList();
+            model._Categories = category;
+            var forsale = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
+           
+           
+            //   model.selectedCategoryId = forsale.CategoryID;
             if (ModelState.IsValid)
             {
-                var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId || uid.Id == id);
+                var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
 
                 artUpdate.Title = model.ForSale.Title;
                 artUpdate.mediumUsed = model.ForSale.mediumUsed;
                 artUpdate.wSize = model.ForSale.wSize;
                 artUpdate.hSize = model.ForSale.hSize;
+                artUpdate.ArtistPrice = model.ForSale.ArtistPrice;
+
+                artUpdate.Profit = model.ForSale.Profit;
+                artUpdate.ShippingFee = model.ForSale.ShippingFee;
                 artUpdate.Price = model.ForSale.Price;
+
+                artUpdate.artDescription = model.ForSale.artDescription;
                 artUpdate.yearCreated = model.selectedYear;
                 artUpdate.Framed = model.ForSale.Framed;
                 artUpdate.otherArtist = model.ForSale.otherArtist;
@@ -182,13 +196,47 @@ namespace ArtProject2016.Controllers
                 artUpdate.dateUpdated = DateTime.Now;
                 artUpdate.CategoryID = model.selectedCategoryId;
 
+                if (files.Count(file => file != null && file.ContentLength > 0) > 0)
+                {
+                    foreach (var file in files)
+                    {
+                        if (Functions.ArtControls.IsImage(file))
+                        {
+                            if (file.ContentLength < 4000000)
+                            {
+                                file.SaveAs(System.Web.HttpContext.Current.Server.MapPath("~/Upload/Pics/" + file.FileName));
+                                artUpdate.fileName = file.FileName;
+                                artUpdate.Path = "~/Upload/Pics/" + file.FileName;
+                            }
+                            else
+                            {
+                                //  ViewBag.Error = "Image file exceed 4mb.";
+                                ModelState.AddModelError("", "Image file exceed 4mb.");
+                                model.ForSale = forsale;
+                                //  [Required(ErrorMessage = "Please upload a picture of your art.")]
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Image - .jpg / .jpeg / .png file extensions only.");
+                            model.ForSale = forsale;
+                            return View(model);
+                        }
+                    }
+
+                }
+
                 //   db.Entry(forsale).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Success"] = "Successfuly Updated!";
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryID = new SelectList(db.Categories, "Id", "name", model.ForSale.CategoryID);
+            //      ModelState.AddModelError("Edit Errors", "some error occured");
+
+            //ViewBag.CategoryID = new SelectList(db.Categories, "Id", "name", model.ForSale.CategoryID);
             //      ViewBag.UserAccountId = new SelectList(db.UserAccounts, "Id", "userName", forsale.UserAccountId);
+            model.ForSale = forsale;
             return View(model);
         }
 
@@ -235,13 +283,13 @@ namespace ArtProject2016.Controllers
             }
             ForSale forsale =
                 db.ForSales.SingleOrDefault(i => i.SellerId == WebSecurity.CurrentUserId && i.Id == id);
-            
+
             if (forsale == null)
             {
                 return HttpNotFound();
             }
 
-            if(forsale.Sold)
+            if (forsale.Sold)
             {
                 TempData["Error"] = "Art cannot be deleted. It's already sold";
                 return RedirectToAction("Index");
@@ -255,13 +303,13 @@ namespace ArtProject2016.Controllers
         public ActionResult DeleteArt(int id)
         {
             var forsale = db.ForSales.Single(art => art.Id == id && art.Sold == false);
-            if(forsale == null)
+            if (forsale == null)
             {
-              //  TempData["Error"] = "Art cannot be deleted";
+                //  TempData["Error"] = "Art cannot be deleted";
                 return HttpNotFound();
             }
-           
-                db.ForSales.Remove(forsale);
+
+            db.ForSales.Remove(forsale);
 
             //delete wishlist associated with the Art that will be deleted
             //onCascade delete is set to false
@@ -269,9 +317,9 @@ namespace ArtProject2016.Controllers
 
             db.WishLists.RemoveRange(wish);
 
-                db.SaveChanges();
-                TempData["Success"] = "Art successfully deleted!";
-          
+            db.SaveChanges();
+            TempData["Success"] = "Art successfully deleted!";
+
             return RedirectToAction("Index");
         }
 
@@ -280,7 +328,7 @@ namespace ArtProject2016.Controllers
         {
             var wishlist = db.WishLists.Where(wish => wish.UserAccountId == WebSecurity.CurrentUserId).ToList();
 
-            
+
             return View(wishlist);
         }
 
@@ -294,9 +342,9 @@ namespace ArtProject2016.Controllers
         [HttpGet]
         public ActionResult OrderDetails(int id)
         {
-             var orderDets = db.OrderDetails.Where(order => order.OrderId == id && order.ForSale.BuyerId == WebSecurity.CurrentUserId).OrderByDescending(ord => ord.Order.OrderDate).ToList();
+            var orderDets = db.OrderDetails.Where(order => order.OrderId == id && order.ForSale.BuyerId == WebSecurity.CurrentUserId).OrderByDescending(ord => ord.Order.OrderDate).ToList();
 
-             return View(orderDets);
+            return View(orderDets);
         }
 
 

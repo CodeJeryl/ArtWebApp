@@ -33,23 +33,23 @@ namespace ArtProject2016.Models
         [Required]
         [Display(Name = "Height")]
         public string hSize { get; set; }
-       
-        [Required]
+
+        [Required(ErrorMessage = "Please input price of your art")]
         [Display(Name = "Art Price")]
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
         public decimal ArtistPrice { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please click the Compute button to remove this error")]
         [Display(Name = "Profit")]
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal Profit { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please click the Compute button to remove this error")]
         [Display(Name = "Shipping Fee")]
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal ShippingFee { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please click the Compute button to remove this error")]
         [Display(Name = "Price")]
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }

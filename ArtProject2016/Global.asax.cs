@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Management;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -31,7 +32,7 @@ namespace ArtProject2016
                 WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserAccounts", "Id", "userName", true);
             }
 
-
+           
 
 
 
@@ -57,6 +58,21 @@ namespace ArtProject2016
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        private void Application_Error(object sender, EventArgs e)
+        {
+            var ex = Server.GetLastError();
+            var httpException = ex as HttpException ?? ex.InnerException as HttpException;
+            if (httpException == null) return;
+
+            if (httpException.WebEventCode == WebEventCodes.RuntimeErrorPostTooLarge)
+            {
+              //  TempData["success"] = "Success. ID no: " + newOrder.Id.ToString();
+                
+                //handle the error
+                //Response.Write("Too big a file, dude"); //for example
+            }
         }
     }
 }

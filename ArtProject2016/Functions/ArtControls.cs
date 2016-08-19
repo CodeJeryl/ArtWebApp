@@ -58,7 +58,6 @@ namespace ArtProject2016.Functions
                         foreach (var file in files)
                         {
                             file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/Pics/" + file.FileName));
-                            
                             artUpload.fileName = file.FileName;
                             artUpload.Path = "~/Upload/Pics/" + file.FileName;
                         }
