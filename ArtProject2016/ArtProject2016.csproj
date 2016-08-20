@@ -415,6 +415,7 @@
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderTracking.cs" />
     <Compile Include="Models\VoucherCode.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Category.cs" />
@@ -430,6 +431,7 @@
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
     <Compile Include="ViewModel\registerViewModel.cs" />
+    <Compile Include="ViewModel\ShipmentViewModel.cs" />
     <Compile Include="ViewModel\UpdateArtistViewModel.cs" />
     <Compile Include="ViewModel\uploadViewModel.cs" />
     <Compile Include="ViewModel\VerificationViewModel.cs" />
@@ -498,6 +500,7 @@
     <Content Include="Views\Art\OrderDetails.cshtml" />
     <Content Include="Views\Sell\Index.cshtml" />
     <Content Include="Views\Sell\_ViewStart.cshtml" />
+    <Content Include="Views\Sell\Shipment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -169,13 +169,13 @@ namespace ArtProject2016.Controllers
         {
             var category = db.Categories.ToList();
             model._Categories = category;
-            var forsale = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
+            var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
            
            
             //   model.selectedCategoryId = forsale.CategoryID;
             if (ModelState.IsValid)
             {
-                var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
+              //  var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
 
                 artUpdate.Title = model.ForSale.Title;
                 artUpdate.mediumUsed = model.ForSale.mediumUsed;
@@ -212,7 +212,7 @@ namespace ArtProject2016.Controllers
                             {
                                 //  ViewBag.Error = "Image file exceed 4mb.";
                                 ModelState.AddModelError("", "Image file exceed 4mb.");
-                                model.ForSale = forsale;
+                                model.ForSale = artUpdate;
                                 //  [Required(ErrorMessage = "Please upload a picture of your art.")]
                                 return View(model);
                             }
@@ -220,7 +220,7 @@ namespace ArtProject2016.Controllers
                         else
                         {
                             ModelState.AddModelError("", "Image - .jpg / .jpeg / .png file extensions only.");
-                            model.ForSale = forsale;
+                            model.ForSale = artUpdate;
                             return View(model);
                         }
                     }
@@ -236,7 +236,7 @@ namespace ArtProject2016.Controllers
 
             //ViewBag.CategoryID = new SelectList(db.Categories, "Id", "name", model.ForSale.CategoryID);
             //      ViewBag.UserAccountId = new SelectList(db.UserAccounts, "Id", "userName", forsale.UserAccountId);
-            model.ForSale = forsale;
+            model.ForSale = artUpdate;
             return View(model);
         }
 

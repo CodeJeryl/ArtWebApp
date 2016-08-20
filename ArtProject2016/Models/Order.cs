@@ -25,6 +25,7 @@ namespace ArtProject2016.Models
         [Required]
         public string PaymentType { get; set; }
 
+        public bool Paid { get; set; }
      
         public decimal SubTotal { get; set; }
         public decimal VoucherDeduction { get; set; }

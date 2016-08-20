@@ -38,6 +38,11 @@ namespace ArtProject2016.Controllers
             }
             galleryViewModel viewModel = new galleryViewModel();
             ForSale forsale = db.ForSales.Find(id);
+
+            if(forsale == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var related = db.ForSales.Where(ar => ar.SellerId == forsale.SellerId && ar.Id != id && ar.ForPosting).Take(3).ToList();
 
             viewModel.ForSale = forsale;
@@ -375,6 +380,7 @@ namespace ArtProject2016.Controllers
                                            Total = viewModel.Total,
 
                                            PaymentType = "wala pa",
+                                           Paid = false,
                                            OrderStatus = "Processing...",
 
                                            OrderDate = DateTime.Now,
@@ -401,8 +407,8 @@ namespace ArtProject2016.Controllers
                         updateArt.Sold = true;
                         updateArt.BuyerId = WebSecurity.CurrentUserId;
                     } 
-                    db.SaveChanges();
 
+                    db.SaveChanges();
                     dbContextTransaction.Commit();
                     //  TempData["s"] = viewModel.SubTotal;
                     //  TempData["d"] = viewModel.Total;

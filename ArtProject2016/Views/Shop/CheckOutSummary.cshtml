@@ -90,7 +90,7 @@
                                         <tr id="row-@item.Id">
                                             <td>
                                                 <a href="#">
-                                                    <img src="@Url.Content(item.ForSale.Path)" style="width: 200px">
+                                                    <img src="@Url.Content(item.ForSale.Path)" style="width: 250px">
                                                 </a> 
                                             </td>
                                             @if (item.ForSale.otherArtist)
@@ -107,7 +107,7 @@
                                                 <br />
                                                     by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                                     <br />
-                                                    from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                                    from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)
                                                 </td>
 
                                             }

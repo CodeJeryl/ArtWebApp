@@ -1,0 +1,133 @@
+﻿@model ArtProject2016.ViewModel.ShipmentViewModel
+
+@{
+    ViewBag.Title = "Shipment";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+
+<div class="col-md-9">
+    <div class="box">
+        <div class="row">
+            <div class="col-md-4">
+               
+                <span style="margin-left: 40px">
+                    <img src="@Url.Content(Model.OrderDetails.ForSale.Path)"  width="240px" class="img-responsive"/></span>
+             
+            </div>
+            <div class="col-md-8">
+                <h3>Input Shipping Tracking Number</h3>
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+    
+                    <div class="form-horizontal">
+
+                        <hr />
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.OrderDetails.Id)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrderDetails.ShippingCompany, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.TrackCompany, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Air21 / LBC / JRS Express" } })
+                                @Html.ValidationMessageFor(model => model.TrackCompany)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrderDetails.TrackingNumber, new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Track, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Track)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-9 col-md-3">
+                                <input type="submit" value="Save" class="btn-lg btn-success right" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box" id="order-summary">
+                    <div class="box-headerCheckout">
+                        <h3>Art Details</h3>
+                    </div>
+                    <div class="table-responsive">
+
+                        <table class="table" id="summaryTable">
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <th>@Html.DisplayFor(item => item.OrderDetails.ForSale.Title) </th>
+                                </tr>
+                                <tr>
+                                    <td>Artist</td>
+                                    @if (Model.OrderDetails.ForSale.otherArtist)
+                                    {
+                                        <th>@Html.DisplayFor(modelItem => modelItem.OrderDetails.ForSale.otherArtistName)
+                                            from  @Html.DisplayFor(modelItem => modelItem.OrderDetails.ForSale.otherArtistAddress)
+                                        </th>
+                                    }
+                                    else
+                                    {
+                                        <th>
+                                            @Html.DisplayFor(modelItem => modelItem.OrderDetails.ForSale.SellerAccount.nickName)
+                                            <br />
+                                            from @Html.DisplayFor(modelItem => modelItem.OrderDetails.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)
+                                        </th>
+
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>Unit Price</td>
+                                    <th>@Html.DisplayFor(item => item.OrderDetails.UnitPrice)</th>
+                                </tr>
+                                <tr>
+                                    <td>Size: Width X Height</td>
+                                    <th>@Html.DisplayFor(item => item.OrderDetails.ForSale.wSize)" W X @Html.DisplayFor(item => item.OrderDetails.ForSale.hSize)" H</th>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="box" id="order-summary">
+                    <div class="box-headerCheckout">
+                        <h3>Buyer Details (Shipping Address)</h3>
+                    </div>
+                    <div class="checkoutAddress">
+                        <p class="namee">@Html.DisplayFor(item => item.OrderDetails.Order.FirstName) @Html.DisplayFor(item => item.OrderDetails.Order.LastName)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.Street)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.City)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.Province), @Html.DisplayFor(item => item.OrderDetails.Order.PostalCode)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.MobileNo)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.LandLine)</p>
+                        <p>@Html.DisplayFor(item => item.OrderDetails.Order.Username)</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+          <div class="row">
+                <div>
+                    @Html.ActionLink("Back to List of Order", "Index", null, new { @class = "btn-lg btn-success" })
+                </div>
+            </div>
+    </div>
+</div>
+
