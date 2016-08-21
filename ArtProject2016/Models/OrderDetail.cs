@@ -16,8 +16,7 @@ namespace ArtProject2016.Models
         [Display(Name = "Status")]
         public string OrderDetailStatus { get; set; }
         public bool Shipped { get; set; }
-            [Display(Name = "Shipping Company")]
-        public string ShippingCompany { get; set; }
+           
         [Display(Name = "Tracking Number")]
         public string TrackingNumber { get; set; }
         public bool Returned { get; set; }
@@ -33,5 +32,9 @@ namespace ArtProject2016.Models
         public virtual Order Order { get; set; }
 
         public ICollection<OrderTracking> OrderTrackings { get; set; }
+
+        [Display(Name = "Shipping Company")]
+        public int? ShippingCompanyId { get; set; }
+        public virtual ShippingCompany  ShippingCompany { get; set; }
     }
 }

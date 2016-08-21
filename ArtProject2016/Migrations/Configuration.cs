@@ -41,9 +41,9 @@ namespace ArtProject2016.Migrations
 
             try
             {
-                
 
-            //    context.SaveChanges();
+
+                //    context.SaveChanges();
 
                 if (!WebSecurity.Initialized)
                 {
@@ -115,14 +115,30 @@ namespace ArtProject2016.Migrations
                 context.VoucherCodes.AddOrUpdate(
                     v => v.Id, new VoucherCode()
                                    {
-                                       VoucherName = "First Order Voucher",
+                                       VoucherName = "test",
                                        VoucherDeduction = 500,
                                        VoucherCount = 10,
                                        VoucherMinOrder = 5000,
                                        VoucherEnabled = true
                                    }
-                    
+
                     );
+
+                context.ShippingCompanies.AddOrUpdate(
+                    ship => ship.Id, new ShippingCompany()
+                                           {
+                                               Name = "LBC"
+                                           },
+                                           new ShippingCompany()
+                                            {
+                                             Name = "Air21"
+                                           },
+                                         new ShippingCompany()
+                                           {
+                                           Name = "Xend"
+                                            });
+
+                context.SaveChanges();
 
                 ////    var role = System.Web.Security.Roles.Provider;
                 //    if (!Roles.RoleExists("Admin"))

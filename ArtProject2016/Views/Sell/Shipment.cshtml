@@ -32,8 +32,10 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.OrderDetails.ShippingCompany, new { @class = "control-label col-md-4" })
                             <div class="col-md-8">
-                                @Html.EditorFor(model => model.TrackCompany, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Air21 / LBC / JRS Express" } })
-                                @Html.ValidationMessageFor(model => model.TrackCompany)
+                                @Html.DropDownListFor(model => model.SelectedShippingId, Model.ShippingCompanies, "--Choose Shipping Company--", new { @class = "form-control" } )
+                                @Html.ValidationMessageFor(model => model.SelectedShippingId)
+                              @*  @Html.EditorFor(model => model.TrackCompany, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Air21 / LBC / JRS Express" } })
+                                @Html.ValidationMessageFor(model => model.TrackCompany)*@
                             </div>
                         </div>
 

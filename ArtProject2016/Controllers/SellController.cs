@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
 using WebMatrix.WebData;
+using ArtProject2016.Functions;
 
 namespace ArtProject2016.Controllers
 {
@@ -18,10 +19,15 @@ namespace ArtProject2016.Controllers
         ArtContext db = new ArtContext();
         public ActionResult Index()
         {
-            var orders = db.OrderDetails.Where(art => art.ForSale.SellerId == WebSecurity.CurrentUserId && art.OrderDetailStatus != "Delivered" && art.Order.Paid).ToList();
-            
+            var orders = db.OrderDetails.Where(art => art.ForSale.SellerId == WebSecurity.CurrentUserId && art.Order.Paid)
+                                         .OrderByDescending(ord => ord.Order.OrderDate).ToList();
+
+            var sellcon = new SellControls();
+
+            ViewBag.Pending = "₱ " + sellcon.GetPending();
+            ViewBag.Redeemable = "₱ "+ sellcon.GetRedeemable();
+                
                 return View(orders);
-            
         }
 
 
@@ -36,6 +42,7 @@ namespace ArtProject2016.Controllers
            
            ShipmentViewModel model = new ShipmentViewModel();
             model.OrderDetails = ship;
+            model._ShippingCompany = db.ShippingCompanies.ToList();
 
             if(ship == null)
             {
@@ -58,17 +65,17 @@ namespace ArtProject2016.Controllers
 
             if(ModelState.IsValid)
             {
-                editShipping.ShippingCompany = model.TrackCompany;
+                editShipping.ShippingCompanyId = model.SelectedShippingId;
                 editShipping.TrackingNumber = model.Track;
                 editShipping.Shipped = true;
                 editShipping.OrderDetailStatus = "Shipped";
-                
 
+                var shipName = db.ShippingCompanies.Find(model.SelectedShippingId);
                 var OrderTrackingDetails = new OrderTracking()
                                                {
                                                    DateTime = DateTime.Now,
                                                    StatusType = "Shipped",
-                                                   Description = "Order has been shipped with " + model.TrackCompany +
+                                                   Description = "Order has been shipped with " + shipName.Name +
                                                                  " For more details, please visit the shipping company website and enter"
                                                                  + " the tracking number [" + model.Track + "].",
                                                    OrderDetailId = model.OrderDetails.Id

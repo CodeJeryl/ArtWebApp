@@ -51,6 +51,7 @@ namespace ArtProject2016.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderTracking> OrderTrackings { get; set; }
+        public DbSet<ShippingCompany> ShippingCompanies { get; set; }
 
       // For multiple picture table
       //  public DbSet<ForSaleAlbum> ForSaleAlbums { get; set; }

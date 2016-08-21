@@ -178,6 +178,7 @@
     <Content Include="Content\img\slider4.jpg" />
     <Content Include="Content\jquery.steps.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="EmailTemplate\Register.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="img\AjaxLoader.gif" />
@@ -406,7 +407,9 @@
     <Compile Include="Functions\AccountControls.cs" />
     <Compile Include="Functions\ArtControls.cs" />
     <Compile Include="Functions\CartControls.cs" />
+    <Compile Include="Functions\EmailControls.cs" />
     <Compile Include="Functions\Membership.cs" />
+    <Compile Include="Functions\SellControls.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -416,6 +419,7 @@
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderTracking.cs" />
+    <Compile Include="Models\ShippingCompany.cs" />
     <Compile Include="Models\VoucherCode.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\Category.cs" />

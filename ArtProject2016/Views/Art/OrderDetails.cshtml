@@ -62,7 +62,14 @@
                                 @Html.DisplayFor(modelItem => item.UnitPrice)
                             </td>
                             <td>
-                              <span class="label label-info">  @Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                  @if(item.Shipped)
+                                {
+                                  <span class="label label-success">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                }
+                                else
+                                {
+                                   <span class="label label-info">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                }
                             </td>
 
                         </tr>
