@@ -1,4 +1,5 @@
-﻿@model ArtProject2016.ViewModel.UpdateArtistViewModel
+﻿@using ArtProject2016.ViewModel
+@model ArtProject2016.ViewModel.UpdateArtistViewModel
 
 @{
     ViewBag.Title = "Update Profile Page";
@@ -10,9 +11,12 @@
                 <h1>My Account Profile</h1>
                 <p class="lead">Change your personal details</p>
                 <p class="text-muted">Update your profile </p>
-                
+              <a href="#" data-toggle="modal" data-target="#login-modal">Change Password</a>
                    
-        @if(ViewBag.Success != null)
+                
+                @Html.Partial("_ChangePassword", new ChangePassViewModel())
+
+                @if(ViewBag.Success != null)
         {
             <div class="alert alert-success" role="alert"> @ViewBag.Success </div>
         }

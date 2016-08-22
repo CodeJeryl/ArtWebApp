@@ -31,9 +31,7 @@ namespace ArtProject2016
             {
                 WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserAccounts", "Id", "userName", true);
             }
-
-           
-
+          
 
 
             //if (!WebSecurity.Initialized)

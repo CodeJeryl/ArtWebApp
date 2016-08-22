@@ -430,11 +430,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CartRemoveViewModel.cs" />
     <Compile Include="ViewModel\CartViewModel.cs" />
+    <Compile Include="ViewModel\ChangePassViewModel.cs" />
     <Compile Include="ViewModel\checkoutDetailsViewModel.cs" />
     <Compile Include="ViewModel\CheckoutViewModel.cs" />
+    <Compile Include="ViewModel\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
     <Compile Include="ViewModel\registerViewModel.cs" />
+    <Compile Include="ViewModel\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModel\ShipmentViewModel.cs" />
     <Compile Include="ViewModel\UpdateArtistViewModel.cs" />
     <Compile Include="ViewModel\uploadViewModel.cs" />
@@ -505,6 +508,9 @@
     <Content Include="Views\Sell\Index.cshtml" />
     <Content Include="Views\Sell\_ViewStart.cshtml" />
     <Content Include="Views\Sell\Shipment.cshtml" />
+    <Content Include="Views\Account\_ChangePassword.cshtml" />
+    <Content Include="Views\Auth\_ForgotPassword.cshtml" />
+    <Content Include="Views\Auth\ResetPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -19,6 +19,7 @@ namespace ArtProject2016.Models
 
         //};
         [Required]
+        [EmailAddress(ErrorMessage = "Please input valid Email Address")]
         public string userName { get; set; }
         //[Required]
         //[DataType(DataType.Password)]

@@ -14,7 +14,7 @@
                            @Html.AntiForgeryToken()
                             <div class="form-group">
                                 
-                                <label for="email">Email</label>
+                                <label for="email">Email Address: (User Name)</label>
                               
                                 @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
                                    @Html.ValidationMessageFor(model => model.userName)
@@ -28,4 +28,9 @@
                             <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
                         </div>
                         }
-                    </div>
+     
+     
+                        <a href="#" data-toggle="modal" data-target="#forgot-modal">Forgot Password</a>
+     
+     @Html.Partial("_ForgotPassword", new ArtProject2016.ViewModel.ForgotPasswordViewModel())
+ </div>

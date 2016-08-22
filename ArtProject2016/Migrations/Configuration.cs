@@ -48,7 +48,7 @@ namespace ArtProject2016.Migrations
                 if (!WebSecurity.Initialized)
                 {
                     WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserAccounts", "Id", "userName", true);
-
+                   
                     if (!Roles.RoleExists("Admin"))
                     {
                         Roles.CreateRole("Admin");
@@ -76,7 +76,7 @@ namespace ArtProject2016.Migrations
                                 });
 
 
-                WebSecurity.CreateUserAndAccount("qwer", "321", new
+                WebSecurity.CreateUserAndAccount("jcsx99@yahoo.com", "321", new
                 {
                     firstName = "Jeryl",
                     lastName = "Suarez",
@@ -84,7 +84,7 @@ namespace ArtProject2016.Migrations
                     nickName = "Jeryl Pogi"
                 });
 
-                WebSecurity.CreateUserAndAccount("qwert", "321", new
+                WebSecurity.CreateUserAndAccount("jcs990@yahoo.com", "321", new
                 {
                     firstName = "Colec",
                     lastName = "tor",
@@ -96,21 +96,21 @@ namespace ArtProject2016.Migrations
                 var artist = new UserProfile()
                 {
                     profileDesc = "A realist/impressionist artist who loves landscape, everyday scene, still-life florals and butterflies for his painting subjects. He took his fine arts studies in Manila, Philippines. And transform his paintings into lively, lovely atmosphere.",
-                    UserAccount = context.UserAccounts.First(a => a.userName == "qwer"),
+                    UserAccount = context.UserAccounts.First(a => a.userName == "jcsx99@yahoo.com"),
                     isIdVerified = true
                 };
                 var collector = new UserProfile()
                 {
-                    UserAccount = context.UserAccounts.First(a => a.userName == "qwert"),
+                    UserAccount = context.UserAccounts.First(a => a.userName == "jcs990@yahoo.com"),
                     isIdVerified = true
                 };
 
                 context.UserProfiles.Add(artist);
                 context.UserProfiles.Add(collector);
 
-                Roles.AddUserToRole("qwer", "Artist");
+                Roles.AddUserToRole("jcsx99@yahoo.com", "Artist");
 
-                Roles.AddUserToRole("qwert", "Collector");
+                Roles.AddUserToRole("jcs990@yahoo.com", "Collector");
 
                 context.VoucherCodes.AddOrUpdate(
                     v => v.Id, new VoucherCode()

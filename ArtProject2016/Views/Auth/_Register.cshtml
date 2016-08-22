@@ -15,6 +15,21 @@
         @Html.ValidationSummary(false)
         @Html.AntiForgeryToken()
         <div class="form-group">
+            <label for="email">Email Address: (User Name)</label>
+            @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.userName)
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+         <div class="form-group">
+            <label for="password">Retype Password</label>
+            @Html.PasswordFor(m => m.RetypePassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RetypePassword)
+        </div>
+        <div class="form-group">
             <label for="name">First Name</label>
             @Html.TextBoxFor(m => m.firstName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.firstName)
@@ -29,21 +44,7 @@
             @Html.TextBoxFor(m => m.nickName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.nickName)
         </div>
-        <div class="form-group">
-            <label for="email">User Name:</label>
-            @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.userName)
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.password)
-        </div>
-        <div class="form-group">
-            <label for="password">Retype Password</label>
-            @Html.PasswordFor(m => m.RetypePassword, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.RetypePassword)
-        </div>
+       
         <div class="form-group">
             <label class="text-large">User Type:</label>
             <label style="padding-left: 100px; font-weight: 700">@Html.RadioButtonFor(m => m.userType, "Artist", new { @class = "form-control" }) Artist</label>

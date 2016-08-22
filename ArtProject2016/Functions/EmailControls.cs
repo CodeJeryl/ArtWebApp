@@ -9,7 +9,7 @@ namespace ArtProject2016.Functions
 {
     public class EmailControls
     {
-        private string PopulateBody(string Fname)
+        public string PopulateBody(string Fname, string link)
         {
             string body = string.Empty;
             using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/EmailTemplate/Register.html")))
@@ -18,7 +18,7 @@ namespace ArtProject2016.Functions
             }
 
             body = body.Replace("{FirstName}", Fname);
-            //body = body.Replace("{password}", password);
+            body = body.Replace("{link}", link);
             return body;
         }
 
@@ -36,21 +36,21 @@ namespace ArtProject2016.Functions
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
             SmtpClient client = new SmtpClient();
-             client.EnableSsl = true;
-            client.Credentials = new System.Net.NetworkCredential(sender, "qwerqwer21");
+            client.EnableSsl = true;
+            client.Credentials = new System.Net.NetworkCredential(sender, "qwerqwer321");
             client.Port = 587;
             client.Host = "smtp.gmail.com";
             client.Send(email);
-
+            
             //client.Credentials = new System.Net.NetworkCredential(sender, "");
             //client.Port = 587;
             //client.Host = "smtp.gmail.com";
             //client.Send(email);
 
-           // string mess = this.PopulateBody(red1.GetInt32(0).ToString(), y.ToString());
-          
-          //  sendEmail("JerylSuarez@letranbataan.edu.ph", red1.GetString(2), "", "", "Letran Bataan Student Portal: Forgot Password", mess);
-                           
+            // string mess = this.PopulateBody(red1.GetInt32(0).ToString(), y.ToString());
+
+            //  sendEmail("JerylSuarez@letranbataan.edu.ph", red1.GetString(2), "", "", "Letran Bataan Student Portal: Forgot Password", mess);
+
         }
     }
 

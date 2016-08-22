@@ -6,9 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
+using ArtProject2016.Functions;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
+using WebMatrix.WebData;
+using Membership = System.Web.Security.Membership;
 
 
 namespace ArtProject2016.Controllers
@@ -94,18 +96,97 @@ namespace ArtProject2016.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Username already exist!");
+                        ModelState.AddModelError(string.Empty, "Email Address already exist!");
                     }
 
                 }
+                
                 return View(model);
-            }
+            } 
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 throw;
             }
         }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View("RegLogin");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            // Username is also the Email Address
+            var user = Membership.GetUser(model.userName);
+
+            if(user == null)
+            {
+                ModelState.AddModelError("","User/Email not exist");
+                TempData["error"] = "User/Email not exist, Please try again";
+            }
+            else
+            {
+                var token = WebSecurity.GeneratePasswordResetToken(model.userName);
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Auth", new { rt = token }, "http") + "'>Reset Password</a>";
+                //get user emailid
+
+                //send mail
+                string subject = "Test Email: Password Reset Token";
+                
+                var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
+                var controls = new EmailControls();
+                string body = controls.PopulateBody(firstName, resetLink);
+
+              //   string body = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
+                try
+                {
+                    EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, body);
+                    TempData["success"] = "Forgot password procedure sent to your email address. - " + model.userName;
+                }
+                catch (Exception ex)
+                {
+                    TempData["error"] = "Error occured while sending email." + ex.Message;
+                }
+                //only for testing
+             //   TempData["Message"] = resetLink;
+            }
+            return View("RegLogin");
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword(string rt)
+        {
+            var model = new ResetPasswordViewModel();
+            model.rt = rt;
+
+            return View(model);
+       }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                if(WebSecurity.ResetPassword(model.rt, model.NewPassword))
+                {
+                    TempData["success"] = "Password Changed. You can now login";
+                }
+                else
+                {
+                    TempData["error"] = "Forgot password request token expired. Please click forgot password link below";
+                }
+                return RedirectToAction("RegLogin");
+                
+            }
+
+            return View(model);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

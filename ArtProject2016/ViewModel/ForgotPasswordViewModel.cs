@@ -6,15 +6,10 @@ using System.Web;
 
 namespace ArtProject2016.ViewModel
 {
-    public class loginViewModel
+    public class ForgotPasswordViewModel
     {
         [Required]
         [EmailAddress(ErrorMessage = "Please input valid Email Address")]
         public string userName { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string password { get; set; }
-
     }
 }

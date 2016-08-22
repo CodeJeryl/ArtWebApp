@@ -159,6 +159,28 @@ namespace ArtProject2016.Controllers
         }
 
 
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePassViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+
+                if (WebSecurity.ChangePassword(WebSecurity.CurrentUserName, model.OldPassword, model.NewPassword))
+                {
+                    TempData["success"] = "Password Changed!";
+                }
+                else
+                {
+                    TempData["error"] = "Wrong Old password. Please try again";
+                }
+                
+                return View("UpdateProfile");
+            }
+           return View();
+        }
+
+
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();

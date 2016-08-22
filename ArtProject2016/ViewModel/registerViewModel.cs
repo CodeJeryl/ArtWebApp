@@ -9,6 +9,7 @@ namespace ArtProject2016.ViewModel
     public class registerViewModel
     {
         [Required]
+        [EmailAddress(ErrorMessage = "Please input valid Email Address")]
         public string userName { get; set; }
         [Required]
         [DataType(DataType.Password)]
