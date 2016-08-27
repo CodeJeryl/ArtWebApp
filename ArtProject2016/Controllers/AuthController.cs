@@ -131,7 +131,7 @@ namespace ArtProject2016.Controllers
             else
             {
                 var token = WebSecurity.GeneratePasswordResetToken(model.userName);
-                var resetLink = "<a href='" + Url.Action("ResetPassword", "Auth", new { rt = token }, "http") + "'>Reset Password</a>";
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Auth", new { rt = token }, "http") + "'>Reset Password Link</a>";
                 //get user emailid
 
                 //send mail
@@ -139,13 +139,16 @@ namespace ArtProject2016.Controllers
                 
                 var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
                 var controls = new EmailControls();
-                string body = controls.PopulateBody(firstName, resetLink);
+                //   string content = controls.PopulateBody(firstName, resetLink);  
 
-              //   string body = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
+                string body = "<b>Please click the link below to change your password. </b> <br/> <br/> " + resetLink +
+                    "<br/> you have 24 hours before the link expires. <br/> <br/> Thank you!"; 
+                string content = controls.PopulateBody("Password Reset",firstName,body);
+              
                 try
                 {
-                    EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, body);
-                    TempData["success"] = "Forgot password procedure sent to your email address. - " + model.userName;
+                    EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, content);
+                    TempData["success"] = "Forgot password link sent to your email address. - " + model.userName;
                 }
                 catch (Exception ex)
                 {

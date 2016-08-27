@@ -9,17 +9,18 @@ namespace ArtProject2016.Functions
 {
     public class EmailControls
     {
-        public string PopulateBody(string Fname, string link)
+        public string PopulateBody(string header,string fname, string body)
         {
-            string body = string.Empty;
-            using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/EmailTemplate/Register.html")))
+            string Emailbody = string.Empty;
+            using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/EmailTemplate/Default.html")))
             {
-                body = reader.ReadToEnd();
+                Emailbody = reader.ReadToEnd();
             }
 
-            body = body.Replace("{FirstName}", Fname);
-            body = body.Replace("{link}", link);
-            return body;
+            Emailbody = Emailbody.Replace("{header}", header);
+            Emailbody = Emailbody.Replace("{firstname}",fname);
+            Emailbody = Emailbody.Replace("{body}", body);
+            return Emailbody;
         }
 
 

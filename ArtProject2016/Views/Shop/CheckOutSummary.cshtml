@@ -16,26 +16,26 @@
             $.ajax({
                 type: 'POST',
                 url: '/Shop/AddVoucher',
-               data: { voucher: voucherCode },
+                data: { voucher: voucherCode },
                 success: function (data) {
                     //$('#row-' + data.DeleteId).fadeOut('slow');
-                  //    $('#total').text('₱' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
-                //    $('#voucherDed').text('₱' + parseFloat(data.VoucherDeduction, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()); //('$' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
+                    //    $('#total').text('₱' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+                    //    $('#voucherDed').text('₱' + parseFloat(data.VoucherDeduction, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()); //('$' + parseFloat(data.Total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
                     if (data.vouchAdd == "false") {
                         $("#voucherAlert").show();
                         $("#voucherAlert").text(data.Error);
                     } else {
                         $("#summaryTable").html(data);
-                       // $("#voucherAlert").addClass("alert alert-success");
+                        // $("#voucherAlert").addClass("alert alert-success");
                         $("#voucherAlert").text("Voucher Discount added").show();
                     }
-                  
-                    
+
+
                     //$('#total').html("₱" + data.Total);
                     //$('#voucherDed').html("₱" + data.VoucherDeduction); 
                 },
                 error: function (data) {
-                   alert("error");
+                    alert("error");
                 }
             });
         });
@@ -91,7 +91,7 @@
                                             <td>
                                                 <a href="#">
                                                     <img src="@Url.Content(item.ForSale.Path)" style="width: 250px">
-                                                </a> 
+                                                </a>
                                             </td>
                                             @if (item.ForSale.otherArtist)
                                             {
@@ -118,7 +118,7 @@
                                             <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
                                             <td>@Html.DisplayFor(modelItem => item.ForSale.wSize)" W X @Html.DisplayFor(modelItem => item.ForSale.hSize)" H</td>
                                             <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
-                                         </tr>
+                                        </tr>
                                     }
                                 </tbody>
                                 <tfoot>
@@ -150,7 +150,7 @@
                                 </div>
                                 <div class="col-md-6">
                                 </div>
-                            </div> 
+                            </div>
                         </div>
 
                     </div>
@@ -161,10 +161,15 @@
                             @Html.ActionLink("Back to shipping details", "CheckoutDetails", "Shop", null, new { @class = "btn btn-default" })
                         </div>
                         <div class="pull-right">
-
+                            
+                            <a href="@Url.Action("PayPalCheck")" data-paypal-button="true">
+                                <img src="//www.paypalobjects.com/en_US/i/btn/btn_xpressCheckout.gif" alt="Check out with PayPal" />
+                            </a>
                             <button type="submit" class="btn-lg btn-primary">
                                 Place an order<i class="fa fa-chevron-right"></i>
                             </button>
+
+                           
 
                         </div>
                     </div>
@@ -184,12 +189,12 @@
                     <p class="text-muted">Shipping and additional costs are calculated based on the values you have entered.</p>
 
                     <div class="table-responsive">
-                      
-                        
+
+
                         @Html.Partial("_summary", Model)
-                        
+
                         <div class="box-footer">
-                            <div class="alert alert-danger" role="alert" id="voucherAlert"> </div>
+                            <div class="alert alert-danger" role="alert" id="voucherAlert"></div>
                             <p class="text-muted">If you have a voucher code, please enter it in the box below.</p>
                             <div class="input-group">
 

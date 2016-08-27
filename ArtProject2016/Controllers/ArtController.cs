@@ -99,7 +99,11 @@ namespace ArtProject2016.Controllers
                             }
                         }
                     }
-
+                    else
+                    {
+                        ModelState.AddModelError("", "Add Image of your artwork on the bottom of the upload page to proceed");
+                        return View(model);
+                    }
 
                 }
                 else

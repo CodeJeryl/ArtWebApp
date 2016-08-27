@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using ArtProject2016.Functions;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
+using PayPal.PayPalAPIInterfaceService;
+using PayPal.PayPalAPIInterfaceService.Model;
 using WebMatrix.WebData;
 
 
@@ -39,7 +41,7 @@ namespace ArtProject2016.Controllers
             galleryViewModel viewModel = new galleryViewModel();
             ForSale forsale = db.ForSales.Find(id);
 
-            if(forsale == null)
+            if (forsale == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -406,7 +408,7 @@ namespace ArtProject2016.Controllers
                         var updateArt = db.ForSales.Find(cartItem.ForSaleId);
                         updateArt.Sold = true;
                         updateArt.BuyerId = WebSecurity.CurrentUserId;
-                    } 
+                    }
 
                     db.SaveChanges();
                     dbContextTransaction.Commit();
@@ -431,6 +433,60 @@ namespace ArtProject2016.Controllers
                 return View(viewModel);
             }
         }
+
+        //[HttpGet]
+        //public ActionResult Paypal(string success)
+        //{
+        //    TempData["success"] = success;
+
+        //    return RedirectToAction("cart", "shop");
+        //}
+
+        public void PayPalCheck(CheckoutViewModel viewModel)
+        {
+            PaypalControls pay = new PaypalControls();
+            var PaypalResult = pay.PaypalExpress(viewModel);
+
+           //TempData["error"] = token;
+            Response.Redirect(PaypalResult);
+           // return View("CheckoutSummary");
+            //TempData["payment_amt"] = viewModel.Total;
+
+            //NVPAPICaller payPalCaller = new NVPAPICaller();
+            //string retMsg = "";
+            //string token = "";
+
+            //if (TempData["payment_amt"] != null)
+            //{
+            //    string amt = TempData["payment_amt"].ToString();
+
+            //    bool ret = payPalCaller.ShortcutExpressCheckout(amt, ref token, ref retMsg);
+            //    if (ret)
+            //    {
+            //        TempData["token"] = token;
+            //        Response.Redirect(retMsg);
+            //    }
+            //    else
+            //    {
+            //        Response.Redirect("CheckoutError.aspx?" + retMsg);
+            //    }
+            //}
+            //else
+            //{
+            //    Response.Redirect("CheckoutError.aspx?ErrorCode=AmtMissing");
+            //}
+
+            //return View();
+        }
+
+        [HttpGet]
+        public ActionResult PayPalCheckout(string success)
+        {
+            TempData["success"] = success.ToString();
+            return View();
+        }
+
+        
 
         protected override void Dispose(bool disposing)
         {
