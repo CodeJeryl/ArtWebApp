@@ -39,26 +39,77 @@ namespace ArtProject2016.Functions
 
                 PaymentDetailsType paymentDetail = new PaymentDetailsType();
                 CurrencyCodeType currency = (CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType));
-                PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
-                paymentItem.Name = cartItems[0].ForSale.Title;
-                decimal itemAmount = 10000;  //Regex.Replace(cartItems[0].ForSale.Price.ToString(), "[^0-9.]", "");
-                paymentItem.Amount = new BasicAmountType(currency, itemAmount.ToString());
-                int itemQuantity = cartItems[0].Qty;
-                paymentItem.Quantity = itemQuantity;
-                // paymentItem.ItemCategory = (ItemCategoryType)EnumUtils.GetValue(, typeof(ItemCategoryType));
-                List<PaymentDetailsItemType> paymentItems = new List<PaymentDetailsItemType>();
-                paymentItems.Add(paymentItem);
-                paymentDetail.PaymentDetailsItem = paymentItems;
+                //   SolutionTypeType sole = (SolutionTypeType)EnumUtils.GetValue("SOLE", typeof(SolutionTypeType));
+                //  LandingPageType bill = (LandingPageType)EnumUtils.GetValue("BILLING", typeof(LandingPageType));
 
-                paymentDetail.PaymentAction = (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
-                paymentDetail.OrderTotal = new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType)), (itemAmount * itemQuantity).ToString());
+
+                List<PaymentDetailsItemType> paymentItems = new List<PaymentDetailsItemType>();
+                //   List<PaymentDetailsItemType> paymentItem = new List<PaymentDetailsItemType>();
+
+                decimal orderTotal = 0;
+                for (int i = 0; i < cartItems.Count; i++)
+                {
+                    PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
+                    paymentItem.Name = cartItems[i].ForSale.Title;
+                    decimal itemAmount = cartItems[i].ForSale.Price;
+                    //Regex.Replace(cartItems[0].ForSale.Price.ToString(), "[^0-9.]", "");
+                    paymentItem.Amount = new BasicAmountType(currency, itemAmount.ToString());
+                    int itemQuantity = cartItems[i].Qty;
+                    paymentItem.Quantity = itemQuantity;
+
+                    paymentItem.ItemHeight = new MeasureType("Inches", Convert.ToDecimal(cartItems[i].ForSale.hSize));
+                    paymentItem.ItemWidth = new MeasureType("Inches", Convert.ToDecimal(cartItems[i].ForSale.wSize));
+
+                    paymentItems.Add(paymentItem);
+                    orderTotal += itemAmount * itemQuantity;
+                }
+
+                if (viewModel.VoucherCodeId != null && viewModel.VoucherDeduction > 0)
+                {
+                    PaymentDetailsItemType discount = new PaymentDetailsItemType();
+                    discount.Name = "Voucher Discount";
+                    discount.Description = "";
+                    decimal NegativeDisc = viewModel.VoucherDeduction * -1;
+                    discount.Amount = new BasicAmountType(currency, NegativeDisc.ToString());
+                    paymentItems.Add(discount);
+                    orderTotal += NegativeDisc;
+                }
+
+                // paymentItem.ItemCategory = (ItemCategoryType)EnumUtils.GetValue("Painting", typeof(ItemCategoryType));
+
+                //  List<CartItem> myOrderList = myCartOrders.GetCartItems();
+
+                //for (int i = 0; i < cartItems.Count; i++)
+                //{
+                //    encoder["L_PAYMENTREQUEST_0_NAME" + i] = myOrderList[i].Product.ProductName.ToString();
+                //    encoder["L_PAYMENTREQUEST_0_AMT" + i] = myOrderList[i].Product.UnitPrice.ToString();
+                //    encoder["L_PAYMENTREQUEST_0_QTY" + i] = myOrderList[i].Quantity.ToString();
+                //}
+
+                paymentDetail.PaymentDetailsItem = paymentItems;
+                paymentDetail.ItemTotal =
+                    new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType)),
+                                        orderTotal.ToString());
+                paymentDetail.PaymentAction =
+                    (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
+                paymentDetail.OrderTotal =
+                    new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType)),
+                                        orderTotal.ToString());
+                paymentDetail.NotifyURL = "http://localhost:60817/Shop/PaypalIPN";
                 List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
                 paymentDetails.Add(paymentDetail);
 
+
                 SetExpressCheckoutRequestDetailsType ecDetails = new SetExpressCheckoutRequestDetailsType();
-                ecDetails.ReturnURL = "http://localhost:60817/Shop/PayPalCheckout?success=true";
-                ecDetails.CancelURL = "http://localhost:60817/Shop/PayPalCheckout?success=false";
+                ecDetails.ReturnURL = "http://localhost:60817/Shop/OrdersComplete";
+                ecDetails.CancelURL = "http://localhost:60817/Shop/CheckOutSummary?PaypalPayment=false";
                 ecDetails.PaymentDetails = paymentDetails;
+                ecDetails.NoShipping = "1";
+                ecDetails.LandingPage = LandingPageType.BILLING;
+                ecDetails.SolutionType = SolutionTypeType.SOLE;
+                ecDetails.LocaleCode = "PH";
+                ecDetails.BuyerEmail = WebSecurity.CurrentUserName;
+
 
                 //PaymentDetailsType paymentDetail = new PaymentDetailsType();
                 //CurrencyCodeType currency = (CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType));
@@ -87,6 +138,7 @@ namespace ArtProject2016.Functions
                 request.Version = "104.0";
                 request.SetExpressCheckoutRequestDetails = ecDetails;
 
+
                 SetExpressCheckoutReq wrapper = new SetExpressCheckoutReq();
                 wrapper.SetExpressCheckoutRequest = request;
                 Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
@@ -95,7 +147,9 @@ namespace ArtProject2016.Functions
                 sdkConfig.Add("account1.apiPassword", "BGX735ARZFAS95ZN");
                 sdkConfig.Add("account1.apiSignature", "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-");
                 sdkConfig.Add("account1.applicationId", "APP-80W284485P519543T");
+                //SOLUTIONTYPE=Sole and LANDINGPAGE=Billing
                 PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
+
 
                 //Dictionary<string, string> config = PayPal.Manager.ConfigManager.Instance.GetProperties();
                 //// Create the Classic SDK service instance to use.
@@ -120,7 +174,9 @@ namespace ArtProject2016.Functions
                         // transaction by making buyer to login into PayPal. For that,
                         // need to construct redirect url using EC token from response.
                         // For example,
-                       string redirectURL="https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="+setECResponse.Token;
+                        string redirectURL =
+                            "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&useraction=commit&token=" +
+                            setECResponse.Token;
 
                         return redirectURL;
                         // Express Checkout Token
@@ -159,8 +215,11 @@ namespace ArtProject2016.Functions
             paymentItems.Add(paymentItem);
             paymentDetail.PaymentDetailsItem = paymentItems;
 
-            paymentDetail.PaymentAction = (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
-            paymentDetail.OrderTotal = new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType)), (itemAmount * itemQuantity).ToString());
+            paymentDetail.PaymentAction =
+                (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
+            paymentDetail.OrderTotal =
+                new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType)),
+                                    (itemAmount * itemQuantity).ToString());
             List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
             paymentDetails.Add(paymentDetail);
 
@@ -185,307 +244,85 @@ namespace ArtProject2016.Functions
 
             return setECResponse.Token;
         }
-    }
 
 
-
-
-    public class NVPAPICaller
-    {
-        //Flag that determines the PayPal environment (live or sandbox)
-        private const bool bSandbox = true;
-        private const string CVV2 = "CVV2";
-
-        // Live strings.
-        private string pEndPointURL = "https://api-3t.paypal.com/nvp";
-        private string host = "www.paypal.com";
-
-        // Sandbox strings.
-        private string pEndPointURL_SB = "https://api-3t.sandbox.paypal.com/nvp";
-        private string host_SB = "www.sandbox.paypal.com";
-
-        private const string SIGNATURE = "SIGNATURE";
-        private const string PWD = "PWD";
-        private const string ACCT = "ACCT";
-
-        //Replace <Your API Username> with your API Username
-        //Replace <Your API Password> with your API Password
-        //Replace <Your Signature> with your Signature
-        public string APIUsername = "jeryl.suarez-facilitator_api1.yahoo.com";
-        private string APIPassword = "BGX735ARZFAS95ZN";
-        private string APISignature = "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-";
-        private string Subject = "";
-        private string BNCode = "PP-ECWizard";
-
-
-        //HttpWebRequest Timeout specified in milliseconds 
-        private const int Timeout = 15000;
-        private static readonly string[] SECURED_NVPS = new string[] { ACCT, CVV2, SIGNATURE, PWD };
-
-        public void SetCredentials(string Userid, string Pwd, string Signature)
+        public string DoExpress(string token, string payerId, string OrderTotal)
         {
-            APIUsername = Userid;
-            APIPassword = Pwd;
-            APISignature = Signature;
-        }
+            DoExpressCheckoutPaymentRequestType request = new DoExpressCheckoutPaymentRequestType();
+            request.Version = "104.0";
+            DoExpressCheckoutPaymentRequestDetailsType requestDetails = new DoExpressCheckoutPaymentRequestDetailsType();
 
-        public bool ShortcutExpressCheckout(string amt, ref string token, ref string retMsg)
-        {
-            if (bSandbox)
+            requestDetails.Token = token;
+            requestDetails.PayerID = payerId;
+
+            request.DoExpressCheckoutPaymentRequestDetails = requestDetails;
+
+            PaymentDetailsType paymentDetail = new PaymentDetailsType();
+            paymentDetail.PaymentAction = PaymentActionCodeType.SALE;
+            paymentDetail.OrderTotal = new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType)), OrderTotal);
+            
+
+            SellerDetailsType seller = new SellerDetailsType();
+            seller.PayPalAccountID = "jeryl.suarez-facilitator@yahoo.com";
+            paymentDetail.SellerDetails = seller;
+
+            List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
+            paymentDetails.Add(paymentDetail);
+
+            requestDetails.PaymentDetails = paymentDetails;
+            
+            DoExpressCheckoutPaymentReq wrapper = new DoExpressCheckoutPaymentReq();
+            wrapper.DoExpressCheckoutPaymentRequest = request;
+            Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
+            sdkConfig.Add("mode", "security-test-sandbox");
+            sdkConfig.Add("account1.apiUsername", "jeryl.suarez-facilitator_api1.yahoo.com");
+            sdkConfig.Add("account1.apiPassword", "BGX735ARZFAS95ZN");
+            sdkConfig.Add("account1.apiSignature", "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-");
+            PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
+            DoExpressCheckoutPaymentResponseType doECResponse = service.DoExpressCheckoutPayment(wrapper);
+
+            if (doECResponse != null)
             {
-                pEndPointURL = pEndPointURL_SB;
-                host = host_SB;
-            }
+                // Response envelope acknowledgement
+                string acknowledgement = "DoExpressCheckoutPayment API Operation - ";
+                acknowledgement += doECResponse.Ack.ToString();
 
-            string returnURL = "https://localhost:60817/Shop/PaypalCheckout";
-            string cancelURL = "https://localhost:60817/Shop/PaypalCancel";
+                Console.WriteLine(acknowledgement + "\n");
 
-            NVPCodec encoder = new NVPCodec();
-            encoder["METHOD"] = "SetExpressCheckout";
-            encoder["RETURNURL"] = returnURL;
-            encoder["CANCELURL"] = cancelURL;
-            encoder["BRANDNAME"] = "Wingtip Toys Sample Application";
-            encoder["PAYMENTREQUEST_0_AMT"] = amt;
-            encoder["PAYMENTREQUEST_0_ITEMAMT"] = amt;
-            encoder["PAYMENTREQUEST_0_PAYMENTACTION"] = "Sale";
-            encoder["PAYMENTREQUEST_0_CURRENCYCODE"] = "PHP";
-
-            // Get the Shopping Cart Products
-            using (ArtContext db = new ArtContext())
-            {
-
-                var myOrderList =
-                    db.Carts.Where(item => item.UserAccountId == WebSecurity.CurrentUserId).ToList();
-
-                for (int i = 0; i < myOrderList.Count; i++)
+                // # Success values
+                if (doECResponse.Ack.ToString().Trim().ToUpper().Equals("SUCCESS"))
                 {
-                    encoder["L_PAYMENTREQUEST_0_NAME" + i] = myOrderList[i].ForSale.Title;//myOrderList[i].Product.ProductName.ToString();
-                    encoder["L_PAYMENTREQUEST_0_AMT" + i] = myOrderList[i].ForSale.Price.ToString();
-                    encoder["L_PAYMENTREQUEST_0_QTY" + i] = myOrderList[i].Qty.ToString();
+                    // Transaction identification number of the transaction that was
+                    // created.
+                    // This field is only returned after a successful transaction
+                    // for DoExpressCheckout has occurred.
+                    if (doECResponse.DoExpressCheckoutPaymentResponseDetails.PaymentInfo != null)
+                    {
+                        IEnumerator<PaymentInfoType> paymentInfoIterator = doECResponse.DoExpressCheckoutPaymentResponseDetails.PaymentInfo.GetEnumerator();
+                        while (paymentInfoIterator.MoveNext())
+                        {
+                            PaymentInfoType paymentInfo = paymentInfoIterator.Current;
+                            //   logger.Info("Transaction ID : " + paymentInfo.TransactionID + "\n");
+                          //  Console.WriteLine("Transaction ID : " + paymentInfo.TransactionID + "\n");
+                            return paymentInfo.GrossAmount.ToString() + " Transaction ID : " + paymentInfo.TransactionID;
+                        }
+                    }
                 }
-            }
-
-            string pStrrequestforNvp = encoder.Encode();
-            string pStresponsenvp = HttpCall(pStrrequestforNvp);
-
-            NVPCodec decoder = new NVPCodec();
-            decoder.Decode(pStresponsenvp);
-
-            string strAck = decoder["ACK"].ToLower();
-            if (strAck != null && (strAck == "success" || strAck == "successwithwarning"))
-            {
-                token = decoder["TOKEN"];
-                string ECURL = "https://" + host + "/cgi-bin/webscr?cmd=_express-checkout" + "&token=" + token;
-                retMsg = ECURL;
-                return true;
-            }
-            else
-            {
-                retMsg = "ErrorCode=" + decoder["L_ERRORCODE0"] + "&" +
-                    "Desc=" + decoder["L_SHORTMESSAGE0"] + "&" +
-                    "Desc2=" + decoder["L_LONGMESSAGE0"];
-                return false;
-            }
-        }
-
-        public bool GetCheckoutDetails(string token, ref string PayerID, ref NVPCodec decoder, ref string retMsg)
-        {
-            if (bSandbox)
-            {
-                pEndPointURL = pEndPointURL_SB;
-            }
-
-            NVPCodec encoder = new NVPCodec();
-            encoder["METHOD"] = "GetExpressCheckoutDetails";
-            encoder["TOKEN"] = token;
-
-            string pStrrequestforNvp = encoder.Encode();
-            string pStresponsenvp = HttpCall(pStrrequestforNvp);
-
-            decoder = new NVPCodec();
-            decoder.Decode(pStresponsenvp);
-
-            string strAck = decoder["ACK"].ToLower();
-            if (strAck != null && (strAck == "success" || strAck == "successwithwarning"))
-            {
-                PayerID = decoder["PAYERID"];
-                return true;
-            }
-            else
-            {
-                retMsg = "ErrorCode=" + decoder["L_ERRORCODE0"] + "&" +
-                    "Desc=" + decoder["L_SHORTMESSAGE0"] + "&" +
-                    "Desc2=" + decoder["L_LONGMESSAGE0"];
-
-                return false;
-            }
-        }
-
-        public bool DoCheckoutPayment(string finalPaymentAmount, string token, string PayerID, ref NVPCodec decoder, ref string retMsg)
-        {
-            if (bSandbox)
-            {
-                pEndPointURL = pEndPointURL_SB;
-            }
-
-            NVPCodec encoder = new NVPCodec();
-            encoder["METHOD"] = "DoExpressCheckoutPayment";
-            encoder["TOKEN"] = token;
-            encoder["PAYERID"] = PayerID;
-            encoder["PAYMENTREQUEST_0_AMT"] = finalPaymentAmount;
-            encoder["PAYMENTREQUEST_0_CURRENCYCODE"] = "PHP";
-            encoder["PAYMENTREQUEST_0_PAYMENTACTION"] = "Sale";
-
-            string pStrrequestforNvp = encoder.Encode();
-            string pStresponsenvp = HttpCall(pStrrequestforNvp);
-
-            decoder = new NVPCodec();
-            decoder.Decode(pStresponsenvp);
-
-            string strAck = decoder["ACK"].ToLower();
-            if (strAck != null && (strAck == "success" || strAck == "successwithwarning"))
-            {
-                return true;
-            }
-            else
-            {
-                retMsg = "ErrorCode=" + decoder["L_ERRORCODE0"] + "&" +
-                    "Desc=" + decoder["L_SHORTMESSAGE0"] + "&" +
-                    "Desc2=" + decoder["L_LONGMESSAGE0"];
-
-                return false;
-            }
-        }
-
-        public string HttpCall(string NvpRequest)
-        {
-            string url = pEndPointURL;
-
-            string strPost = NvpRequest + "&" + buildCredentialsNVPString();
-            strPost = strPost + "&BUTTONSOURCE=" + HttpUtility.UrlEncode(BNCode);
-
-            HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(url);
-            objRequest.Timeout = Timeout;
-            objRequest.Method = "POST";
-            objRequest.ContentLength = strPost.Length;
-
-            try
-            {
-                using (StreamWriter myWriter = new StreamWriter(objRequest.GetRequestStream()))
+                // # Error Values
+                else
                 {
-                    myWriter.Write(strPost);
+                    List<ErrorType> errorMessages = doECResponse.Errors;
+                    foreach (ErrorType error in errorMessages)
+                    {
+                        //  logger.Debug("API Error Message : " + error.LongMessage);
+                        Console.WriteLine("API Error Message : " + error.LongMessage + "\n");
+                    }
                 }
+
+
             }
-            catch (Exception)
-            {
-                // No logging for this tutorial.
-            }
-
-            //Retrieve the Response returned from the NVP API call to PayPal.
-            HttpWebResponse objResponse = (HttpWebResponse)objRequest.GetResponse();
-            string result;
-            using (StreamReader sr = new StreamReader(objResponse.GetResponseStream()))
-            {
-                result = sr.ReadToEnd();
-            }
-
-            return result;
-        }
-
-        private string buildCredentialsNVPString()
-        {
-            NVPCodec codec = new NVPCodec();
-
-            if (!IsEmpty(APIUsername))
-                codec["USER"] = APIUsername;
-
-            if (!IsEmpty(APIPassword))
-                codec[PWD] = APIPassword;
-
-            if (!IsEmpty(APISignature))
-                codec[SIGNATURE] = APISignature;
-
-            if (!IsEmpty(Subject))
-                codec["SUBJECT"] = Subject;
-
-            codec["VERSION"] = "88.0";
-
-            return codec.Encode();
-        }
-
-        public static bool IsEmpty(string s)
-        {
-            return s == null || s.Trim() == string.Empty;
+            return "error";
         }
     }
 
-    public sealed class NVPCodec : NameValueCollection
-    {
-        private const string AMPERSAND = "&";
-        private const string EQUALS = "=";
-        private static readonly char[] AMPERSAND_CHAR_ARRAY = AMPERSAND.ToCharArray();
-        private static readonly char[] EQUALS_CHAR_ARRAY = EQUALS.ToCharArray();
-
-        public string Encode()
-        {
-            StringBuilder sb = new StringBuilder();
-            bool firstPair = true;
-            foreach (string kv in AllKeys)
-            {
-                string name = HttpUtility.UrlEncode(kv);
-                string value = HttpUtility.UrlEncode(this[kv]);
-                if (!firstPair)
-                {
-                    sb.Append(AMPERSAND);
-                }
-                sb.Append(name).Append(EQUALS).Append(value);
-                firstPair = false;
-            }
-            return sb.ToString();
-        }
-
-        public void Decode(string nvpstring)
-        {
-            Clear();
-            foreach (string nvp in nvpstring.Split(AMPERSAND_CHAR_ARRAY))
-            {
-                string[] tokens = nvp.Split(EQUALS_CHAR_ARRAY);
-                if (tokens.Length >= 2)
-                {
-                    string name = HttpUtility.UrlDecode(tokens[0]);
-                    string value = HttpUtility.UrlDecode(tokens[1]);
-                    Add(name, value);
-                }
-            }
-        }
-
-        public void Add(string name, string value, int index)
-        {
-            this.Add(GetArrayName(index, name), value);
-        }
-
-        public void Remove(string arrayName, int index)
-        {
-            this.Remove(GetArrayName(index, arrayName));
-        }
-
-        public string this[string name, int index]
-        {
-            get { return this[GetArrayName(index, name)]; }
-            set { this[GetArrayName(index, name)] = value; }
-        }
-
-        private static string GetArrayName(int index, string name)
-        {
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException("index", "index cannot be negative : " + index);
-            }
-            return name + index;
-        }
-
-
-    }
 }
-
-

@@ -521,7 +521,7 @@
     <Content Include="Views\Account\_ChangePassword.cshtml" />
     <Content Include="Views\Auth\_ForgotPassword.cshtml" />
     <Content Include="Views\Auth\ResetPassword.cshtml" />
-    <Content Include="Views\Shop\PayPalCheckout.cshtml" />
+    <Content Include="Views\Shop\OrdersComplete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

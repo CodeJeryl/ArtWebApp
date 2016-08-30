@@ -294,7 +294,7 @@ namespace ArtProject2016.Controllers
 
 
         [HttpGet]
-        public ActionResult CheckOutSummary()
+        public ActionResult CheckOutSummary(string PaypalPayment)
         {
             var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
             if (!cartItems.Any())
@@ -306,6 +306,11 @@ namespace ArtProject2016.Controllers
 
             var userAccount = db.UserAccounts.Single(user => user.Id == WebSecurity.CurrentUserId);
             var userProfile = db.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
+
+            if (PaypalPayment != null)
+            {
+                TempData["error"] = "Paypal Payment Cancelled. Please try again.";
+            }
 
             var controls = new CartControls();
 
@@ -354,6 +359,7 @@ namespace ArtProject2016.Controllers
                 viewModel.UserProfile = userProfile;
                 viewModel.CartItems = cartItems;
 
+              
                 //if(viewModel.VoucherCodeId == 0)
                 //{
                 //    viewModel.VoucherCodeId = null;
@@ -416,8 +422,14 @@ namespace ArtProject2016.Controllers
                     //  TempData["d"] = viewModel.Total;
                     //        var delCart = new CartControls();
                     //     delCart.EmptyCart();
-                    TempData["success"] = "Success. ID no: " + newOrder.Id.ToString();
-                    return RedirectToAction("Cart");
+                    PaypalControls pay = new PaypalControls();
+
+                    var PaypalResult = pay.PaypalExpress(viewModel);
+                    TempData["orderId"] = newOrder.Id.ToString();
+                    return Redirect(PaypalResult);
+
+                   
+                   // return RedirectToAction("Cart");
                 }
                 //else
                 //{
@@ -445,6 +457,8 @@ namespace ArtProject2016.Controllers
         public void PayPalCheck(CheckoutViewModel viewModel)
         {
             PaypalControls pay = new PaypalControls();
+            decimal test = viewModel.VoucherDeduction;
+          //  string test1 = viewModel.VoucherCodeId;
             var PaypalResult = pay.PaypalExpress(viewModel);
 
            //TempData["error"] = token;
@@ -480,10 +494,22 @@ namespace ArtProject2016.Controllers
         }
 
         [HttpGet]
-        public ActionResult PayPalCheckout(string success)
+        public ActionResult OrdersComplete(string PayerID, string token)
         {
-            TempData["success"] = success.ToString();
-            return View();
+            //if(TempData["orderId"] != null)
+            //{
+            //    ViewBag.OrderId = TempData["orderId"].ToString();
+            using (ArtContext db = new ArtContext())
+            {
+                var OrderTotal = db.Orders.Find(8).Total.ToString();
+                PaypalControls paypal = new PaypalControls();
+                ViewBag.GrossAmt = paypal.DoExpress(token, PayerID, OrderTotal);
+
+                return View();
+            }
+              
+            //}
+            //return RedirectToAction("Gallery", "Shop");
         }
 
         
