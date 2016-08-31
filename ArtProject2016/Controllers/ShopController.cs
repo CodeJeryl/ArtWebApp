@@ -294,8 +294,33 @@ namespace ArtProject2016.Controllers
 
 
         [HttpGet]
-        public ActionResult CheckOutSummary(string PaypalPayment)
+        public ActionResult CheckOutSummary(string PaypalPayment, string token)
         {
+            if (PaypalPayment == "false" && token != null)
+            {
+                int orderId = (int)TempData["orderId"];
+                var orderCancelled = db.Orders.Find(orderId);
+                var orderDetailCancelled = db.OrderDetails.Where(item => item.OrderId == orderId).ToList();
+
+                orderCancelled.OrderStatus = "Payment Error: Cancelled";
+
+                foreach (var orderDetail in orderDetailCancelled)
+                {
+                    orderDetail.OrderDetailStatus = "Payment Error: Cancelled - " + token;
+
+                    var orderTrack = new OrderTracking()
+                                         {
+                                             DateTime = DateTime.Now,
+                                             StatusType = "PayPal Cancelled",
+                                             Description = "PayPal Payment was cancelled or an error occured.",
+                                             OrderDetailId = orderDetail.Id
+                                         };
+                    db.OrderTrackings.Add(orderTrack);
+                }
+
+                db.SaveChanges();
+            }
+
             var cartItems = db.Carts.Where(items => items.UserAccountId == WebSecurity.CurrentUserId).ToList();
             if (!cartItems.Any())
             {
@@ -359,7 +384,7 @@ namespace ArtProject2016.Controllers
                 viewModel.UserProfile = userProfile;
                 viewModel.CartItems = cartItems;
 
-              
+
                 //if(viewModel.VoucherCodeId == 0)
                 //{
                 //    viewModel.VoucherCodeId = null;
@@ -424,12 +449,12 @@ namespace ArtProject2016.Controllers
                     //     delCart.EmptyCart();
                     PaypalControls pay = new PaypalControls();
 
-                    var PaypalResult = pay.PaypalExpress(viewModel);
-                    TempData["orderId"] = newOrder.Id.ToString();
+                    var PaypalResult = pay.PaypalExpress(viewModel, newOrder.Id);
+                    TempData["orderId"] = newOrder.Id;
                     return Redirect(PaypalResult);
 
-                   
-                   // return RedirectToAction("Cart");
+
+                    // return RedirectToAction("Cart");
                 }
                 //else
                 //{
@@ -458,61 +483,171 @@ namespace ArtProject2016.Controllers
         {
             PaypalControls pay = new PaypalControls();
             decimal test = viewModel.VoucherDeduction;
-          //  string test1 = viewModel.VoucherCodeId;
-            var PaypalResult = pay.PaypalExpress(viewModel);
+            //  string test1 = viewModel.VoucherCodeId;
+       //     var PaypalResult = pay.PaypalExpress(viewModel);
 
-           //TempData["error"] = token;
-            Response.Redirect(PaypalResult);
-           // return View("CheckoutSummary");
-            //TempData["payment_amt"] = viewModel.Total;
+            //TempData["error"] = token;
+         //   Response.Redirect(PaypalResult);
+            // return View("CheckoutSummary");
 
-            //NVPAPICaller payPalCaller = new NVPAPICaller();
-            //string retMsg = "";
-            //string token = "";
-
-            //if (TempData["payment_amt"] != null)
-            //{
-            //    string amt = TempData["payment_amt"].ToString();
-
-            //    bool ret = payPalCaller.ShortcutExpressCheckout(amt, ref token, ref retMsg);
-            //    if (ret)
-            //    {
-            //        TempData["token"] = token;
-            //        Response.Redirect(retMsg);
-            //    }
-            //    else
-            //    {
-            //        Response.Redirect("CheckoutError.aspx?" + retMsg);
-            //    }
-            //}
-            //else
-            //{
-            //    Response.Redirect("CheckoutError.aspx?ErrorCode=AmtMissing");
-            //}
-
-            //return View();
         }
 
         [HttpGet]
-        public ActionResult OrdersComplete(string PayerID, string token)
+        public ActionResult PaymentProcessing(string PayerID, string token)
         {
-            //if(TempData["orderId"] != null)
-            //{
-            //    ViewBag.OrderId = TempData["orderId"].ToString();
-            using (ArtContext db = new ArtContext())
+            if (PayerID != null && token != null && TempData["orderId"] != null)
             {
-                var OrderTotal = db.Orders.Find(8).Total.ToString();
-                PaypalControls paypal = new PaypalControls();
-                ViewBag.GrossAmt = paypal.DoExpress(token, PayerID, OrderTotal);
+                using (ArtContext db = new ArtContext())
+                {
+                    // TempData.Keep("orderId");
+                    int OrderId = Convert.ToInt32(TempData["orderId"]);
+                    var OrderModel = db.Orders.Find(OrderId);
+
+                    var NewPaypalOrder = new PaypalPayment
+                                             {
+                                                 Token = token,
+                                                 PayerId = PayerID,
+                                                 Remarks = "Before Do Express Checkout Save",
+                                                 DateTime = DateTime.Now,
+                                                 Order = OrderModel
+                                             };
+
+                    db.PaypalPayments.Add(NewPaypalOrder);
+
+                    CartControls cart = new CartControls();
+                    cart.EmptyCart();
+
+                    var OrderTotal = OrderModel.Total.ToString();
+                    PaypalControls paypal = new PaypalControls();
+                    string result = paypal.DoExpress(token, PayerID, OrderTotal);
+                    if (result == "error")
+                    {
+                        TempData["error"] = "An error occured on Payment Processing.";
+                        return RedirectToAction("Gallery", "Shop");
+                    }
+
+                    NewPaypalOrder.TransactionId = result;
+                    db.SaveChanges();
+
+
+                    TempData["orderId"] = OrderId;
+                    return RedirectToAction("OrdersComplete");
+                }
+            }
+
+            TempData["error"] = "An error occured on Payment Processing.";
+            return RedirectToAction("Gallery", "Shop");
+
+        }
+
+        [HttpGet]
+        public ActionResult OrdersComplete()
+        {
+            if (TempData["orderId"] != null)
+            {
+                ViewBag.OrderId = TempData["orderId"].ToString();
 
                 return View();
             }
-              
-            //}
-            //return RedirectToAction("Gallery", "Shop");
+
+            TempData["error"] = "An error occured to orders complete page";
+            return RedirectToAction("Gallery", "Shop");
         }
 
-        
+        public EmptyResult IPNreceiver()
+        {
+            PaypalControls PayControls = new PaypalControls();
+
+            var formVals = new Dictionary<string, string>();
+            formVals.Add("cmd", "_notify-validate");
+            //true for sandbox, false for live
+            string response = PayControls.GetPayPalResponse(formVals, true);
+
+            if (response == "VERIFIED")
+            {
+
+                string transactionID = Request["txn_id"];
+                string sAmountPaid = Request["mc_gross"];
+                string orderID = Request["custom"];
+                string payStatus = Request["payment_status"];
+
+                //_logger.Info("IPN Verified for order " + orderID);
+
+                //validate the order
+                Decimal amountPaid = 0;
+                Decimal.TryParse(sAmountPaid, out amountPaid);
+
+                //check if transaction is already processed
+                var trans = db.Orders.SingleOrDefault(tran => tran.PayPal.TransactionId == transactionID);
+                if(trans.PayPal.IPNverified)
+                {
+                    return new EmptyResult();
+                }
+
+                //Order order = _orderService.GetOrder(new Guid(orderID));
+                Order order = db.Orders.Find(orderID);
+                //check the amount paid
+
+                if (PayControls.AmountPaidIsValid(order, amountPaid))
+                {
+                   
+                    // check that Payment_status=Completed
+                    //' check that Txn_id has not been previously processed
+                    //' check that Receiver_email is your Primary PayPal email
+                    //' check that Payment_amount/Payment_currency are correct
+                    //' process payment
+
+                    //Address add = new Address();
+                    //add.FirstName = Request["first_name"];
+                    //add.LastName = Request["last_name"];
+                    //add.Email = Request["payer_email"];
+                    //add.Street1 = Request["address_street"];
+                    //add.City = Request["address_city"];
+                    //add.StateOrProvince = Request["address_state"];
+                    //add.Country = Request["address_country"];
+                    //add.Zip = Request["address_zip"];
+                    //add.UserName = order.UserName;
+
+
+                    //process it
+                    try
+                    {
+                        if (payStatus == "Completed")
+                        {
+                            trans.Paid = true;
+                            trans.PayPal.Remarks = payStatus + " - Amount: " + amountPaid;
+                            trans.PayPal.DateTime = DateTime.Now;
+
+                        }
+                        else
+                        {
+                            trans.PayPal.Remarks = payStatus;
+                            trans.PayPal.DateTime = DateTime.Now;
+                        }
+
+                        db.SaveChanges();
+                        //_pipeline.AcceptPalPayment(order, transactionID, amountPaid);
+                        //_logger.Info("IPN Order successfully transacted: " + orderID);
+                        //   return RedirectToAction("Receipt", "Order", new { id = order.ID });
+                    }
+                    catch
+                    {
+                        //HandleProcessingError(order, x);
+                        //  return View();
+                    }
+                }
+                else
+                {
+                    //let fail - this is the IPN so there is no viewer
+                }
+            }
+
+
+
+            return new EmptyResult();
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

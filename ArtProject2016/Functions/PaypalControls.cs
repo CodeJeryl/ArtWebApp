@@ -23,7 +23,7 @@ namespace ArtProject2016.Functions
 {
     public class PaypalControls
     {
-        public string PaypalExpress(CheckoutViewModel viewModel)
+        public string PaypalExpress(CheckoutViewModel viewModel, int orderId)
         {
             using (ArtContext db = new ArtContext())
             {
@@ -96,12 +96,13 @@ namespace ArtProject2016.Functions
                     new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("PHP", typeof(CurrencyCodeType)),
                                         orderTotal.ToString());
                 paymentDetail.NotifyURL = "http://localhost:60817/Shop/PaypalIPN";
+                paymentDetail.Custom = orderId.ToString();
                 List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
                 paymentDetails.Add(paymentDetail);
-
+               
 
                 SetExpressCheckoutRequestDetailsType ecDetails = new SetExpressCheckoutRequestDetailsType();
-                ecDetails.ReturnURL = "http://localhost:60817/Shop/OrdersComplete";
+                ecDetails.ReturnURL = "http://localhost:60817/Shop/PaymentProcessing";
                 ecDetails.CancelURL = "http://localhost:60817/Shop/CheckOutSummary?PaypalPayment=false";
                 ecDetails.PaymentDetails = paymentDetails;
                 ecDetails.NoShipping = "1";
@@ -141,19 +142,20 @@ namespace ArtProject2016.Functions
 
                 SetExpressCheckoutReq wrapper = new SetExpressCheckoutReq();
                 wrapper.SetExpressCheckoutRequest = request;
-                Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
-                sdkConfig.Add("mode", "security-test-sandbox");
-                sdkConfig.Add("account1.apiUsername", "jeryl.suarez-facilitator_api1.yahoo.com");
-                sdkConfig.Add("account1.apiPassword", "BGX735ARZFAS95ZN");
-                sdkConfig.Add("account1.apiSignature", "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-");
-                sdkConfig.Add("account1.applicationId", "APP-80W284485P519543T");
-                //SOLUTIONTYPE=Sole and LANDINGPAGE=Billing
-                PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
+                //Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
+                //sdkConfig.Add("mode", "security-test-sandbox");
+                //sdkConfig.Add("account1.apiUsername", "jeryl.suarez-facilitator_api1.yahoo.com");
+                //sdkConfig.Add("account1.apiPassword", "BGX735ARZFAS95ZN");
+                //sdkConfig.Add("account1.apiSignature", "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-");
+                //sdkConfig.Add("account1.applicationId", "APP-80W284485P519543T");
+                //PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
 
 
-                //Dictionary<string, string> config = PayPal.Manager.ConfigManager.Instance.GetProperties();
+                Dictionary<string, string> config = PayPal.Manager.ConfigManager.Instance.GetProperties();
+
+
                 //// Create the Classic SDK service instance to use.
-                //PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(config);
+                PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(config);
                 //config
                 SetExpressCheckoutResponseType setECResponse = new SetExpressCheckoutResponseType();
                 setECResponse = service.SetExpressCheckout(wrapper);
@@ -164,7 +166,7 @@ namespace ArtProject2016.Functions
                     string acknowledgement = "SetExpressCheckout API Operation - ";
                     acknowledgement += setECResponse.Ack.ToString();
                     // logger.Info(acknowledgement + "\n");
-                    Console.WriteLine(acknowledgement + "\n");
+               //     Console.WriteLine(acknowledgement + "\n");
 
                     // # Success values
                     if (setECResponse.Ack.ToString().Trim().ToUpper().Equals("SUCCESS"))
@@ -200,50 +202,48 @@ namespace ArtProject2016.Functions
             }
         }
 
-        public string pay()
-        {
-            PaymentDetailsType paymentDetail = new PaymentDetailsType();
-            CurrencyCodeType currency = (CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType));
-            PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
-            paymentItem.Name = "item";
-            double itemAmount = 1.00;
-            paymentItem.Amount = new BasicAmountType(currency, itemAmount.ToString());
-            int itemQuantity = 1;
-            paymentItem.Quantity = itemQuantity;
-            //paymentItem.ItemCategory = (ItemCategoryType)EnumUtils.GetValue(, typeof(ItemCategoryType));
-            List<PaymentDetailsItemType> paymentItems = new List<PaymentDetailsItemType>();
-            paymentItems.Add(paymentItem);
-            paymentDetail.PaymentDetailsItem = paymentItems;
+        //public string pay()
+        //{
+        //    PaymentDetailsType paymentDetail = new PaymentDetailsType();
+        //    CurrencyCodeType currency = (CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType));
+        //    PaymentDetailsItemType paymentItem = new PaymentDetailsItemType();
+        //    paymentItem.Name = "item";
+        //    double itemAmount = 1.00;
+        //    paymentItem.Amount = new BasicAmountType(currency, itemAmount.ToString());
+        //    int itemQuantity = 1;
+        //    paymentItem.Quantity = itemQuantity;
+        //    //paymentItem.ItemCategory = (ItemCategoryType)EnumUtils.GetValue(, typeof(ItemCategoryType));
+        //    List<PaymentDetailsItemType> paymentItems = new List<PaymentDetailsItemType>();
+        //    paymentItems.Add(paymentItem);
+        //    paymentDetail.PaymentDetailsItem = paymentItems;
 
-            paymentDetail.PaymentAction =
-                (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
-            paymentDetail.OrderTotal =
-                new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType)),
-                                    (itemAmount * itemQuantity).ToString());
-            List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
-            paymentDetails.Add(paymentDetail);
+        //    paymentDetail.PaymentAction =
+        //        (PaymentActionCodeType)EnumUtils.GetValue("Sale", typeof(PaymentActionCodeType));
+        //    paymentDetail.OrderTotal =
+        //        new BasicAmountType((CurrencyCodeType)EnumUtils.GetValue("USD", typeof(CurrencyCodeType)),
+        //                            (itemAmount * itemQuantity).ToString());
+        //    List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
+        //    paymentDetails.Add(paymentDetail);
 
-            SetExpressCheckoutRequestDetailsType ecDetails = new SetExpressCheckoutRequestDetailsType();
-            ecDetails.ReturnURL = "https://devtools-paypal.com/guide/expresscheckout/dotnet?success=true";
-            ecDetails.CancelURL = "https://devtools-paypal.com/guide/expresscheckout/dotnet?cancel=true";
-            ecDetails.PaymentDetails = paymentDetails;
+        //    SetExpressCheckoutRequestDetailsType ecDetails = new SetExpressCheckoutRequestDetailsType();
+        //    ecDetails.ReturnURL = "https://devtools-paypal.com/guide/expresscheckout/dotnet?success=true";
+        //    ecDetails.CancelURL = "https://devtools-paypal.com/guide/expresscheckout/dotnet?cancel=true";
+        //    ecDetails.PaymentDetails = paymentDetails;
 
-            SetExpressCheckoutRequestType request = new SetExpressCheckoutRequestType();
-            request.Version = "104.0";
-            request.SetExpressCheckoutRequestDetails = ecDetails;
+        //    SetExpressCheckoutRequestType request = new SetExpressCheckoutRequestType();
+        //    request.Version = "104.0";
+        //    request.SetExpressCheckoutRequestDetails = ecDetails;
 
-            SetExpressCheckoutReq wrapper = new SetExpressCheckoutReq();
-            wrapper.SetExpressCheckoutRequest = request;
-            Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
-            sdkConfig.Add("mode", "security-test-sandbox");
-            sdkConfig.Add("account1.apiUsername", "jb-us-seller_api1.paypal.com");
-            sdkConfig.Add("account1.apiPassword", "WX4WTU3S8MY44S7F");
-            sdkConfig.Add("account1.apiSignature", "AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy");
-            PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
-            SetExpressCheckoutResponseType setECResponse = service.SetExpressCheckout(wrapper);
+        //    SetExpressCheckoutReq wrapper = new SetExpressCheckoutReq();
+        //    wrapper.SetExpressCheckoutRequest = request;
 
-            return setECResponse.Token;
-        }
+        //    Dictionary<string, string> config = PayPal.Manager.ConfigManager.Instance.GetProperties();
+
+        //    PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(config);
+        //    SetExpressCheckoutResponseType setECResponse = service.SetExpressCheckout(wrapper);
+
+        //    return setECResponse.Token;
+        //}
 
 
         public string DoExpress(string token, string payerId, string OrderTotal)
@@ -263,7 +263,7 @@ namespace ArtProject2016.Functions
             
 
             SellerDetailsType seller = new SellerDetailsType();
-            seller.PayPalAccountID = "jeryl.suarez-facilitator@yahoo.com";
+            seller.PayPalAccountID = PayPal.Manager.ConfigManager.Instance.GetProperties()["sellerPaypalAccnt"];
             paymentDetail.SellerDetails = seller;
 
             List<PaymentDetailsType> paymentDetails = new List<PaymentDetailsType>();
@@ -273,12 +273,10 @@ namespace ArtProject2016.Functions
             
             DoExpressCheckoutPaymentReq wrapper = new DoExpressCheckoutPaymentReq();
             wrapper.DoExpressCheckoutPaymentRequest = request;
-            Dictionary<string, string> sdkConfig = new Dictionary<string, string>();
-            sdkConfig.Add("mode", "security-test-sandbox");
-            sdkConfig.Add("account1.apiUsername", "jeryl.suarez-facilitator_api1.yahoo.com");
-            sdkConfig.Add("account1.apiPassword", "BGX735ARZFAS95ZN");
-            sdkConfig.Add("account1.apiSignature", "A2QoVdXW-3NyIOsjGGBweDnke5g2A3YC3DckQi-iAkuUZnpi4KveJ.7-");
-            PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkConfig);
+
+            Dictionary<string, string> config = PayPal.Manager.ConfigManager.Instance.GetProperties();
+
+            PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(config);
             DoExpressCheckoutPaymentResponseType doECResponse = service.DoExpressCheckoutPayment(wrapper);
 
             if (doECResponse != null)
@@ -287,7 +285,7 @@ namespace ArtProject2016.Functions
                 string acknowledgement = "DoExpressCheckoutPayment API Operation - ";
                 acknowledgement += doECResponse.Ack.ToString();
 
-                Console.WriteLine(acknowledgement + "\n");
+             //   Console.WriteLine(acknowledgement + "\n");
 
                 // # Success values
                 if (doECResponse.Ack.ToString().Trim().ToUpper().Equals("SUCCESS"))
@@ -304,7 +302,7 @@ namespace ArtProject2016.Functions
                             PaymentInfoType paymentInfo = paymentInfoIterator.Current;
                             //   logger.Info("Transaction ID : " + paymentInfo.TransactionID + "\n");
                           //  Console.WriteLine("Transaction ID : " + paymentInfo.TransactionID + "\n");
-                            return paymentInfo.GrossAmount.ToString() + " Transaction ID : " + paymentInfo.TransactionID;
+                            return paymentInfo.TransactionID;
                         }
                     }
                 }
@@ -323,6 +321,201 @@ namespace ArtProject2016.Functions
             }
             return "error";
         }
+
+        public string GetPayPalResponse(Dictionary<string, string> formVals, bool useSandbox)
+        {
+
+            string paypalUrl = useSandbox ? "https://www.sandbox.paypal.com/cgi-bin/webscr"
+                : "https://www.paypal.com/cgi-bin/webscr";
+
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(paypalUrl);
+
+            // Set values for the request back
+            req.Method = "POST";
+            req.ContentType = "application/x-www-form-urlencoded";
+
+            byte[] param = HttpContext.Current.Request.BinaryRead(HttpContext.Current.Request.ContentLength);
+            string strRequest = Encoding.ASCII.GetString(param);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(strRequest);
+
+            foreach (string key in formVals.Keys)
+            {
+                sb.AppendFormat("&{0}={1}", key, formVals[key]);
+            }
+            strRequest += sb.ToString();
+            req.ContentLength = strRequest.Length;
+
+            //for proxy
+            //WebProxy proxy = new WebProxy(new Uri("http://urlort#");
+            //req.Proxy = proxy;
+            //Send the request to PayPal and get the response
+            string response = "";
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            using (StreamWriter streamOut = new StreamWriter(req.GetRequestStream(), System.Text.Encoding.ASCII))
+            {
+                streamOut.Write(strRequest);
+                streamOut.Close();
+                using (StreamReader streamIn = new StreamReader(req.GetResponse().GetResponseStream()))
+                {
+                    response = streamIn.ReadToEnd();
+                }
+            }
+
+            return response;
+        }
+
+       public bool AmountPaidIsValid(Order order, decimal amountPaid)
+        {
+
+            //pull the order
+            bool result = true;
+
+            if (order != null)
+            {
+                if (order.Total > amountPaid)
+                {
+                    //_logger.Warn("Invalid order amount to PDT/IPN: " + order.ID + "; Actual: " + amountPaid.ToString("C") + "; Should be: " + order.Total.ToString("C") + "user IP is " + Request.UserHostAddress);
+                    result = false;
+                }
+            }
+            else
+            {
+                //_logger.Warn("Invalid order ID passed to PDT/IPN; user IP is " + Request.UserHostAddress);
+            }
+            return result;
+
+        }
+
+        //public string IPNvalidator(string message)
+        //{
+        //    string result = message;
+
+        //    //string strSandbox = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+        //    //string strLive = "https://www.paypal.com/cgi-bin/webscr";
+        //    string url = ConfigurationManager.AppSettings["PayPalUrl"];
+        //    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+        //    //Set values for the request back
+        //    req.Method = "POST";  
+        //    req.ContentType = "application/x-www-form-urlencoded";
+        //    byte[] param = Request.BinaryRead(HttpContext.Current.Request.ContentLength);
+        //    string strRequest = Encoding.ASCII.GetString(param);
+        //    strRequest += "&cmd=_notify-validate";
+        //    req.ContentLength = strRequest.Length;
+
+
+        //    //Send the request to PayPal and get the response
+        //    StreamWriter streamOut = new StreamWriter(req.GetRequestStream(), System.Text.Encoding.ASCII);
+        //    streamOut.Write(strRequest);
+
+        //    streamOut.Close();
+        //    StreamReader streamIn = new StreamReader(req.GetResponse().GetResponseStream());
+        //    string strResponse = streamIn.ReadToEnd();
+        //    streamIn.Close();
+
+        //    if (strResponse == "VERIFIED")
+        //    {
+        //        // strRequest is a long string delimited by '&'
+        //        string[] responseArray = strRequest.Split('&');
+
+        //        List<KeyValuePair<string, string>> lkvp = new List<KeyValuePair<string, string>>();
+
+        //        string[] temp;
+
+        //        // for each key value pair
+        //        foreach (string i in responseArray)
+        //        {
+        //            temp = i.Split('=');
+        //            lkvp.Add(new KeyValuePair<string, string>(temp[0], temp[1]));
+        //        }
+
+        //        // now we have a list of key value pairs
+        //        string firstName = string.Empty;
+        //        string lastName = string.Empty;
+        //        string address = string.Empty;
+        //        string city = string.Empty;
+        //        string state = string.Empty;
+        //        string zip = string.Empty;
+        //        string payerEmail = string.Empty;
+        //        string contactPhone = string.Empty;
+
+        //        foreach (KeyValuePair<string, string> kvp in lkvp)
+        //        {
+        //            switch (kvp.Key)
+        //            {
+        //                case "payer_email":
+        //                    payerEmail = kvp.Value.Replace("%40", "@");
+        //                    break;
+        //                case "first_name":
+        //                    firstName = kvp.Value;
+        //                    break;
+        //                case "last_name":
+        //                    lastName = kvp.Value;
+        //                    break;
+        //                case "address_city":
+        //                    city = kvp.Value.Replace("+", " ");
+        //                    break;
+        //                case "address_state":
+        //                    state = kvp.Value.Replace("+", " ");
+        //                    break;
+        //                case "address_street":
+        //                    address = kvp.Value.Replace("+", " ");
+        //                    break;
+        //                case "address_zip":
+        //                    zip = kvp.Value;
+        //                    break;
+        //                case "contact_phone":
+        //                    contactPhone = kvp.Value;
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
+        //        }
+
+        //        //string userName = payerEmail;
+        //        //string password = Membership.GeneratePassword(8, 0);
+
+        //        //MembershipCreateStatus status = new MembershipCreateStatus();
+        //        //MembershipUser newUser = Membership.CreateUser(userName, password, userName, null, null, true, out status);
+
+        //        //ProfileCommon pc = ProfileCommon.Create(userName) as ProfileCommon;
+        //        //pc.Address.PostalCode = zip;
+        //        //pc.Address.Address = address;
+        //        //pc.Address.City = city;
+        //        //pc.Address.State = state;
+        //        //pc.Personal.FirstName = firstName;
+        //        //pc.Personal.LastName = lastName;
+        //        //pc.Contacts.DayPhone = contactPhone;
+        //        //pc.Save();
+
+        //        //if (status == MembershipCreateStatus.Success)
+        //        //{
+        //        //    Roles.AddUserToRole(userName, "User");
+
+        //        //    //send email to user indicating username and password
+        //        //    SendEmailToUser(userName, password, firstName, lastName, payerEmail);
+        //        //}
+
+        //        // need to figure out a way to catch unwanted responses here... redirect somehow
+        //    }
+        //    else if (strResponse == "INVALID")
+        //    {
+        //        //log for manual investigation
+        //    }
+        //    else
+        //    {
+        //        //log response/ipn data for manual investigation
+        //    }
+
+
+        //    return result;
+        //}
+
     }
+
+
 
 }

@@ -429,6 +429,7 @@
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderTracking.cs" />
+    <Compile Include="Models\PaypalPayment.cs" />
     <Compile Include="Models\ShippingCompany.cs" />
     <Compile Include="Models\VoucherCode.cs" />
     <Compile Include="Models\UserProfile.cs" />
@@ -522,6 +523,7 @@
     <Content Include="Views\Auth\_ForgotPassword.cshtml" />
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Shop\OrdersComplete.cshtml" />
+    <Content Include="Views\Shop\PaymentProcessing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

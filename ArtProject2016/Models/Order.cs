@@ -41,6 +41,7 @@ namespace ArtProject2016.Models
         public virtual UserAccount UserAccount { get; set; }
 
         public virtual List<OrderDetail> OrderDetails { get; set; }
-
+        
+        public virtual PaypalPayment PayPal { get; set; }
     }
 }
