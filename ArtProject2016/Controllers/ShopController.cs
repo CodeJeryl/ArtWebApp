@@ -615,8 +615,16 @@ namespace ArtProject2016.Controllers
                         if (payStatus == "Completed")
                         {
                             trans.Paid = true;
+                            trans.OrderStatus = "Paid thru PayPal";
                             trans.PayPal.Remarks = payStatus + " - Amount: " + amountPaid;
                             trans.PayPal.DateTime = DateTime.Now;
+
+                            var orderDets =
+                                db.OrderDetails.Where(dets => dets.OrderId == Convert.ToInt32(orderID)).ToList();
+                            foreach (var orderDetail in orderDets)
+                            {
+                                orderDetail.OrderDetailStatus = "Shipment Processing";
+                            }
 
                         }
                         else

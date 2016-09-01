@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using ArtProject2016.Functions;
 using ArtProject2016.Models;
 using WebMatrix.WebData;
 using ArtProject2016.ViewModel;
@@ -62,15 +63,15 @@ namespace ArtProject2016.Controllers
                     var userToUpdate = context.UserAccounts.Find(WebSecurity.CurrentUserId);
                     var artistToUpdate = context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
-           
+
                     userToUpdate.firstName = model.firstName.ToUpper();
                     userToUpdate.lastName = model.lastName.ToUpper();
                     string[] lastRole = Roles.GetRolesForUser(WebSecurity.CurrentUserName);
 
-                    if(!Roles.IsUserInRole(model.userType))
+                    if (!Roles.IsUserInRole(model.userType))
                     {
                         Roles.RemoveUserFromRole(WebSecurity.CurrentUserName, lastRole[0]);
-                       
+
                         userToUpdate.userType = model.userType;
                         Roles.AddUserToRole(WebSecurity.CurrentUserName, model.userType);
                     }
@@ -91,7 +92,7 @@ namespace ArtProject2016.Controllers
 
                     context.SaveChanges();
                     ViewBag.Success = "Profile updated!";
-                   // Roles.DeleteCookie();
+                    // Roles.DeleteCookie();
                     return View();
                     //    return RedirectToAction("Index");
                 }
@@ -163,7 +164,7 @@ namespace ArtProject2016.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePassViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 if (WebSecurity.ChangePassword(WebSecurity.CurrentUserName, model.OldPassword, model.NewPassword))
@@ -174,10 +175,37 @@ namespace ArtProject2016.Controllers
                 {
                     TempData["error"] = "Wrong Old password. Please try again";
                 }
-                
+
                 return View("UpdateProfile");
             }
-           return View();
+            return View();
+        }
+
+
+
+        public ActionResult PayOut()
+        {
+            using (ArtContext db = new ArtContext())
+            {
+                PayoutViewModel model = new PayoutViewModel();
+                SellControls sell = new SellControls();
+
+                model.PendingOrderDetails =
+                    db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                                  && cash.OrderDetailStatus == "Shipment Processing" ||
+                                                  cash.OrderDetailStatus == "Shipped" ||
+                                                  cash.OrderDetailStatus == "Paid" ||
+                                                  cash.OrderDetailStatus == "Delivered" && cash.Redeemed != true).ToList();
+
+                model.RedeemOrderDetails =
+                    db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                                  && cash.OrderDetailStatus == "Finished" && cash.Redeemed != true).ToList();
+
+                model.PendingAmt = sell.GetPending();
+                model.RedeemableAmt = sell.GetRedeemable();
+
+                return View(model);
+            }
         }
 
 

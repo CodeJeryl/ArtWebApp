@@ -17,8 +17,8 @@ namespace ArtProject2016.Functions
             // the current price for each of those albums in the cart
             // sum all album price totals to get the cart total
             decimal? pending = db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                && cash.OrderDetailStatus == "Shipped" || cash.OrderDetailStatus == "Paid" || cash.OrderDetailStatus == "Delivered")
-                                 .Sum(sub => (decimal?)sub.UnitPrice) ?? 0;
+                && cash.OrderDetailStatus == "Shipment Processing" || cash.OrderDetailStatus == "Shipped" || cash.OrderDetailStatus == "Paid" || cash.OrderDetailStatus == "Delivered" && cash.Redeemed != true)
+                                 .Sum(sub => (decimal?)sub.ForSale.Profit) ?? 0;
 
 
             //(from cartItems in storeDB.Carts
@@ -36,8 +36,8 @@ namespace ArtProject2016.Functions
             // the current price for each of those albums in the cart
             // sum all album price totals to get the cart total
             decimal? redeem = db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                && cash.OrderDetailStatus == "Finished")
-                                 .Sum(sub => (decimal?)sub.UnitPrice) ?? 0;
+                && cash.OrderDetailStatus == "Finished" && cash.Redeemed != true)
+                                 .Sum(sub => (decimal?)sub.ForSale.Profit) ?? 0;
 
 
             //(from cartItems in storeDB.Carts

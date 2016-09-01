@@ -26,6 +26,8 @@ namespace ArtProject2016.Models
         [Display(Name = "Tracking Number")]
         public string ReturnedTrackingNumber { get; set; }
 
+        public bool Redeemed { get; set; }
+
         public int ForSaleId { get; set; }
         public virtual ForSale ForSale { get; set; }
         public int OrderId { get; set; }

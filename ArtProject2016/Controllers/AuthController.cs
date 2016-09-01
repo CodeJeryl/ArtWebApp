@@ -87,11 +87,34 @@ namespace ArtProject2016.Controllers
                     {
                         if (Functions.Membership.RegisterIsValid(model))
                         {
-                            if (!string.IsNullOrEmpty(returnUrl))
+                            //send mail
+                            string subject = "Account Registration Successful";
+
+                          //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
+                            var controls = new EmailControls();
+                            //   string content = controls.PopulateBody(firstName, resetLink);  
+                            string voucher = "Use this voucher on your first purchase:  <strong><voucherName></strong>";
+                            string body = "<strong>Thank you for registration in <website>. </strong> <br/> <br/> " + voucher +
+                                "<br/> <br/> feel free to see our Online Gallery!";
+                            string content = controls.PopulateBody("Registration Successful", model.firstName, body);
+
+                            try
                             {
-                                return RedirectToLocal(returnUrl);
+                                EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, content);
+                               
+                                if (!string.IsNullOrEmpty(returnUrl))
+                                {
+                                    return RedirectToLocal(returnUrl);
+                                }
+                                return RedirectToAction("Index", "Account");
                             }
-                            return RedirectToAction("Index", "Account");
+                            catch (Exception ex)
+                            {
+                               // TempData["error"] = "Error occured while sending email." + ex.Message;
+                            }
+
+
+                           
                         }
                     }
                     else
@@ -135,7 +158,7 @@ namespace ArtProject2016.Controllers
                 //get user emailid
 
                 //send mail
-                string subject = "Test Email: Password Reset Token";
+                string subject = "Art: Password Reset Token";
                 
                 var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
                 var controls = new EmailControls();

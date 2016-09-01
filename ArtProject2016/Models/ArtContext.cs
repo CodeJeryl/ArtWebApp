@@ -54,6 +54,7 @@ namespace ArtProject2016.Models
         public DbSet<ShippingCompany> ShippingCompanies { get; set; }
 
         public DbSet<PaypalPayment> PaypalPayments { get; set; }
+        public DbSet<Payout> Payouts { get; set; }
 
       // For multiple picture table
       //  public DbSet<ForSaleAlbum> ForSaleAlbums { get; set; }

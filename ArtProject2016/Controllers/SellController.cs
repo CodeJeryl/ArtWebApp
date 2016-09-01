@@ -118,28 +118,22 @@ namespace ArtProject2016.Controllers
 
         //
         // GET: /Sale/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult BuyerDetails(int Id)
         {
-            return View();
+            var buyerDets = db.OrderDetails.Find(Id);
+
+            return View(buyerDets);
         }
 
-        //
-        // POST: /Sale/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //public ActionResult PrintInvoice(int invoiceId)
+        //{
+           
+        //    return new ActionAsPdf(
+        //                   "Invoice",
+        //                   new { invoiceId = invoiceId }) { FileName = "Invoice.pdf" };
+        //}
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+      
         //
         // GET: /Sale/Delete/5
         public ActionResult Delete(int id)

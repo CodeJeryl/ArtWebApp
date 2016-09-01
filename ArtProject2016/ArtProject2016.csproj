@@ -224,7 +224,9 @@
     <Content Include="img\slider2.jpg" />
     <Content Include="img\slider3.jpg" />
     <Content Include="img\slider4.jpg" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\jquery.steps.js" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -429,6 +431,7 @@
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderTracking.cs" />
+    <Compile Include="Models\Payout.cs" />
     <Compile Include="Models\PaypalPayment.cs" />
     <Compile Include="Models\ShippingCompany.cs" />
     <Compile Include="Models\VoucherCode.cs" />
@@ -447,6 +450,7 @@
     <Compile Include="ViewModel\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
+    <Compile Include="ViewModel\PayoutViewModel.cs" />
     <Compile Include="ViewModel\registerViewModel.cs" />
     <Compile Include="ViewModel\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModel\ShipmentViewModel.cs" />
@@ -524,6 +528,8 @@
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Shop\OrdersComplete.cshtml" />
     <Content Include="Views\Shop\PaymentProcessing.cshtml" />
+    <Content Include="Views\Sell\BuyerDetails.cshtml" />
+    <Content Include="Views\Account\PayOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

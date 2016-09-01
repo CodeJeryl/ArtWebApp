@@ -35,7 +35,7 @@
                         <th>Art Image</th>
                         <th colspan="2">@Html.DisplayNameFor(model => model.ForSale.Title) & Artist</th>
                         <th>@Html.DisplayNameFor(model => model.Order.OrderDate)</th>
-                        <th>@Html.DisplayNameFor(model => model.UnitPrice)</th>
+                        <th>@Html.DisplayNameFor(model => model.ForSale.Profit)</th>
                         <th>@Html.DisplayNameFor(model => model.OrderDetailStatus)</th>
                         <th>Tracking Number</th>
                         <th>Controls</th>
@@ -75,7 +75,7 @@
                                 @Html.DisplayFor(modelItem => item.Order.OrderDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                                @Html.DisplayFor(modelItem => item.ForSale.Profit)
                             </td>
                             <td>
                                 @if(item.Shipped)
@@ -104,7 +104,10 @@
                                     }
                                     else
                                     {
-                                        <td>@Html.ActionLink("Input Tracking #", "Shipment", new { Id = item.Id }, new { @class = "btn btn-success" })</td>
+                                        <td>
+                                            @Html.ActionLink("View Buyer Details", "BuyerDetails", new { Id = item.Id }, new { @class = "btn btn-info" }) <br /> <br />
+                                            @Html.ActionLink("Input Tracking #", "Shipment", new { Id = item.Id }, new { @class = "btn btn-success" })
+                                        </td>
                                     }
                                 }
                             }

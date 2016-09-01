@@ -1,0 +1,106 @@
+﻿@using System.Web.Optimization
+@model ArtProject2016.Models.OrderDetail
+@Styles.Render("~/Content/Css/allCss")
+@{
+    ViewBag.Title = "BuyerDetails";
+    Layout = null;
+}
+
+
+<div class="col-md-12" id="customer-order">
+    <hr />
+    <div class="box">
+        <h1>Collector Details</h1>
+
+        <p class="lead">Please use the details below in shipping the masterpiece.</p>
+        <p class="text-muted">If you have any questions, please feel free to contact us at jerylsuarez@gmail.com</p>
+    </div>
+       <div class="col-md-6 box">
+        <h3>Collector / Buyer Details</h3>
+        <hr />
+        
+         <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                    
+                        <tr>
+                            <td>Full Name : </td>
+                            <th>@Html.DisplayFor(model => model.Order.FirstName) @Html.DisplayFor(model => model.Order.LastName)</th>
+                        </tr>
+                        <tr>
+                            <td>Address: </td>
+                            <th> @Html.DisplayFor(model => model.Order.Street) @Html.DisplayFor(model => model.Order.City) @Html.DisplayFor(model => model.Order.Province)</th>
+                        </tr>
+                        <tr>
+                            <td>Postal Code:</td>
+                            <th>@Html.DisplayFor(model => model.Order.PostalCode)</th>
+                        </tr>
+                        <tr>
+                            <td>Contanct numbers:  </td>
+                            <th> @Html.DisplayFor(model => model.Order.MobileNo) @Html.DisplayFor(model => model.Order.LandLine)</th>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    <div class="col-md-6 box">
+        <h4>Art Details</h4>
+        <hr />
+
+        <div class="col-md-5" id="text-page">
+            <span style="margin-left: 20px">
+                <img src="@Url.Content(Model.ForSale.Path)" alt="@Model.ForSale.Title" style="width: 200px">
+            </span>
+        </div>
+        <div class="col-md-7" id="order-summary">
+            <h3>Title:   @Html.DisplayFor(model => model.ForSale.Title)</h3>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        <tr>
+
+                            @if (Model.ForSale.otherArtist)
+                            {
+                                <td>Artist Name : </td>
+                                <th>
+                                    @Html.DisplayFor(model => model.ForSale.otherArtistName)
+                                </th>
+                                <td>Artist Address : </td>
+                                <th>
+                                    @Html.DisplayFor(model => model.ForSale.otherArtistAddress)
+                                </th>
+                                  
+                            }
+                            else
+                            { 
+                                <td>Artist Name: </td>
+                                <th>
+                                    @Html.DisplayFor(model => model.ForSale.SellerAccount.nickName)
+                                </th>
+                                <td>Artist Address: </td>
+                                <th>
+                                    @Html.DisplayFor(model => model.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == Model.ForSale.SellerId).province)
+                                </th>
+                            }
+                        </tr>
+                        <tr>
+
+                            <td>@Html.DisplayNameFor(model => model.Quantity):</td>
+                            <th>@Html.DisplayFor(model => model.Quantity)</th>
+                        
+                            <td>Ordered Date:</td>
+                            <th>@Model.Order.OrderDate.ToShortDateString()</th>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+ 
+</div>
