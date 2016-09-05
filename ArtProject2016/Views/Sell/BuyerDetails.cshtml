@@ -7,7 +7,7 @@
 }
 
 
-<div class="col-md-12" id="customer-order">
+<div class="col-xs-12" id="customer-order">
     <hr />
     <div class="box">
         <h1>Collector Details</h1>
@@ -15,7 +15,7 @@
         <p class="lead">Please use the details below in shipping the masterpiece.</p>
         <p class="text-muted">If you have any questions, please feel free to contact us at jerylsuarez@gmail.com</p>
     </div>
-       <div class="col-md-6 box">
+       <div class="col-xs-6 box">
         <h3>Collector / Buyer Details</h3>
         <hr />
         
@@ -44,16 +44,17 @@
                 </table>
             </div>
     </div>
-    <div class="col-md-6 box">
+    <div class="col-xs-6 box">
         <h4>Art Details</h4>
         <hr />
-
-        <div class="col-md-5" id="text-page">
+       
+        <div class="col-xs-5" id="text-page">
             <span style="margin-left: 20px">
+                <img src="@Server.MapPath(Model.ForSale.Path)" alt="@Model.ForSale.Title" style="width: 200px">
                 <img src="@Url.Content(Model.ForSale.Path)" alt="@Model.ForSale.Title" style="width: 200px">
             </span>
         </div>
-        <div class="col-md-7" id="order-summary">
+        <div class="col-xs-7" id="order-summary">
             <h3>Title:   @Html.DisplayFor(model => model.ForSale.Title)</h3>
 
             <div class="table-responsive">

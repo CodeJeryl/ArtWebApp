@@ -9,7 +9,16 @@
    <div class="box">
                 <h1>Thank you for supporting local artists!</h1>
        <p>Your order no: @ViewBag.OrderId</p>
-       <p>We are already preparing your order for shipping!</p>
        
-       <p>Gross amount of trans: @ViewBag.GrossAmt</p>
+       @if (TempData["PayPal"].ToString() == "False")
+       {
+                <p>Please check your Email <strong>@TempData["email"].ToString()</strong> for bank payment procedure</p>
+     
+       }
+       else
+       {
+            <p>We are already preparing your order for shipping!</p>
+        }
+      
+       
    </div>

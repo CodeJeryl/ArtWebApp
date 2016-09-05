@@ -43,6 +43,7 @@ namespace ArtProject2016.ViewModel
          [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal VoucherDeduction { get; set; }
      
+        [Required(ErrorMessage = "Please choose your Payment Method to proceed. Thank you!")]
         public string PaymentType { get; set; }
 
         public virtual List<Cart> CartItems { get; set; }

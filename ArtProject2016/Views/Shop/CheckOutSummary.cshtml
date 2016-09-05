@@ -46,7 +46,7 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary()
+         
             <div class="col-md-12">
                 <ul class="breadcrumb">
                     <li><a href="#">Home</a>
@@ -54,7 +54,7 @@
                     <li>Checkout - Order Summary</li>
                 </ul>
             </div>
-               
+
             <div class="col-md-9" id="checkout">
 
                 <div class="box">
@@ -96,7 +96,7 @@
                                             @if (item.ForSale.otherArtist)
                                             {
                                                 <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                                <br />
+                                                    <br />
                                                     by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
                                                     from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
                                                 </td>
@@ -104,7 +104,7 @@
                                             else
                                             {
                                                 <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                                <br />
+                                                    <br />
                                                     by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                                     <br />
                                                     from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)
@@ -133,7 +133,7 @@
                         <!-- /.table-responsive -->
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="box" id="order-summary">
                                     <div class="box-headerCheckout">
                                         <h3>Shipping Address</h3>
@@ -148,8 +148,54 @@
                                         <p>@Html.DisplayFor(item => item.UserAccount.userName)</p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-7">
+                                <div class="box" id="order-summary">
+                                    <div class="box-headerCheckout">
+                                        <h3 style="color: red">Choose Payment Options</h3>
+                                    </div>
+                                    <div class="checkoutAddress">
+                                        <h3>@Html.ValidationMessageFor(i => i.PaymentType)</h3>
+                                        <div class="funkyradio">
+                                            @*      <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.PaymentType, "PayPal", new { @class = "form-control", @style = "float: left" }) Awwist</label>
+                           <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.PaymentType, "eww", new { @class = "form-control", @style = "float: left" }) sss</label>
+                 *@
+                                            <div class="funkyradio-success">
+                                                @{string id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPayPal");}
+                                                @Html.RadioButtonFor(i => i.PaymentType, "PayPal", new { id })
+                                                @Html.LabelFor(i => i.PaymentType, "PayPal: You will be redirected to Paypal website for payment processing", new { @for = id })
+                                               
+                                            </div>
+                                            <div class="funkyradio-primary">
+                                                @{ id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBank");}
+                                                @Html.RadioButtonFor(i => i.PaymentType, "Bank", new { id })
+                                                @Html.LabelFor(i => i.PaymentType, "Bank Transfer: BDO/BPI Account details and procedure will be sent to your email address", new { @for = id })
+                                            </div>
+                                            <div class="funkyradio-info">
+                                                @{ id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioCreditCard");}
+                                                @Html.RadioButtonFor(i => i.PaymentType, "CreditCard", new { id })
+                                                @Html.LabelFor(i => i.PaymentType, "Credit Card Payment: You will be redirected to Paypal website and click Pay with Credit card below PayPal page", new { @for = id })
+                                               
+                                            </div>
+                                        </div>
+                                        @*      <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.PaymentType, "PayPal", new { @class = "form-control" }) Awwist</label>
+                           <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.PaymentType, "eww", new { @class = "form-control" }) sss</label>
+              *@
+
+                                        @*<div class="funkyradio">
+                                            <div class="funkyradio-default">
+                                                <input type="radio" name="radio" id="radio1" />
+                                                <label for="radio1">PayPal</label>
+                                            </div>
+                                            <div class="funkyradio-primary">
+                                                <input type="radio" name="radio" id="radio2" checked />
+                                                <label for="radio2">Credit Card</label>
+                                            </div>
+                                        </div>*@
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -161,7 +207,7 @@
                             @Html.ActionLink("Back to shipping details", "CheckoutDetails", "Shop", null, new { @class = "btn btn-default" })
                         </div>
                         <div class="pull-right">
-                            
+
                             <a href="@Url.Action("PayPalCheck")" data-paypal-button="true">
                                 <img src="//www.paypalobjects.com/en_US/i/btn/btn_xpressCheckout.gif" alt="Check out with PayPal" />
                             </a>
@@ -169,7 +215,7 @@
                                 Place an order<i class="fa fa-chevron-right"></i>
                             </button>
 
-                           
+
 
                         </div>
                     </div>

@@ -4,159 +4,167 @@
 @{
     ViewBag.Title = "Update Profile Page";
     ViewBag.Current = "updateProfile";
+    
 }
 
-        <div class="col-md-9">
-            <div class="box">
-                <h1>My Account Profile</h1>
-                <p class="lead">Change your personal details</p>
-                <p class="text-muted">Update your profile </p>
-              <a href="#" data-toggle="modal" data-target="#login-modal">Change Password</a>
-                   
-                
-                @Html.Partial("_ChangePassword", new ChangePassViewModel())
-
-                @if(ViewBag.Success != null)
-        {
-            <div class="alert alert-success" role="alert"> @ViewBag.Success </div>
-        }
-
-                <h3>Personal details</h3>
-
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary()
-                        <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                 <label for="firstName">First Name</label>
-                                @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.firstName)
-                            </div>
-                        </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="lastName">Last Name</label>
-                                    @Html.EditorFor(model => model.lastName,new { htmlAttributes = new { @class = "form-control" } } )
-                                    @Html.ValidationMessageFor(model => model.lastName)
-                                </div>
-                            </div>
-                              
-                    </div>
-                    <!-- /.row -->
-
-                    <div class="row">
-                         <div class="col-sm-4">
-                            <div class="form-group">
-                                 <label for="nickName">Nick Name</label>
-                                @Html.EditorFor(model => model.nickName,new { htmlAttributes = new { @class = "form-control" } } )
-                                @Html.ValidationMessageFor(model => model.nickName)
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="birthDay">Birthday</label>
-                                @Html.EditorFor(model => model.UserProfile.birthDay,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.birthDay)
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="education">Education</label>
-                                @Html.EditorFor(model => model.UserProfile.education,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.education)
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <!-- /.row -->
-
-                    <div class="row">
-                        <div class="col-sm-6 col-md-4">
-                            <div class="form-group">
-                                <label for="street">Street and Barangay</label>
-                                @Html.EditorFor(model => model.UserProfile.street, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.street)
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                @Html.EditorFor(model => model.UserProfile.city,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.city)
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group">
-                                <label for="province">Province</label>
-                                @Html.EditorFor(model => model.UserProfile.province,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.province)
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-2">
-                            <div class="form-group">
-                                <label for="postalCode">Postal Code</label>
-                                @Html.EditorFor(model => model.UserProfile.postalCode,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.postalCode)
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="landLine">Telephone/Land Line</label>
-                                @Html.EditorFor(model => model.UserProfile.landLine,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.landLine)
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="mobileNo">Mobile Number</label>
-                                @Html.EditorFor(model => model.UserProfile.mobileNo,  new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.UserProfile.mobileNo)
-                            </div>
-                        </div>
-                            <div class="col-sm-4">
-                         <div class="form-group">
-                                <label class="userType">User Type:</label>
-                                <label style="padding-left:20px; font-weight: 500">   @Html.RadioButtonFor(m => m.userType,"Artist", new { @class = "form-control" }) Artist</label>
-                                <label style="padding-left:20px; font-weight: 500">    @Html.RadioButtonFor(m => m.userType,"Collector", new { @class = "form-control" }) Collector</label>
-                            </div>
-                        </div>
-                  
-                    </div>
-                    
-                    if(User.IsInRole("Artist"))
-                    {
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="profileDesc">Artist Description</label>
-                                    @Html.EditorFor(model => model.UserProfile.profileDesc,  new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.UserProfile.profileDesc)
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="Exhibitions">Exhibitions</label>
-                                    @Html.EditorFor(model => model.UserProfile.Exhibitions,  new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.UserProfile.Exhibitions)
-                                </div>
-                            </div>
-                           
-                        </div>
-                    }
-                        <div class="row">
-                            <div class="col-sm-12 text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save changes</button>
-
-                            </div>
-                        </div>
-                }
-                
-            </div>
+<div class="col-md-9">
+    <div class="box">
+        <h1>My Account Profile</h1>
+        <div class="col-md-8">
+            <p class="lead">Update your profile / personal details</p>
+           @* <p class="text-muted"> </p>*@
+             <h3>Personal details</h3>
+        </div>
+        <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#login-modal" class="btn btn-success">Change Password</a>
         </div>
 
 
+        @Html.Partial("_ChangePassword", new ChangePassViewModel())
+
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.Success </div>
+        }
 
        
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        @*@Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })*@
+                        @Html.EditorFor(model => model.firstName, @ViewBag.ReadOnly ? (object)new { htmlAttributes = new { @class = "form-control", @readonly = "true" } } : new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.firstName)
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        @Html.EditorFor(model => model.lastName, @ViewBag.ReadOnly ? (object)new { htmlAttributes = new { @class = "form-control", @readonly = "true" } } : new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.lastName)
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="nickName">Nick Name</label>
+                        @Html.EditorFor(model => model.nickName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.nickName)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="birthDay">Birthday</label>
+                        @Html.EditorFor(model => model.UserProfile.birthDay, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.birthDay)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="education">Education</label>
+                        @Html.EditorFor(model => model.UserProfile.education, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.education)
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label for="street">Street and Barangay</label>
+                        @Html.EditorFor(model => model.UserProfile.street, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.street)
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        @Html.EditorFor(model => model.UserProfile.city, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.city)
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        @Html.EditorFor(model => model.UserProfile.province, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.province)
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code</label>
+                        @Html.EditorFor(model => model.UserProfile.postalCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.postalCode)
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="landLine">Telephone/Land Line</label>
+                        @Html.EditorFor(model => model.UserProfile.landLine, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.landLine)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="mobileNo">Mobile Number</label>
+                        @Html.EditorFor(model => model.UserProfile.mobileNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.mobileNo)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="userType">User Type:</label>
+                        <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.userType, "Artist", new { @class = "form-control" }) Artist</label>
+                           <label style="padding-left: 20px; font-weight: 500">@Html.RadioButtonFor(m => m.userType, "Collector", new { @class = "form-control" }) Collector</label>
+                     </div>
+                   
+                </div>
+
+            </div>
+                    
+            if (User.IsInRole("Artist"))
+            {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="profileDesc">Artist Description</label>
+                        @Html.EditorFor(model => model.UserProfile.profileDesc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.profileDesc)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="Exhibitions">Exhibitions</label>
+                        @Html.EditorFor(model => model.UserProfile.Exhibitions, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserProfile.Exhibitions)
+                    </div>
+                </div>
+
+            </div>
+            }
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save changes</button>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+
+

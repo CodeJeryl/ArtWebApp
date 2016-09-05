@@ -302,17 +302,17 @@ namespace ArtProject2016.Controllers
                 var orderCancelled = db.Orders.Find(orderId);
                 var orderDetailCancelled = db.OrderDetails.Where(item => item.OrderId == orderId).ToList();
 
-                orderCancelled.OrderStatus = "Payment Error: Cancelled";
+                orderCancelled.OrderStatus = "Payment Cancelled.";
 
                 foreach (var orderDetail in orderDetailCancelled)
                 {
-                    orderDetail.OrderDetailStatus = "Payment Error: Cancelled - " + token;
+                    orderDetail.OrderDetailStatus = "Payment Cancelled.";
 
                     var orderTrack = new OrderTracking()
                                          {
                                              DateTime = DateTime.Now,
-                                             StatusType = "PayPal Cancelled",
-                                             Description = "PayPal Payment was cancelled or an error occured.",
+                                             StatusType = "PayPal/CC Cancelled",
+                                             Description = "PayPal/CC Payment was cancelled or an error occured. - " + token,
                                              OrderDetailId = orderDetail.Id
                                          };
                     db.OrderTrackings.Add(orderTrack);
@@ -412,9 +412,9 @@ namespace ArtProject2016.Controllers
                                            SubTotal = viewModel.SubTotal,
                                            Total = viewModel.Total,
 
-                                           PaymentType = "wala pa",
+                                           PaymentType = viewModel.PaymentType,
                                            Paid = false,
-                                           OrderStatus = "Processing...",
+                                           OrderStatus = "Waiting for Payment",
 
                                            OrderDate = DateTime.Now,
 
@@ -430,7 +430,7 @@ namespace ArtProject2016.Controllers
                                                   {
                                                       Quantity = cartItem.Qty,
                                                       UnitPrice = cartItem.ForSale.Price,
-                                                      OrderDetailStatus = "Processing...",
+                                                      OrderDetailStatus = "Waiting for Payment",
                                                       ForSaleId = cartItem.ForSaleId,
                                                       OrderId = newOrder.Id
                                                   };
@@ -447,12 +447,47 @@ namespace ArtProject2016.Controllers
                     //  TempData["d"] = viewModel.Total;
                     //        var delCart = new CartControls();
                     //     delCart.EmptyCart();
-                    PaypalControls pay = new PaypalControls();
 
-                    var PaypalResult = pay.PaypalExpress(viewModel, newOrder.Id);
-                    TempData["orderId"] = newOrder.Id;
-                    return Redirect(PaypalResult);
+                    //send mail
+                    string subject = "<website> Order Confirmation #: "+ newOrder.Id;
+                    //default value if not bank
+                    string bankDetails = "Please wait for another email confirmation about your payment. Thank you";
 
+                    if(viewModel.PaymentType == "Bank")
+                    {
+                        bankDetails = "Total Amount to be paid:" + viewModel.Total;
+                    }
+
+                    var controls = new EmailControls();
+                    string body = "<strong>Thank you for supporting local artist from <website>. </strong> <br/> <br/> " +
+                                  "<br/> <br/>Your Order #" + newOrder.Id +" <br/> <br/> has been placed on "+ DateTime.Now.ToShortDateString() + " via " + viewModel.PaymentType + " Payment." +
+                                  "<br/> <br/> " + bankDetails + "<br/> <br/> orderDetails here <br/> <br/> <em><small>Note: If you cancelled your order thru Paypal/Credit card payment, please disregard this email. </small> </em>";
+
+                    string content = controls.PopulateBody("Website Order Confirmation", viewModel.UserAccount.firstName, body);
+                    EmailControls.sendEmail("jerylsuarez@gmail.com", viewModel.UserAccount.userName, "", "", subject, content);
+
+
+                    if (viewModel.PaymentType == "PayPal" || viewModel.PaymentType == "CreditCard")
+                    {
+                        PaypalControls pay = new PaypalControls();
+
+                        var PaypalResult = pay.PaypalExpress(viewModel, newOrder.Id);
+                        TempData["PayPal"] = "True";
+                        TempData["orderId"] = newOrder.Id;
+                        return Redirect(PaypalResult);
+                    }
+                    else
+                    {
+                        CartControls cart = new CartControls();
+                        cart.EmptyCart();
+
+                        TempData["PayPal"] = "False";
+                        TempData["email"] = viewModel.UserAccount.userName;
+                        TempData["orderId"] = newOrder.Id;
+                        return Redirect("OrdersComplete");
+                    }
+
+               
 
                     // return RedirectToAction("Cart");
                 }
@@ -484,10 +519,10 @@ namespace ArtProject2016.Controllers
             PaypalControls pay = new PaypalControls();
             decimal test = viewModel.VoucherDeduction;
             //  string test1 = viewModel.VoucherCodeId;
-       //     var PaypalResult = pay.PaypalExpress(viewModel);
+            //     var PaypalResult = pay.PaypalExpress(viewModel);
 
             //TempData["error"] = token;
-         //   Response.Redirect(PaypalResult);
+            //   Response.Redirect(PaypalResult);
             // return View("CheckoutSummary");
 
         }
@@ -525,6 +560,8 @@ namespace ArtProject2016.Controllers
                         TempData["error"] = "An error occured on Payment Processing.";
                         return RedirectToAction("Gallery", "Shop");
                     }
+
+
 
                     NewPaypalOrder.TransactionId = result;
                     db.SaveChanges();
@@ -579,7 +616,7 @@ namespace ArtProject2016.Controllers
 
                 //check if transaction is already processed
                 var trans = db.Orders.SingleOrDefault(tran => tran.PayPal.TransactionId == transactionID);
-                if(trans.PayPal.IPNverified)
+                if (trans.PayPal.IPNverified)
                 {
                     return new EmptyResult();
                 }
@@ -590,7 +627,7 @@ namespace ArtProject2016.Controllers
 
                 if (PayControls.AmountPaidIsValid(order, amountPaid))
                 {
-                   
+
                     // check that Payment_status=Completed
                     //' check that Txn_id has not been previously processed
                     //' check that Receiver_email is your Primary PayPal email
@@ -624,7 +661,24 @@ namespace ArtProject2016.Controllers
                             foreach (var orderDetail in orderDets)
                             {
                                 orderDetail.OrderDetailStatus = "Shipment Processing";
+
+                                var orderTracki = new OrderTracking()
+                                {
+                                    DateTime = DateTime.Now,
+                                    StatusType = "PayPal: Payment Received",
+                                    Description = "Payment Received. Shipment will start processing.",
+                                    OrderDetailId = orderDetail.Id
+                                };
+                                db.OrderTrackings.Add(orderTracki);
                             }
+
+                            //send mail
+                            string subject = "Paypal Payment received.";
+                            var controls = new EmailControls();
+                            string body = "<strong>Thank you for supporting local artist from <website>. </strong> <br/> <br/> " +
+                                          "<br/> <br/> We already received your payment thru Paypal! <br/> <br/> We will start to process your orders.";
+                            string content = controls.PopulateBody("Paypal Payment Successful", trans.FirstName, body);
+                            EmailControls.sendEmail("jerylsuarez@gmail.com", trans.Username, "", "", subject, content);
 
                         }
                         else

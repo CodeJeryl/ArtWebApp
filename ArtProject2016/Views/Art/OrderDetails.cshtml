@@ -23,7 +23,7 @@
                         <th>Art Image</th>
                         <th colspan="2">@Html.DisplayNameFor(model => model.ForSale.Title)</th>
                         <th>@Html.DisplayNameFor(model => model.Quantity)</th>
-                          <th>@Html.DisplayNameFor(model => model.UnitPrice)</th>
+                        <th>@Html.DisplayNameFor(model => model.UnitPrice)</th>
                         <th>@Html.DisplayNameFor(model => model.OrderDetailStatus)</th>
                     </tr>
                 </thead>
@@ -32,28 +32,29 @@
                     {
                         <tr>
                             <td>
-                                 <a href="#">
-                                <img src="@Url.Content(item.ForSale.Path)" alt="@item.ForSale.Title" style="width: 200px">
-                            </a>
+                                <a href="#">
+                                    <img src="@Url.Content(item.ForSale.Path)" alt="@item.ForSale.Title" style="width: 200px">
+                                </a>
                             </td>
                             <td>
                                 @if (item.ForSale.otherArtist)
-                                    {
-                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
+                                {
+                                    <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
                                                  <br />
-                                            by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName) <br />
-                                            from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
+                                        by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                        <br />
+                                        from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
                                                 <br />
-                                            by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
-                                            <br />
-                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
-                                        </td>
-                                    }
+                                        by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                        <br />
+                                        from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                    </td>
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Quantity)
@@ -62,13 +63,13 @@
                                 @Html.DisplayFor(modelItem => item.UnitPrice)
                             </td>
                             <td>
-                                  @if(item.Shipped)
+                                @if (item.Shipped)
                                 {
-                                  <span class="label label-success">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                    <span class="label label-success">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
                                 }
                                 else
                                 {
-                                   <span class="label label-info">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                    <span class="label label-info">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
                                 }
                             </td>
 
@@ -103,17 +104,37 @@
         <div class="row addresses">
             <div class="col-md-6">
                 <h2>Payment Method</h2>
-                <p>@Model.First().Order.PaymentType
-                    <br>
-                    13/25 New Avenue
-                                    <br>
-                    New Heaven
-                                    <br>
-                    45Y 73J
-                                    <br>
-                    England
-                                    <br>
-                    Great Britain
+                <p>
+                    @Model.First().Order.PaymentType.ToUpper()
+
+                    @if (Model.First().Order.PaymentType == "Bank")
+                    {
+                        if (Model.First().Order.Paid)
+                        {<br />
+                        @:Your order is already Paid <br />
+                        @:we are already processing <br/>
+                        @:the shipment
+                        }
+                        else
+                        {
+                        <br>
+                        @:Please check your email.
+                        <br>
+                        @:Payment procedure is sent to
+                        <br>
+                        @Model.First().Order.Username }
+
+                    }
+                    else
+                    {
+                        if (Model.First().Order.Paid)
+                        {<br />
+                        @:Your order is already Paid <br />
+                        @:we are already processing <br/>
+                        @:the shipment
+                        }
+                    }
+
                 </p>
             </div>
             <div class="col-md-6">

@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
+using Rotativa;
+using Rotativa.Options;
 using WebMatrix.WebData;
 using ArtProject2016.Functions;
 
@@ -122,7 +124,24 @@ namespace ArtProject2016.Controllers
         {
             var buyerDets = db.OrderDetails.Find(Id);
 
-            return View(buyerDets);
+          // return View(buyerDets);
+            return new ViewAsPdf(buyerDets)
+            {
+                FileName = "Order #:" + buyerDets.OrderId.ToString() + " Details.pdf",
+                PageSize = Size.Letter,
+                IsBackgroundDisabled = false,
+                IsGrayScale = false,
+                IsJavaScriptDisabled = true,
+                CustomSwitches = "--viewport-size 1000x1000"
+            };
+        }
+
+
+        //
+        // GET: print buyer details
+        public ActionResult ViewBuyerDetails()
+        {
+            return View();
         }
 
         //public ActionResult PrintInvoice(int invoiceId)
@@ -134,12 +153,7 @@ namespace ArtProject2016.Controllers
         //}
 
       
-        //
-        // GET: /Sale/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+      
 
         //
         // POST: /Sale/Delete/5

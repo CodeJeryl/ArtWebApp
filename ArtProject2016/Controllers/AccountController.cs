@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using ArtProject2016.Functions;
 using ArtProject2016.Models;
+using Rotativa;
 using WebMatrix.WebData;
 using ArtProject2016.ViewModel;
 
@@ -20,9 +21,9 @@ namespace ArtProject2016.Controllers
         ArtContext context = new ArtContext();
 
 
-        public ActionResult Index(UserProfile model)
+        public ActionResult Index()
         {
-            return View(model);
+            return RedirectToAction("UpdateProfile");
         }
 
         //
@@ -48,8 +49,12 @@ namespace ArtProject2016.Controllers
             viewModel.nickName = user.nickName;
             viewModel.userType = user.userType;
             viewModel.UserProfile = artist;
+
+            ViewBag.ReadOnly = artist.isIdVerified;
+            TempData["readonly"] = artist.isIdVerified;
             //a => a.UserAccountId == WebSecurity.CurrentUserId).First();
             return View(viewModel);
+            
         }
 
 
@@ -63,6 +68,7 @@ namespace ArtProject2016.Controllers
                     var userToUpdate = context.UserAccounts.Find(WebSecurity.CurrentUserId);
                     var artistToUpdate = context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
+                    ViewBag.ReadOnly = artistToUpdate.isIdVerified;
 
                     userToUpdate.firstName = model.firstName.ToUpper();
                     userToUpdate.lastName = model.lastName.ToUpper();
@@ -176,7 +182,8 @@ namespace ArtProject2016.Controllers
                     TempData["error"] = "Wrong Old password. Please try again";
                 }
 
-                return View("UpdateProfile");
+                return RedirectToAction("UpdateProfile");
+               // return View("UpdateProfile");
             }
             return View();
         }
@@ -205,7 +212,20 @@ namespace ArtProject2016.Controllers
                 model.RedeemableAmt = sell.GetRedeemable();
 
                 return View(model);
+                
             }
+        }
+
+        public ActionResult Print()
+        {
+            return new ViewAsPdf("testPr", new { name = "jeryl" }) { FileName = "Test.pdf" };
+         //   return new ActionAsPdf("testPr", new {name ="jeryl"}) { FileName = "Test.pdf" };
+        }
+
+        public ActionResult testPr(string name)
+        {
+            ViewBag.Name = name;
+            return View();
         }
 
 
