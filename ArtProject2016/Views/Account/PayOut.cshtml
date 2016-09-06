@@ -1,8 +1,217 @@
-﻿
+﻿@model ArtProject2016.ViewModel.PayoutViewModel
 @{
     ViewBag.Title = "PayOut";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
+    ViewBag.Current = "PayOut";
 }
 
-<h2>PayOut</h2>
+
+<div class="col-md-9">
+    <div class="box">
+        <h1>My Payout</h1>
+        <p class="lead">Check all your sold items / redeemed payments here.</p>
+        <p class="text-muted">If you have questions please dont hesitate to contact us </p>
+
+
+        <hr />
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-pills nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#pending" aria-controls="home" role="tab" data-toggle="tab">Pending</a></li>
+            <li role="presentation"><a href="#redeemable" aria-controls="profile" role="tab" data-toggle="tab">Redeemable</a></li>
+            <li role="presentation"><a href="#redeemed" aria-controls="messages" role="tab" data-toggle="tab">Redeemed</a></li>
+            <li role="presentation"><a href="#payout" aria-controls="settings" role="tab" data-toggle="tab">Payout</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="pending">
+                <hr />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Art Title</th>
+                                <th>Artist</th>
+                                <th>Ordered Date</th>
+                                <th>Profit</th>
+                                <th>Redeemable In</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.PendingOrderDetails)
+                            {
+                                <tr>
+                                    <th>
+                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+                                   
+                                        @if (item.ForSale.otherArtist)
+                                        {
+                                            <td class="titletd">
+                                      @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                                <br />
+                                                from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="titletd">
+                                        @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                                <br />
+                                                from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            </td>
+                                        }
+                                    
+                                    <td>
+                                        @String.Format("{0:d}", item.Order.OrderDate)</td> @*date.BuyerReceivedDateTime.Value.AddDays(10) - DateTime.Now.Date*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                    <td>
+                                        @if(item.BuyerReceived)
+                                        {
+                                             @Convert.ToInt32(((item.BuyerReceivedDateTime.Value.Date.AddDays(10) - DateTime.Now.Date).TotalDays)) @:Day(s) - @item.BuyerReceivedDateTime.Value.AddDays(10).ToShortDateString()
+                                        }else
+                                        {
+                                         @:10 days after Buyer received it.
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="redeemable">
+              
+                <hr />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Art Title</th>
+                                <th>Artist</th>
+                                <th>Ordered Date</th>
+                                <th>Profit</th>
+                                <th>Redeemable In</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RedeemOrderDetails)
+                            {
+                                <tr>
+                                    <th>
+                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+                                   
+                                        @if (item.ForSale.otherArtist)
+                                        {
+                                            <td class="titletd">
+                                      @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                                <br />
+                                                from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="titletd">
+                                        @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                                <br />
+                                                from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            </td>
+                                        }
+                                    
+                                    <td>
+                                        @String.Format("{0:d}", item.Order.OrderDate)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                    <td>10 days after Buyer received it.
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+                
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="redeemed">
+              
+                <hr />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Art Title</th>
+                                <th>Artist</th>
+                                <th>Ordered Date</th>
+                                <th>Profit</th>
+                                <th>Redeemable In</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RedeemedOrderDetails)
+                            {
+                                <tr>
+                                    <th>
+                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+                                   
+                                        @if (item.ForSale.otherArtist)
+                                        {
+                                            <td class="titletd">
+                                      @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                                <br />
+                                                from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="titletd">
+                                        @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                                <br />
+                                                from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            </td>
+                                        }
+                                    
+                                    <td>
+                                        @String.Format("{0:d}", item.Order.OrderDate)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                    <td>10 days after Buyer received it.
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="payout">
+                payout
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
 

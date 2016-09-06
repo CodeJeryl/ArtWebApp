@@ -26,6 +26,10 @@ namespace ArtProject2016.Models
         [Display(Name = "Tracking Number")]
         public string ReturnedTrackingNumber { get; set; }
 
+        public bool BuyerReceived { get; set; }
+        public DateTime? BuyerReceivedDateTime { get; set; }
+
+        public bool ReadyToRedeem { get; set; }
         public bool Redeemed { get; set; }
 
         public int ForSaleId { get; set; }

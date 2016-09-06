@@ -307,6 +307,7 @@ namespace ArtProject2016.Controllers
                 foreach (var orderDetail in orderDetailCancelled)
                 {
                     orderDetail.OrderDetailStatus = "Payment Cancelled.";
+                    orderDetail.BuyerReceived = false;
 
                     var orderTrack = new OrderTracking()
                                          {
@@ -432,8 +433,11 @@ namespace ArtProject2016.Controllers
                                                       UnitPrice = cartItem.ForSale.Price,
                                                       OrderDetailStatus = "Waiting for Payment",
                                                       ForSaleId = cartItem.ForSaleId,
+                                                      BuyerReceived = false,
+                                                      ReadyToRedeem = false,
                                                       OrderId = newOrder.Id
                                                   };
+
                         db.OrderDetails.Add(newOrderDetails);
 
                         var updateArt = db.ForSales.Find(cartItem.ForSaleId);
@@ -587,7 +591,7 @@ namespace ArtProject2016.Controllers
                 return View();
             }
 
-            TempData["error"] = "An error occured to orders complete page";
+            TempData["error"] = "An error occured to orders complete page, Please check your MyOrders Page.";
             return RedirectToAction("Gallery", "Shop");
         }
 
@@ -655,12 +659,16 @@ namespace ArtProject2016.Controllers
                             trans.OrderStatus = "Paid thru PayPal";
                             trans.PayPal.Remarks = payStatus + " - Amount: " + amountPaid;
                             trans.PayPal.DateTime = DateTime.Now;
+                            trans.PayPal.IPNverified = true;
 
                             var orderDets =
                                 db.OrderDetails.Where(dets => dets.OrderId == Convert.ToInt32(orderID)).ToList();
                             foreach (var orderDetail in orderDets)
                             {
                                 orderDetail.OrderDetailStatus = "Shipment Processing";
+                                orderDetail.BuyerReceived = false;
+                                orderDetail.Redeemed = false; //default
+                                orderDetail.ReadyToRedeem = false;
 
                                 var orderTracki = new OrderTracking()
                                 {

@@ -192,28 +192,43 @@ namespace ArtProject2016.Controllers
 
         public ActionResult PayOut()
         {
-            using (ArtContext db = new ArtContext())
+            //using (ArtContext db = new ArtContext())
+            //{
+
+            var DueForRedeem = context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid &&
+                                                   cash.OrderDetailStatus != "Cancelled" && cash.Returned != true && cash.ReadyToRedeem != true
+                                                   && cash.Redeemed != true && cash.BuyerReceived).ToList();
+
+            foreach (var date in DueForRedeem)
             {
+                var tenDays = Convert.ToInt32(((date.BuyerReceivedDateTime.Value.AddDays(10) - DateTime.Now.Date).TotalDays));
+
+                if(tenDays <= 0)
+                {
+                    date.ReadyToRedeem = true;
+                    context.SaveChanges();
+                }
+            }
+              
                 PayoutViewModel model = new PayoutViewModel();
                 SellControls sell = new SellControls();
 
-                model.PendingOrderDetails =
-                    db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                                                  && cash.OrderDetailStatus == "Shipment Processing" ||
-                                                  cash.OrderDetailStatus == "Shipped" ||
-                                                  cash.OrderDetailStatus == "Paid" ||
-                                                  cash.OrderDetailStatus == "Delivered" && cash.Redeemed != true).ToList();
+                model.PendingOrderDetails =context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid &&
+                                                   cash.OrderDetailStatus != "Cancelled" && cash.Returned != true && cash.ReadyToRedeem != true && cash.Redeemed != true).ToList();
 
+                //cash.OrderDetailStatus == "Shipment Processing" || cash.OrderDetailStatus == "Shipped" || cash.OrderDetailStatus == "Paid" || cash.OrderDetailStatus == "Delivered"
                 model.RedeemOrderDetails =
-                    db.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                                                  && cash.OrderDetailStatus == "Finished" && cash.Redeemed != true).ToList();
+                    context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                                  && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
+
+                model.RedeemedOrderDetails = context.OrderDetails.Where(deemed => deemed.ForSale.SellerId == WebSecurity.CurrentUserId 
+                                                && deemed.Order.Paid && deemed.Redeemed).ToList();
 
                 model.PendingAmt = sell.GetPending();
                 model.RedeemableAmt = sell.GetRedeemable();
+                model.RedeemedAmt = sell.GetRedemeeded();
 
                 return View(model);
-                
-            }
         }
 
         public ActionResult Print()

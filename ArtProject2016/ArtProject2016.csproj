@@ -503,11 +503,6 @@
     <Content Include="Views\Art\_ViewStart.cshtml" />
     <Content Include="Views\Account\Verification.cshtml" />
     <Content Include="Views\Art\DeleteImage.cshtml" />
-    <Content Include="Views\test\Create.cshtml" />
-    <Content Include="Views\test\Delete.cshtml" />
-    <Content Include="Views\test\Details.cshtml" />
-    <Content Include="Views\test\Edit.cshtml" />
-    <Content Include="Views\test\Index.cshtml" />
     <Content Include="Views\Shop\Gallery.cshtml" />
     <Content Include="Views\Shop\ArtDetails.cshtml" />
     <Content Include="Views\Shared\_ShopLayout.cshtml" />

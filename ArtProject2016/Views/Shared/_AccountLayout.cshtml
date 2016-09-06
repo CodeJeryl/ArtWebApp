@@ -29,9 +29,9 @@
                 <div class="panel-body">
 
                     <ul class="nav nav-pills nav-stacked">
-                        <li>
+                        @*<li>
                             <a href="customer-account.html"><i class="fa fa-user"></i>My account</a>
-                        </li>
+                        </li>*@
                         <li class="@(ViewBag.Current == "updateProfile" ? "active" : "")">
                             @Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "text-center" })
                         </li>
@@ -43,6 +43,9 @@
                         {
                             <li  class="@(ViewBag.Current == "Sell" ? "active" : "")">
                                 @Html.ActionLink("Sales transaction", "Index", "Sell", null, new { @class = "text-center" })
+                            </li>
+                            <li  class="@(ViewBag.Current == "PayOut" ? "active" : "")">
+                                @Html.ActionLink("Sales PayOut", "PayOut", "Account", null, new { @class = "text-center" })
                             </li>
                             <li class="@(ViewBag.Current == "Upload" ? "active" : "")">
                                 @Html.ActionLink("Upload Art", "Upload", "Art", null, new { @class = "text-center" })

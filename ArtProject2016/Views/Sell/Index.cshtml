@@ -8,147 +8,143 @@
 
 
 <div class="col-md-9" id="customer-order">
-    <div class="box">
-        
+    <div class="box clearfix">
+
         <div class="col-md-7">
             <h1>Sold Arts</h1>
 
             <p class="lead">Please prepare the art and ship it</p>
-               
+
         </div>
         <div class="col-md-5">
-            <br/>
+            <br />
             <p class="lead">Pending Cash: @ViewBag.Pending</p>
             <p class="lead">Redeemable Cash: @ViewBag.Redeemable </p>
         </div>
         <div class="col-md-12">
-             <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
+            <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
 
         </div>
-    
-        <hr>
 
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Art Image</th>
-                        <th colspan="2">@Html.DisplayNameFor(model => model.ForSale.Title) & Artist</th>
-                        <th>@Html.DisplayNameFor(model => model.Order.OrderDate)</th>
-                        <th>@Html.DisplayNameFor(model => model.ForSale.Profit)</th>
-                        <th>@Html.DisplayNameFor(model => model.OrderDetailStatus)</th>
-                        <th>Tracking Number</th>
-                        <th>Controls</th>
-                                 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                <a href="#">
-                                    <img src="@Url.Content(item.ForSale.Path)" alt="@item.ForSale.Title" style="width: 200px">
-                                </a>
-                            </td>
-                            <td>
-                                @if (item.ForSale.otherArtist)
-                                {
-                                    <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                        <br />
-                                        by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
-                                        <br />
-                                        from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                        <br />
-                                        by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
-                                        <br />
-                                        from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
-                                    </td>
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Order.OrderDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ForSale.Profit)
-                            </td>
-                            <td>
-                                @if(item.Shipped)
-                                {
-                                    <span class="label label-success">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
-                                }
-                                else
-                                {
-                                    <span class="label label-info">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
-                                }
-                            </td>
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="row products box">
+                
+                    <div class="col-md-4" id="text-page">
 
-                            @if (item.Order.Paid)
-                            {
-                                if (item.Returned)
-                                {
-                                    <td>@Html.DisplayFor(modelItem => item.ReturnedTrackingNumber)</td>
-                                    <td>@Html.ActionLink("Returned", "Return", new { Id = item.Id }, new { @class = "btn btn-warning" })</td>
-                                }
-                                else
-                                {
-                                    if (item.Shipped)
+                        <span style="margin-left: 20px">
+                            <img src="@Url.Content(item.ForSale.Path)"  width="240px" class="img-responsive"/></span>
+
+                    </div>
+                    <div class="col-md-8" id="order-summary">
+                        <h3>Title:   @Html.DisplayFor(modelItem => item.ForSale.Title)</h3>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        @if (item.ForSale.otherArtist)
+                                        {
+                                            <td>Artist Name: </td>
+                                            <th>@Html.DisplayFor(modelItem => item.ForSale.otherArtistName)</th>
+                                            <td>From: </td>
+                                            <th>@Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)</th>
+                                    
+                                        }
+                                        else
+                                        {
+                                            <td>Artist Name:  </td>
+                                            <th>@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)</th>
+                                            <td>From: </td>
+                                            <th>@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)</th>
+                                   
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>Profit:</td>
+                                        <th>@Html.DisplayFor(modelItem => item.ForSale.Profit)</th>
+                                        <td>Order Date:</td>
+                                        <th> @String.Format("{0:d}", item.Order.OrderDate)</th>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Size: </td>
+                                        <th>@Html.DisplayFor(modelItem => item.ForSale.wSize) x @Html.DisplayFor(modelItem => item.ForSale.hSize)</th>
+                                        <td>Status:</td>
+                                        <th>
+                                            @if (item.Shipped)
+                                            {
+                                                <span class="label label-success">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-info">@Html.DisplayFor(modelItem => item.OrderDetailStatus)</span>
+                                            }
+
+                                        </th>
+                                    </tr>
+
+                                    @if (item.Order.Paid)
                                     {
-                                        <td>@Html.DisplayFor(modelItem => item.ShippingCompany.Name) <br />
-                                            @Html.DisplayFor(modelItem => item.TrackingNumber)</td>
+                                        if (item.Returned)
+                                        { 
+                                        <tr>
+                                            <td>Tracking Number:</td>
+                                            <th>@Html.DisplayFor(modelItem => item.ReturnedTrackingNumber)</th>
+                                        </tr>   
+                                        <tr class="total">
+                                            <td colspan="4">
+                                                @Html.ActionLink("Returned", "Return", new { Id = item.Id }, new { @class = "btn btn-warning" })
+                                            </td>
+                                        </tr>
+                                        }
+                                        else
+                                        {
+                                            if (item.Shipped)
+                                            {
+                                        <tr>
+                                            <td>Tracking Number:</td>
+                                            <th colspan="4">@Html.DisplayFor(modelItem => item.ShippingCompany.Name) - @Html.DisplayFor(modelItem => item.TrackingNumber)</th>
+                                        </tr> 
+                                            }
+                                            else
+                                            {
+                                                <tr class="total">
+                                                        <th>Controls:</th>
+                                                    <td >
+                                                        @Html.ActionLink("View Buyer Details", "BuyerDetails", new { Id = item.Id }, new { @class = "btn btn-info" }) </td>
+                                                        <td >
+                                                        @Html.ActionLink("Input Tracking #", "Shipment", new { Id = item.Id }, new { @class = "btn btn-success" })
+                                                    </td>
+                                                </tr> 
+                                            }
+                                        }
                                     }
                                     else
                                     {
-                                        <td>
-                                            @Html.ActionLink("View Buyer Details", "BuyerDetails", new { Id = item.Id }, new { @class = "btn btn-info" }) <br /> <br />
-                                            @Html.ActionLink("Input Tracking #", "Shipment", new { Id = item.Id }, new { @class = "btn btn-success" })
-                                        </td>
+                                        @*this will not be hit bec of server side code*@
+                                        <tr>
+                                            <td>Tracking Number:</td>
+                                            <th>No tracking #</th>
+                                            <td>Do not Ship</td>
+                                            <th>
+                                                <span class="label label-warning">Waiting for Payment. Don't Ship it yet.</span>
+                                            </th>
+                                        </tr>  
                                     }
-                                }
-                            }
-                            else
-                            {
-                                <td>No tracking # yet</td>
-                                <td>
-                                    <span class="label label-warning">Waiting for Payment. Don't Ship it yet.</span>
-                                </td>
-                            }
-                        </tr>
-                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                </tbody>
-                @*<tfoot>
-                    <tr>
-                        <th colspan="5" class="text-right">Order subtotal</th>
-                        <th>@Model.First().Order.SubTotal</th>
-                    </tr>
-                    <tr>
-                        <th colspan="5" class="text-right">Shipping and handling</th>
-                        <th>Free</th>
-                    </tr>
-                    <tr>
-                        <th colspan="5" class="text-right">Voucher Discount</th>
-                        <th>@Model.First().Order.VoucherDeduction</th>
-                    </tr>
-
-                    <tr>
-                        <th colspan="5" class="text-right">Total</th>
-                        <th>@Model.First().Order.Total</th>
-                    </tr>
-                </tfoot>*@
-            </table>
-
-        </div>
-        <!-- /.table-responsive -->
-
+                </div>
+           
+            <!-- /.products buttonsR -->   
+        }
+    
 
     </div>
-</div>
 
 
 
