@@ -18,6 +18,7 @@ namespace ArtProject2016.ViewModel
         [Required]
         public string nickName { get; set; }
      
+     
         public string userType { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }

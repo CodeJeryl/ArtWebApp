@@ -28,6 +28,8 @@ namespace ArtProject2016.Models
         public string firstName { get; set; }
         [Required]
         public string lastName { get; set; }
+        //[Required]
+        //public string middleName { get; set; }
         [Required]
         public string nickName { get; set; }
         [Required]

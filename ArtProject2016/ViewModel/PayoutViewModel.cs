@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using ArtProject2016.Models;
@@ -12,6 +13,7 @@ namespace ArtProject2016.ViewModel
         public virtual List<OrderDetail>  RedeemOrderDetails { get; set; }
         public virtual List<OrderDetail> RedeemedOrderDetails  { get; set; }
         public virtual ICollection<Payout> Payouts { get; set; }
+
 
         public decimal PendingAmt { get; set; }
         public decimal RedeemableAmt { get; set; }

@@ -46,6 +46,7 @@ namespace ArtProject2016.Controllers
             UpdateArtistViewModel viewModel = new UpdateArtistViewModel();
             viewModel.firstName = user.firstName;
             viewModel.lastName = user.lastName;
+          
             viewModel.nickName = user.nickName;
             viewModel.userType = user.userType;
             viewModel.UserProfile = artist;
@@ -72,6 +73,7 @@ namespace ArtProject2016.Controllers
 
                     userToUpdate.firstName = model.firstName.ToUpper();
                     userToUpdate.lastName = model.lastName.ToUpper();
+                 
                     string[] lastRole = Roles.GetRolesForUser(WebSecurity.CurrentUserName);
 
                     if (!Roles.IsUserInRole(model.userType))
@@ -224,11 +226,47 @@ namespace ArtProject2016.Controllers
                 model.RedeemedOrderDetails = context.OrderDetails.Where(deemed => deemed.ForSale.SellerId == WebSecurity.CurrentUserId 
                                                 && deemed.Order.Paid && deemed.Redeemed).ToList();
 
+                model.Payouts = context.Payouts.Where(p => p.UserAccountsId == WebSecurity.CurrentUserId).ToList();
+
                 model.PendingAmt = sell.GetPending();
                 model.RedeemableAmt = sell.GetRedeemable();
                 model.RedeemedAmt = sell.GetRedemeeded();
 
                 return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult RequestPayout(Payout model)
+        {
+            if(ModelState.IsValid)
+            {
+              var redeemed =
+                   context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                                 && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
+
+
+                var payOut = new Payout()
+                                 {
+                                     FirstName = model.FirstName,
+                                     LastName = model.LastName,
+                                     PayOutMethod = model.PayOutMethod,
+                                     Status = "Payout Processing",
+                                     DateTime = DateTime.Now,
+                                     RedeemedPayoutAmt = model.RedeemedPayoutAmt,
+                                     UserAccountsId = WebSecurity.CurrentUserId
+                                 };
+
+                context.Payouts.Add(payOut);
+
+                foreach (var orderDetail in redeemed)
+                {
+                    orderDetail.Redeemed = true;
+                }
+
+                context.SaveChanges();
+                return RedirectToAction("PayOut");
+            }
+            return RedirectToAction("PayOut");
         }
 
         public ActionResult Print()

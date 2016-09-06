@@ -529,6 +529,7 @@
     <Content Include="Views\Sell\BuyerDetails.cshtml" />
     <Content Include="Views\Account\PayOut.cshtml" />
     <Content Include="Views\Account\testPr.cshtml" />
+    <Content Include="Views\Account\_RequestPayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

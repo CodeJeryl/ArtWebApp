@@ -18,7 +18,14 @@ namespace ArtProject2016.Models
         [Required]
         public string PayOutMethod { get; set; } // paypal check etc.
         [Required]
-        public decimal RedeemedPayout { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
+        public decimal RedeemedPayoutAmt { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+
         public string Status { get; set; } //Processing or Paid
         public DateTime DateTime { get; set; }
 
