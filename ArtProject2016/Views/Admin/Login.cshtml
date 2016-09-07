@@ -1,0 +1,39 @@
+﻿@model ArtProject2016.ViewModel.loginViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="box" style="width: 50%">
+    <h1>Admin Login</h1>
+
+    <p class="lead">hoy pogi!</p>
+    <p class="text-muted">
+      Joke lng haha!
+    </p>
+
+    <hr>
+
+    @using (Html.BeginForm("Login", "Admin", new { returnUrl = ViewBag.ReturnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+
+            <label for="email">Email Address: (User Name)</label>
+
+            @Html.TextBoxFor(m => m.userName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.userName)
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>Log in</button>
+        </div>
+    }
+
+</div>

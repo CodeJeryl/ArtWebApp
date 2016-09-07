@@ -4,8 +4,8 @@
     ViewBag.Title = "PayOut";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
     ViewBag.Current = "PayOut";
+    
 }
-
 
 <div class="col-md-9" id="customer-order">
     <div class="box">
@@ -36,17 +36,18 @@
                                 <th>Artist</th>
                                 <th>Ordered Date</th>
                                 <th>Redeemable In</th>
-                                 <th>Profit</th>
+                                <th>Profit</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.PendingOrderDetails)
+                            @if (Model.PendingOrderDetails.Count > 0)
                             {
+                                foreach (var item in Model.PendingOrderDetails)
+                                {
                                 <tr>
-                                    <th>
-                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
-                                   
+                                    <th>"@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+
                                     @if (item.ForSale.otherArtist)
                                     {
                                         <td class="titletd">
@@ -63,15 +64,17 @@
                                             from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
                                         </td>
                                     }
-                                    
+
                                     <td>
-                                        @String.Format("{0:d}", item.Order.OrderDate)</td> @*date.BuyerReceivedDateTime.Value.AddDays(10) - DateTime.Now.Date*@
-                                    
+                                        @String.Format("{0:d}", item.Order.OrderDate)</td>
+                                    @*date.BuyerReceivedDateTime.Value.AddDays(10) - DateTime.Now.Date*@
+
                                     <td>
-                                        @if(item.BuyerReceived)
+                                        @if (item.BuyerReceived)
                                         {
                                             @Convert.ToInt32(((item.BuyerReceivedDateTime.Value.Date.AddDays(10) - DateTime.Now.Date).TotalDays)) @:Day(s) - @item.BuyerReceivedDateTime.Value.AddDays(10).ToShortDateString()
-                                        }else
+                                        }
+                                        else
                                         {
                                             @:10 days after Buyer received it.
                                         }
@@ -80,15 +83,22 @@
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
 
                                 </tr>
+                                }
+                            }
+                            else
+                            {
+                                <th colspan="5">
+                                    <h2>No Data to display at the moment.</h2>
+                                </th>
                             }
                         </tbody>
-                         <tfoot>
-                    <tr>
-                        <th colspan="4" class="text-right">Total Pending Amount</th>
-                        <th>₱<strong> @Model.PendingAmt</strong></th>
-                    </tr>
-                   
-                </tfoot>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" class="text-right">Total Pending Amount</th>
+                                <th>₱<strong> @Model.PendingAmt</strong></th>
+                            </tr>
+
+                        </tfoot>
                     </table>
                 </div>
 
@@ -98,30 +108,33 @@
 
             </div>
             <div role="tabpanel" class="tab-pane fade" id="redeemable">
-              
+
                 <hr />
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                  <th>Details ID</th>
+                                <th>Details ID</th>
                                 <th>Art Title</th>
                                 <th>Artist</th>
                                 <th>Ordered Date</th>
                                 <th>Profit</th>
-                              
+
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.RedeemOrderDetails)
+                            @if (Model.RedeemOrderDetails.Count > 0)
                             {
+
+                                foreach (var item in Model.RedeemOrderDetails)
+                                {
+
                                 <tr>
                                     <th># @Html.DisplayFor(modelItem => item.Id)</th>
 
-                                    <th>
-                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
-                                   
+                                    <th>"@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+
                                     @if (item.ForSale.otherArtist)
                                     {
                                         <td class="titletd">
@@ -138,56 +151,71 @@
                                             from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
                                         </td>
                                     }
-                                    
+
                                     <td>
                                         @String.Format("{0:d}", item.Order.OrderDate)</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
                                 </tr>
+                                }
+                            }
+                            else
+                            {
+                                <th colspan="5">
+                                    <h2>No Data to display at the moment.</h2>
+                                </th>
                             }
                         </tbody>
-                         <tfoot>
-                             <tr>
-                                 <th colspan="4" class="text-right">Total Redeemable Amount</th>
-                                 <th>₱ <strong> @Model.RedeemableAmt</strong> </th>
-                             </tr>
-                             <tr>
-                                 <th colspan="5" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-modal" class="btn btn-success">Request Payout</a></th>
-                             </tr>
-                             
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" class="text-right">Total Redeemable Amount</th>
+                                <th>₱ <strong>@Model.RedeemableAmt</strong> </th>
+                            </tr>
 
-                                @Html.Partial("_RequestPayout", new Payout{ RedeemedPayoutAmt = Model.RedeemableAmt } )
-                   
-                         </tfoot>
+                            @if (Model.RedeemableAmt >= 3000)
+                            {
+                                <tr>
+                                    <th colspan="5" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-modal" class="btn btn-success">Request Payout</a></th>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th colspan="5" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-insuf" class="btn btn-info">Request Payout</a></th>
+                                </tr>
+                            }
+                            @Html.Partial("_RequestPayout", new Payout { RedeemedPayoutAmt = Model.RedeemableAmt })
+                        </tfoot>
                     </table>
                 </div>
-                
+
             </div>
             <div role="tabpanel" class="tab-pane" id="redeemed">
-              
+
                 <hr />
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                 <th>Details ID</th>
+                                <th>Details ID</th>
                                 <th>Art Title</th>
                                 <th>Artist</th>
                                 <th>Ordered Date</th>
                                 <th>Profit</th>
-                              
+
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.RedeemedOrderDetails)
+                            @if (Model.RedeemOrderDetails.Count > 0)
                             {
+                                foreach (var item in Model.RedeemedOrderDetails)
+                                {
                                 <tr>
                                     <th># @Html.DisplayFor(modelItem => item.Id)</th>
 
-                                    <th>
-                                        "@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
-                                   
+                                    <th>"@Html.DisplayFor(modelItem => item.ForSale.Title)"</th>
+
                                     @if (item.ForSale.otherArtist)
                                     {
                                         <td class="titletd">
@@ -204,25 +232,29 @@
                                             from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
                                         </td>
                                     }
-                                    
+
                                     <td>
                                         @String.Format("{0:d}", item.Order.OrderDate)</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
                                 </tr>
+                                }
+                            }
+                            else
+                            {
+                                <th colspan="5">
+                                    <h2>No Data to display at the moment.</h2>
+                                </th>
                             }
                         </tbody>
-                          <tfoot>
-                             <tr>
-                                 <th colspan="4" class="text-right">Total Redeemed Amount</th>
-                                 <th>₱ <strong> @Model.RedeemedAmt</strong> </th>
-                             </tr>
-                           
-                             
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" class="text-right">Total Redeemed Amount</th>
+                                <th>₱ <strong>@Model.RedeemedAmt</strong> </th>
+                            </tr>
 
-                                @Html.Partial("_RequestPayout", new Payout{ RedeemedPayoutAmt = Model.RedeemableAmt } )
-                   
-                         </tfoot>
+
+                        </tfoot>
                     </table>
                 </div>
 
@@ -231,50 +263,64 @@
 
             </div>
             <div role="tabpanel" class="tab-pane fade" id="payout">
-              
-                    <hr />
+
+                <hr />
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                 <th>Method</th>
-                                <th>Name</th>
-                                 <th>Redeemed Amount</th>
-                                <th> Date</th>
+                                <th>Method</th>
+                                <th>Payment Info</th>
+                                <th>Full Name</th>
+                                <th>Date</th>
                                 <th>Status</th>
-                              
+                                <th>Redeemed Amount</th>
+
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Payouts)
+                            @if (Model.Payouts.Count > 0)
                             {
+                                foreach (var item in Model.Payouts)
+                                {
+                                
+                                
                                 <tr>
                                     <th>@Html.DisplayFor(modelItem => item.PayOutMethod)</th>
 
+                                    <th>@Html.DisplayFor(modelItem => item.PaymentInfo)</th>
                                     <th>
-                                        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</th>
-                                   
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.RedeemedPayoutAmt)</td>
+                                        @Html.DisplayFor(modelItem => item.FullName)</th>
+
+
                                     <td>
                                         @String.Format("{0:d}", item.DateTime)</td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Status)</td>
+                                        <span class="label label-success">@Html.DisplayFor(modelItem => item.Status) </span></td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RedeemedPayoutAmt)</td>
                                 </tr>
+                                }
+                            }
+                            else
+                            {
+                                <th colspan="6">
+                                    <h2>No Data to display at the moment.</h2>
+                                </th>
                             }
                         </tbody>
-                         <tfoot>
-                             <tr>
-                                 <th colspan="4" class="text-right">Total Redeemed Amount</th>
-                                 <th>₱ <strong> @Model.RedeemedAmt</strong> </th>
-                             </tr>
-                            
-                         </tfoot>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5" class="text-right">Total Redeemed Amount</th>
+                                <th>₱ <strong>@Model.RedeemedAmt</strong> </th>
+                            </tr>
+
+                        </tfoot>
                     </table>
                 </div>
-                
-                
+
+
 
             </div>
         </div>

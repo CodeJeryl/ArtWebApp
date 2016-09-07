@@ -22,9 +22,9 @@ namespace ArtProject2016.Models
         public decimal RedeemedPayoutAmt { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
+        public string FullName { get; set; }
         [Required]
-        public string LastName { get; set; }
+        public string PaymentInfo { get; set; } //bank info,etc.
 
         public string Status { get; set; } //Processing or Paid
         public DateTime DateTime { get; set; }

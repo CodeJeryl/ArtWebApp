@@ -247,8 +247,8 @@ namespace ArtProject2016.Controllers
 
                 var payOut = new Payout()
                                  {
-                                     FirstName = model.FirstName,
-                                     LastName = model.LastName,
+                                     FullName = model.FullName,
+                                     PaymentInfo = model.PaymentInfo,
                                      PayOutMethod = model.PayOutMethod,
                                      Status = "Payout Processing",
                                      DateTime = DateTime.Now,
@@ -264,8 +264,21 @@ namespace ArtProject2016.Controllers
                 }
 
                 context.SaveChanges();
+
+                  //send mail
+                            string subject = "Pay Out Request is now on process";
+
+                            var controls = new EmailControls();
+                           string body = "<strong>Thank you for selling artworks in <website>. </strong> <br/> <br/> " +
+                                "<br/> <br/> You requested the amount: "+ model.RedeemedPayoutAmt + "thru "+ model.PayOutMethod +"<br> <br>"
+                                +"with Payment information of "+ model.PaymentInfo + "<br> <br> Please give me us 5 working days to process your request. ";
+                           string content = controls.PopulateBody("Pay Out Request is now on process", model.FullName, body);
+                
+                             EmailControls.sendEmail("jerylsuarez@gmail.com", WebSecurity.CurrentUserName, "", "", subject, content);
+                             
                 return RedirectToAction("PayOut");
             }
+            TempData["error"] = "Payout Request Incomplete, Please try again. Thank you!";
             return RedirectToAction("PayOut");
         }
 
