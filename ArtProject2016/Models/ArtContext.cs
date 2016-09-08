@@ -16,6 +16,8 @@ namespace ArtProject2016.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            
+
         //    modelBuilder.Entity<ForSale>()
         //                .HasOptional(m => m.BuyerAccount)
         //                .WithMany(t => t.ForSaleBuyer)
@@ -81,6 +83,7 @@ namespace ArtProject2016.Models
                 throw;  // You can also choose to handle the exception here...
             }
         }
+
       
         /*         
             context.ArtistProfiles.AddOrUpdate(

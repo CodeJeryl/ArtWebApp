@@ -37,6 +37,7 @@
                                 <th>Ordered Date</th>
                                 <th>Redeemable In</th>
                                 <th>Profit</th>
+                                <th>Refundable Shipping</th>
 
                             </tr>
                         </thead>
@@ -81,20 +82,21 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ForSale.ShippingFee)</td>
 
                                 </tr>
                                 }
                             }
                             else
                             {
-                                <th colspan="5">
+                                <th colspan="6">
                                     <h2>No Data to display at the moment.</h2>
                                 </th>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="4" class="text-right">Total Pending Amount</th>
+                                <th colspan="5" class="text-right">Total Pending Amount</th>
                                 <th>₱<strong> @Model.PendingAmt</strong></th>
                             </tr>
 
@@ -119,9 +121,8 @@
                                 <th>Artist</th>
                                 <th>Ordered Date</th>
                                 <th>Profit</th>
-
-
-                            </tr>
+                                <th>Refundable Shipping</th>
+                             </tr>
                         </thead>
                         <tbody>
                             @if (Model.RedeemOrderDetails.Count > 0)
@@ -156,32 +157,35 @@
                                         @String.Format("{0:d}", item.Order.OrderDate)</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                    @*<td>@Html.DisplayFor(modelItem => item.SumShippingAdjustment)</td>*@
+                                 <td>@Html.Raw(item.ForSale.ShippingFee + item.PriceAdjustment)</td>
                                 </tr>
                                 }
                             }
                             else
                             {
-                                <th colspan="5">
+                                <th colspan="6">
                                     <h2>No Data to display at the moment.</h2>
                                 </th>
                             }
+
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="4" class="text-right">Total Redeemable Amount</th>
+                                <th colspan="5" class="text-right">Total Redeemable Amount</th>
                                 <th>₱ <strong>@Model.RedeemableAmt</strong> </th>
                             </tr>
 
                             @if (Model.RedeemableAmt >= 3000)
                             {
                                 <tr>
-                                    <th colspan="5" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-modal" class="btn btn-success">Request Payout</a></th>
+                                    <th colspan="6" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-modal" class="btn btn-success">Request Payout</a></th>
                                 </tr>
                             }
                             else
                             {
                                 <tr>
-                                    <th colspan="5" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-insuf" class="btn btn-info">Request Payout</a></th>
+                                    <th colspan="6" class="text-right"><a href="#" data-toggle="modal" data-target="#pay-insuf" class="btn btn-info">Request Payout</a></th>
                                 </tr>
                             }
                             @Html.Partial("_RequestPayout", new Payout { RedeemedPayoutAmt = Model.RedeemableAmt })
@@ -202,12 +206,12 @@
                                 <th>Artist</th>
                                 <th>Ordered Date</th>
                                 <th>Profit</th>
-
+                                <th>Refunded Shipping Fee</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.RedeemOrderDetails.Count > 0)
+                            @if (Model.RedeemedOrderDetails.Count > 0)
                             {
                                 foreach (var item in Model.RedeemedOrderDetails)
                                 {
@@ -237,19 +241,21 @@
                                         @String.Format("{0:d}", item.Order.OrderDate)</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ForSale.Profit)</td>
+                                     @*   <td>@Html.DisplayFor(modelItem => item.SumShippingAdjustment)</td>*@
+                                      <td>@Html.Raw(item.ForSale.ShippingFee + item.PriceAdjustment)</td>
                                 </tr>
                                 }
                             }
                             else
                             {
-                                <th colspan="5">
+                                <th colspan="6">
                                     <h2>No Data to display at the moment.</h2>
                                 </th>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="4" class="text-right">Total Redeemed Amount</th>
+                                <th colspan="5" class="text-right">Total Redeemed Amount</th>
                                 <th>₱ <strong>@Model.RedeemedAmt</strong> </th>
                             </tr>
 

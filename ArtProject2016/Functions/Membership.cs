@@ -33,6 +33,19 @@ namespace ArtProject2016.Functions
             }
         }
 
+        public static bool UniqueNickname(string nickname)
+        {
+            using (var db = new ArtContext())
+            {
+                var nick = db.UserAccounts.Where(name => name.nickName == nickname);
+                if(nick.Any())
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
 
 
         public static bool RegisterIsValid(registerViewModel user)

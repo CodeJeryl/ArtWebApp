@@ -30,6 +30,6 @@ namespace ArtProject2016.Models
         public DateTime DateTime { get; set; }
 
         public int UserAccountsId { get; set; }
-        public ICollection<UserAccount> UserAccounts { get; set; }
+        public virtual UserAccount UserAccount { get; set; }
     }
 }

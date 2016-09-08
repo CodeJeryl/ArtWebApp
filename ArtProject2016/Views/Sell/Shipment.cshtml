@@ -28,8 +28,7 @@
                         <hr />
                         @Html.ValidationSummary(true)
                         @Html.HiddenFor(model => model.OrderDetails.Id)
-
-                        <div class="form-group">
+                       <div class="form-group">
                             @Html.LabelFor(model => model.OrderDetails.ShippingCompany, new { @class = "control-label col-md-4" })
                             <div class="col-md-8">
                                 @Html.DropDownListFor(model => model.SelectedShippingId, Model.ShippingCompanies, "--Choose Shipping Company--", new { @class = "form-control" } )

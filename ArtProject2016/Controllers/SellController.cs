@@ -90,7 +90,7 @@ namespace ArtProject2016.Controllers
 
             }
 
-            
+          //  model._ShippingCompany = db.ShippingCompanies.ToList();
             return View(model);
          }
 

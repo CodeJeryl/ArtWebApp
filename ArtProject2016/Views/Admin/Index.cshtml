@@ -13,7 +13,7 @@
         <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
 
         <hr>
-
+        
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -43,6 +43,7 @@
                             </td>
                              <td>
                                 @Html.ActionLink("View Order", "OrderDetails", new { id = item.Id}, new {  @class = "btn btn-primary btn-sm" })
+                                @Html.ActionLink("Update Order", "UpdateOrder", new { id = item.Id}, new {  @class = "btn btn-info btn-sm" })
                             </td>
                         </tr>
                     }

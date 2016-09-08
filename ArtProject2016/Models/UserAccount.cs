@@ -44,5 +44,9 @@ namespace ArtProject2016.Models
         public virtual ICollection<ForSale> ForSaleSeller  { get; set; }
 
         public virtual ICollection<WishList> WishLists { get; set; }
+
+        public virtual ICollection<Payout> Payouts  { get; set; }
     }
+
+   
 }

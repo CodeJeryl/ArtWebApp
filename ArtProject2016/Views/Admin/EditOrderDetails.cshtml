@@ -1,0 +1,141 @@
+﻿@model ArtProject2016.Models.OrderDetail
+
+@{
+    ViewBag.Title = "EditOrderDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+ <div class="col-md-9">
+<div class="box">
+   
+    <h2>EditOrderDetails</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    
+        <div class="form-horizontal">
+            <h4>OrderDetail</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.OrderId)
+            @Html.HiddenFor(model => model.ForSale.ShippingFee)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Quantity, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Quantity)
+                    @Html.ValidationMessageFor(model => model.Quantity)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnitPrice, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UnitPrice)
+                    @Html.ValidationMessageFor(model => model.UnitPrice)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OrderDetailStatus, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.OrderDetailStatus)
+                    @Html.ValidationMessageFor(model => model.OrderDetailStatus)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Shipped, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Shipped)
+                    @Html.ValidationMessageFor(model => model.Shipped)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TrackingNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TrackingNumber)
+                    @Html.ValidationMessageFor(model => model.TrackingNumber)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Returned, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Returned)
+                    @Html.ValidationMessageFor(model => model.Returned)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RetrunShippingCompany, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RetrunShippingCompany)
+                    @Html.ValidationMessageFor(model => model.RetrunShippingCompany)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReturnedTrackingNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReturnedTrackingNumber)
+                    @Html.ValidationMessageFor(model => model.ReturnedTrackingNumber)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BuyerReceived, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BuyerReceived)
+                    @Html.ValidationMessageFor(model => model.BuyerReceived)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BuyerReceivedDateTime, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BuyerReceivedDateTime)
+                    @Html.ValidationMessageFor(model => model.BuyerReceivedDateTime)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReadyToRedeem, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReadyToRedeem)
+                    @Html.ValidationMessageFor(model => model.ReadyToRedeem)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Redeemed, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Redeemed)
+                    @Html.ValidationMessageFor(model => model.Redeemed)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PriceAdjustment, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PriceAdjustment)
+                    @Html.ValidationMessageFor(model => model.PriceAdjustment)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+        </div>
+</div>

@@ -98,5 +98,7 @@ namespace ArtProject2016.Models
         public virtual ICollection<WishList> WishLists { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
 
+        
+
     }
 }

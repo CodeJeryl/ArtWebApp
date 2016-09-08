@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,22 +53,45 @@ namespace ArtProject2016.Controllers
         }
 
        
-        public ActionResult OrderDetails(int id)
+        public ActionResult OrderDetails(int Id)
         {
-            var details = db.OrderDetails.Where(det => det.OrderId == id).OrderBy(de => de.UnitPrice).ToList();
+            var details = db.OrderDetails.Where(det => det.OrderId == Id).OrderBy(de => de.UnitPrice).ToList();
             return View(details);
+        }
+
+
+
+        [HttpGet]
+        public ActionResult EditOrderDetails(int Id)
+        {
+            try
+            {
+                var detail = db.OrderDetails.Find(Id);
+
+                return View(detail);
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         //
         // POST: /Admin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditOrderDetails(OrderDetail model)
         {
             try
             {
-                // TODO: Add update logic here
+                db.OrderDetails.Attach(model);
+                db.Entry(model).State = EntityState.Modified;
 
-                return RedirectToAction("Index");
+                var entry = db.Entry(model);
+                entry.Property(e => e.ForSaleId).IsModified = false;
+                entry.Property(e => e.OrderId).IsModified = false;
+              
+                db.SaveChanges();
+                return RedirectToAction("OrderDetails", new { Id = model.OrderId});
             }
             catch
             {

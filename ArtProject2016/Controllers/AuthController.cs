@@ -86,6 +86,8 @@ namespace ArtProject2016.Controllers
 
                     if (!user.Any())
                     {
+                        if(Functions.Membership.UniqueNickname(model.nickName))
+                        {
                         if (Functions.Membership.RegisterIsValid(model))
                         {
                             //send mail
@@ -113,14 +115,16 @@ namespace ArtProject2016.Controllers
                             {
                                // TempData["error"] = "Error occured while sending email." + ex.Message;
                             }
-
-
-                           
+                        }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("nickName", "Nick Name is already taken, please choose another nickname");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Email Address already exist!");
+                        ModelState.AddModelError("userName", "Email Address already exist, please choose another email");
                     }
 
                 }
