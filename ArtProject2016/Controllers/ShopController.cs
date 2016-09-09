@@ -23,12 +23,60 @@ namespace ArtProject2016.Controllers
 
         // GET: /Shop/Gallery
         [AllowAnonymous]
-        public ActionResult Gallery()
+        [HttpGet]
+        public ViewResult Gallery(string search,string artist,string category)
         {
-            var forsales = db.ForSales.Include(f => f.BuyerAccount).Include(f => f.Category).Include(f => f.SellerAccount)
-                                       .Where(r => r.ForPosting && r.Sold == false);
-            return View(forsales.ToList());
+            var forSales = db.ForSales.Where(r => r.ForPosting && r.Sold == false);
+
+            if(!string.IsNullOrEmpty(search))
+            {
+                forSales = forSales.Where(s => s.Title.ToLower().Contains(search.ToLower()) ||
+                                s.artDescription.ToLower().Contains(search.ToLower()) ||
+                                s.mediumUsed.ToLower().Contains(search.ToLower()) || 
+                                s.otherArtistName.ToLower().Contains(search.ToLower()) ||
+                                s.otherArtistAddress.ToLower().Contains(search.ToLower()) ||
+                                s.SellerAccount.nickName.ToLower().Contains(search.ToLower()) ||
+                                s.Category.name.ToLower().Contains(search.ToLower()) ||
+                                s.SellerAccount.UserProfiles.FirstOrDefault().province.ToLower().Contains(search.ToLower()));
+
+            }else if(!string.IsNullOrEmpty(artist))
+            {
+                forSales = forSales.Where(s => s.SellerAccount.nickName.ToLower().Contains(artist.ToLower()));
+            }
+            else if(!string.IsNullOrEmpty(category))
+            {
+                forSales = forSales.Where(s => s.Category.name.ToLower().Contains(category.ToLower()));
+            }
+
+
+            return View(forSales.ToList());
         }
+
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public ActionResult Gallery(string Search)
+        //{
+        //    var model = db.ForSales.Where(r => r.ForPosting && r.Sold == false).ToList();
+
+
+
+        //    return View(model);
+        //}
+
+        [ChildActionOnly]
+        public ActionResult ShopLeftPanel()
+        {
+            ShopLayoutViewModel model = new ShopLayoutViewModel();
+            var categ = db.Categories.ToList();
+            var artist = db.UserAccounts.Where(art => art.ForSaleSeller.Count >= 1).Take(10).OrderBy(n => n.ForSaleSeller.Count).ToList();
+
+            model.Categories = categ;
+            model.UserAccounts = artist;
+
+            return PartialView("_ShopLeftPanel", model);
+        }
+
+
 
         // GET: /Shop/Details/5
         [AllowAnonymous]
@@ -453,18 +501,18 @@ namespace ArtProject2016.Controllers
                     //     delCart.EmptyCart();
 
                     //send mail
-                    string subject = "<website> Order Confirmation #: "+ newOrder.Id;
+                    string subject = "<website> Order Confirmation #: " + newOrder.Id;
                     //default value if not bank
                     string bankDetails = "Please wait for another email confirmation about your payment. Thank you";
 
-                    if(viewModel.PaymentType == "Bank")
+                    if (viewModel.PaymentType == "Bank")
                     {
                         bankDetails = "Total Amount to be paid:" + viewModel.Total;
                     }
 
                     var controls = new EmailControls();
                     string body = "<strong>Thank you for supporting local artist from <website>. </strong> <br/> <br/> " +
-                                  "<br/> <br/>Your Order #" + newOrder.Id +" <br/> <br/> has been placed on "+ DateTime.Now.ToShortDateString() + " via " + viewModel.PaymentType + " Payment." +
+                                  "<br/> <br/>Your Order #" + newOrder.Id + " <br/> <br/> has been placed on " + DateTime.Now.ToShortDateString() + " via " + viewModel.PaymentType + " Payment." +
                                   "<br/> <br/> " + bankDetails + "<br/> <br/> orderDetails here <br/> <br/> <em><small>Note: If you cancelled your order thru Paypal/Credit card payment, please disregard this email. </small> </em>";
 
                     string content = controls.PopulateBody("Website Order Confirmation", viewModel.UserAccount.firstName, body);
@@ -491,7 +539,7 @@ namespace ArtProject2016.Controllers
                         return Redirect("OrdersComplete");
                     }
 
-               
+
 
                     // return RedirectToAction("Cart");
                 }

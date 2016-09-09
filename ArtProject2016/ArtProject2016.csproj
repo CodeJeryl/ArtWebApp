@@ -413,12 +413,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArtController.cs" />
+    <Compile Include="Controllers\ArtistController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SellController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
-    <Compile Include="Controllers\testController.cs" />
     <Compile Include="Functions\AccountControls.cs" />
     <Compile Include="Functions\ArtControls.cs" />
     <Compile Include="Functions\CartControls.cs" />
@@ -426,6 +426,7 @@
     <Compile Include="Functions\Membership.cs" />
     <Compile Include="Functions\PaypalControls.cs" />
     <Compile Include="Functions\SellControls.cs" />
+    <Compile Include="Functions\ShopControls.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -458,6 +459,7 @@
     <Compile Include="ViewModel\registerViewModel.cs" />
     <Compile Include="ViewModel\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModel\ShipmentViewModel.cs" />
+    <Compile Include="ViewModel\ShopLayoutViewModel.cs" />
     <Compile Include="ViewModel\UpdateArtistViewModel.cs" />
     <Compile Include="ViewModel\uploadViewModel.cs" />
     <Compile Include="ViewModel\VerificationViewModel.cs" />
@@ -536,6 +538,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\OrderDetails.cshtml" />
     <Content Include="Views\Admin\EditOrderDetails.cshtml" />
+    <Content Include="Views\Shop\_ShopLeftPanel.cshtml" />
+    <Content Include="Views\Shared\_SearchBox.cshtml" />
+    <Content Include="Views\Artist\MyGallery.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

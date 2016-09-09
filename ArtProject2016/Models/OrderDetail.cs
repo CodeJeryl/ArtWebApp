@@ -30,6 +30,8 @@ namespace ArtProject2016.Models
         public string ReturnedTrackingNumber { get; set; }
 
         public bool BuyerReceived { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? BuyerReceivedDateTime { get; set; }
 
         public bool ReadyToRedeem { get; set; }
