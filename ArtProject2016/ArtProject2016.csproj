@@ -455,6 +455,7 @@
     <Compile Include="ViewModel\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
+    <Compile Include="ViewModel\MyGalleryViewModel.cs" />
     <Compile Include="ViewModel\PayoutViewModel.cs" />
     <Compile Include="ViewModel\registerViewModel.cs" />
     <Compile Include="ViewModel\ResetPasswordViewModel.cs" />
@@ -541,6 +542,7 @@
     <Content Include="Views\Shop\_ShopLeftPanel.cshtml" />
     <Content Include="Views\Shared\_SearchBox.cshtml" />
     <Content Include="Views\Artist\MyGallery.cshtml" />
+    <Content Include="Views\Artist\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,140 +1,204 @@
-﻿
-@model IEnumerable<ArtProject2016.Models.ForSale>
+﻿@model ArtProject2016.ViewModel.MyGalleryViewModel
 
 @{
-    ViewBag.Title = "Gallery";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Artist Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Current = Model.UserAccount.nickName;
 }
 
+<script>
+
+    //        $('#searchArtist').attr('MyGallery', 'Artist/' + $('#nickName').val()).submit();
+    //        //$.ajax({
+    //        //    type: "POST",
+    //        //    contentType: "application/json; charset=utf-8",
+    //        //    url: "Artist/" + $('#nickName').val(),
+    //        //   error: function (xhr, ajaxOptions, thrownError) { alert(xhr.responseText); }
+    //        //});
+    //   
+
+    $(document).ready(function () {
+        $("#nickName").keyup(function (e) {
+            if (e.keyCode == 13) {
+                var name = $('#nickName').val();
+                var url = '@Url.Action("MyGallery", "Artist", new { nickName = "_nick_" }, null)';
+                window.location.href = url.replace('_nick_', name);
+            }
+        });
+        $('#nickSearch').click(function () {
+            var name = $('#nickName').val();
+            var url = '@Url.Action("MyGallery", "Artist", new { nickName = "_nick_" }, null)';
+            window.location.href = url.replace('_nick_', name);
+        });
+
+    });
+</script>
+
+<div id="content">
+    <div class="container">
+
+        <div class="col-md-12">
+
+            <ul class="breadcrumb">
+                <li><a href="#">Search Artist</a>
+                </li>
+                <li>@ViewBag.Title</li>
+
+            </ul>
+        </div>
 
 
-<div class="box">
-                <h1>Paintings</h1>
+
+
+
+
+        <div class="col-md-3">
+            <!-- *** CUSTOMER MENU ***
+                _________________________________________________________ -->
+            <div class="panel panel-default sidebar-menu">
+               
+              
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">Search Artist here</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills nav-stacked">
+                          <li>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="nickName" id="nickName">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary" id="nickSearch"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+
+
+                </li>
+                    </ul>
+                </div>
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">Other Artists</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <ul class="nav nav-pills nav-stacked">
+                        @*<li>
+                            <a href="customer-account.html"><i class="fa fa-user"></i>My account</a>
+                        </li>*@
+                        @foreach (var item in Model.ForSalesArtist)
+                        {
+                            <li class="@(ViewBag.Current == item.nickName ? "active" : "")">
+                                @Html.ActionLink(item.nickName, "MyGallery", "Artist", new { item.nickName }, new { @class = "text-center" })
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+            <!-- /.col-md-3 -->
+
+            <!-- *** CUSTOMER MENU END *** -->
+        </div>
+
+
+
+        <div class="col-md-9">
+            <div class="box" id="details">
+                <h1>Artist: @Model.UserAccount.nickName</h1>
                 <p>We offer wide selection of the best artworks and uploaded by local artist.</p>
             </div>
 
-            <div class="box info-bar">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 products-showing">
-                           <div class="products-sort-by form-inline">
-                                        <strong>Sort by</strong>
-                                        <select name="sort-by" class="form-control">
-                                            <option>Price (Lowest to Highest)</option>
-                                            <option>Price (Highest to Lowest)</option>
-                                            <option>Sales first</option>
-                                        </select>
-                                    </div>
-                    </div>
+            <div class="row products">
 
-                    <div class="col-sm-12 col-md-6  products-number-sort">
-                        <div class="row">
-                            <form class="form-inline">
-                                <div class="col-md-8 col-sm-12">
-                                    @Html.Partial("_SearchBox")
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    @using(Html.BeginForm("Gallery","Shop",FormMethod.Get))
-                                    {
-                                         <input id="resetBtn" type="button" class="btn btn-success" value="Reset fields"/>
-                                    }
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-<div class="row products">
-    
-    @if(Model.Count() > 0)
-    {
-    foreach (var item in Model)
-    {
-        <div class="col-md-4 col-sm-6">
-
-            <div class="product">
-                           
-                <div class="flip-container">
-                    <div class="flipper">
-
-                        <div class="front">
-
-                            <a href="/Shop/ArtDetails/@item.Id">
-                                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="back">
-                            <a href="/Shop/ArtDetails/@item.Id">
-                                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                <a href="/Shop/ArtDetails/@item.Id" class="invisible">
-                    <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
-                </a>  
-                           
-                <div class="text">
-                    <p class="title"><a href="/Shop/ArtDetails/@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></p>
-                    <p class="subtitle">@Html.DisplayFor(modelItem => item.hSize)" Height x @Html.DisplayFor(modelItem => item.wSize)" Width </p>
-                    <br />
-                    <div class="col-md-6 col-sm-6">
-
-                        @if (item.otherArtist)
-                        {
-                            <p class="name">@Html.DisplayFor(modelItem => item.otherArtistName)</p>
-                            <p class="name">@Html.DisplayFor(modelItem => item.otherArtistAddress)</p>
-                        }
-                        else
-                        {
-                            <p class="name">@Html.DisplayFor(modelItem => item.SellerAccount.nickName)</p>
-                            <p class="sub">@Html.DisplayFor(modelItem => item.SellerAccount.UserProfiles.SingleOrDefault().province)</p>
-                        }
-                                   
-                    </div>
-
-                    <div class="col-md-6 col-sm-6">
-
-                        <p class="price">@Html.DisplayFor(modelItem => item.Price)</p>
-                    </div>
-
-                          
-                    <p class="buttons">
-                        <hr/>
-                        @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.Id }, new { @class = "btn-lg btn-primary buttonC" })
-                    </p>
-                </div>
-                <!-- /.text -->
-                @if (item.Sold)
+                @if (Model.ForSales.Any())
                 {
-                    <div class="ribbon new">
-                        <div class="theribbon">SOLD!</div>
-                        <div class="ribbon-background"></div>
+                    foreach (var item in Model.ForSales)
+                    {
+                    <div class="col-md-4 col-sm-6">
+
+                        <div class="product">
+
+                            <div class="flip-container">
+                                <div class="flipper">
+
+                                    <div class="front">
+                                        <a href="/Shop/ArtDetails/@item.Id">
+                                            <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="/Shop/ArtDetails/@item.Id">
+                                            <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <a href="/Shop/ArtDetails/@item.Id" class="invisible">
+                                <img src="@Url.Content(item.Path)" alt="" class="img-responsive">
+                            </a>
+
+                            <div class="text">
+                                <p class="title"><a href="/Shop/ArtDetails/@item.Id">@Html.DisplayFor(modelItem => item.Title)</a></p>
+                                <p class="subtitle">@Html.DisplayFor(modelItem => item.hSize)" Height x @Html.DisplayFor(modelItem => item.wSize)" Width </p>
+                                <br />
+                                <div class="col-md-6 col-sm-6">
+
+                                    @if (item.otherArtist)
+                                    {
+                                        <p class="name">@Html.DisplayFor(modelItem => item.otherArtistName)</p>
+                                        <p class="name">@Html.DisplayFor(modelItem => item.otherArtistAddress)</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="name">@Html.DisplayFor(modelItem => item.SellerAccount.nickName)</p>
+                                        <p class="sub">@Html.DisplayFor(modelItem => item.SellerAccount.UserProfiles.SingleOrDefault().province)</p>
+                                    }
+
+                                </div>
+
+                                <div class="col-md-6 col-sm-6">
+
+                                    <p class="price">@Html.DisplayFor(modelItem => item.Price)</p>
+                                </div>
+
+
+                                <p class="buttons">
+                                    <hr />
+                                    @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.Id }, new { @class = "btn-lg btn-primary buttonC" })
+                                </p>
+                            </div>
+                            <!-- /.text -->
+                            @if (item.Sold)
+                            {
+                                <div class="ribbon new">
+                                    <div class="theribbon">SOLD!</div>
+                                    <div class="ribbon-background"></div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- /.product -->
+                    </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-md-4 col-sm-6 box">
+
+                        <h1>No results found. Search another artwork :)</h1>
+
+                        <ul>
+                            <strong>Recommendations! </strong>
+                            <li>Search for Artist Name or even the province where the artwork originated</li>
+                            <li>Search for the materials used in the artwork like oil, water color, pencil,etc..</li>
+                        </ul>
+
                     </div>
                 }
             </div>
-
-            <!-- /.product -->
-        </div>
-    }
-    }else
-    {
-        <div class="col-md-12 col-sm-12 box">
-            
-            <h1>No results found. Search another artwork :)</h1>
-            
-            <ul>
-               <strong>Recommendations! </strong> 
-                <li> Search for Artist Name or even the province where the artwork originated</li>
-                <li>Search for the materials used in the artwork like oil, water color, pencil,etc..</li>
-            </ul>
-        
-        </div>
-    }
-</div>
 
             <!-- /.products -->
 
@@ -162,5 +226,8 @@
                 </ul>
             </div>
 
-
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
 

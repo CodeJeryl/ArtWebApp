@@ -1,0 +1,104 @@
+﻿@model ArtProject2016.ViewModel.MyGalleryViewModel
+
+@{
+    ViewBag.Title = "Artist Not Found!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div id="content">
+    <div class="container">
+        <div class="col-md-12">
+
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a>
+                </li>
+                <li>@ViewBag.Title</li>
+            </ul>
+
+        </div>
+
+
+
+
+
+        <div class="col-md-12">
+
+            <div class="row">
+
+                <div class="col-sm-12 col-md-12  products-number-sort">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <div class="box" id="details">
+                                <h1>We can't find artist - "@ViewBag.NotFound"</h1>
+                                <p>
+                                   <h4>  Suggestions:</h4>
+                                    <ul>
+                                       
+                                        <li>Make sure that artist name is spelled correctly.</li>
+                                        <li>Artist may use nickname or pseudo name</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4 col-sm-12 box">
+                            @using (Html.BeginForm("MyGallery", "Artist", FormMethod.Post))
+                            {
+                                <h3>Give it another shot.</h3>
+                                <h4>Search it here!</h4>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="nickName" id="nickName">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                     </span>
+                                </div>
+                            }
+                               <br/> <br/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="col-md-12">
+            <!-- *** CUSTOMER MENU ***
+            _________________________________________________________ -->
+            <div class="panel panel-default sidebar-menu">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">Suggested Artists</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <ul class="nav nav-pills nav-stacked">
+                        @*<li>
+                            <a href="customer-account.html"><i class="fa fa-user"></i>My account</a>
+                        </li>*@
+                        @foreach (var item in Model.ForSalesArtist)
+                        {
+                            <li class="@(ViewBag.Current == item.nickName ? "active" : "")">
+                                @Html.ActionLink(item.nickName, "MyGallery", "Artist", new { item.nickName }, new { @class = "text-center" })
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+            <!-- /.col-md-3 -->
+
+            <!-- *** CUSTOMER MENU END *** -->
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
+

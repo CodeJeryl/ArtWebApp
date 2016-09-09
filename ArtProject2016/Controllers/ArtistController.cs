@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ArtProject2016.Models;
+using ArtProject2016.ViewModel;
 
 namespace ArtProject2016.Controllers
 {
@@ -19,10 +20,37 @@ namespace ArtProject2016.Controllers
         public ActionResult MyGallery(string nickName)
         {
             nickName = Server.HtmlEncode(nickName);
+            MyGalleryViewModel model = new MyGalleryViewModel();
 
+            var MyAccnt = db.UserAccounts.FirstOrDefault(acc => acc.nickName == nickName);
+
+            if(MyAccnt == null)
+            {
+               // TempData["notFound"] = nickName;
+               
+                return RedirectToAction("NotFound", new { id = nickName });
+            }
+
+            var OtherArtist = db.UserAccounts.Where(oth => oth.ForSaleSeller.Any()).Take(20).ToList();
             var MyArt = db.ForSales.Where(art => art.SellerAccount.nickName == nickName).ToList();
             
-            return View(MyArt);
+           
+            model.ForSales = MyArt;
+            model.UserAccount = MyAccnt;
+            model.ForSalesArtist = OtherArtist;
+
+            return View(model);
+        }
+        
+        [HttpGet]
+        public ActionResult NotFound(string id)
+        {
+            var OtherArtist = db.UserAccounts.Where(oth => oth.ForSaleSeller.Any()).Take(20).ToList();
+            ViewBag.NotFound = id; ;
+            MyGalleryViewModel model = new MyGalleryViewModel();
+            model.ForSalesArtist = OtherArtist;
+
+            return View(model);
         }
 
 	}
