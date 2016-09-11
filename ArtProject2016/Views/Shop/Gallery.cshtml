@@ -1,6 +1,7 @@
 ﻿@using ArtProject2016.Models
 @model IEnumerable<ArtProject2016.Models.ForSale>
-
+@*@model PagedList.IPagedList<ForSale>*@
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "Shop Gallery";
@@ -141,8 +142,11 @@
                 <p class="loadMore">
                     <a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i>Load more</a>
                 </p>
-
-                <ul class="pagination">
+                
+                
+                @*  Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page > Url.Action("Gallery", new { page, currentFilter = ViewBag.currentFilter }))
+               <ul class="pagination">
                     <li><a href="#">&laquo;</a>
                     </li>
                     <li class="active"><a href="#">1</a>
@@ -157,7 +161,7 @@
                     </li>
                     <li><a href="#">&raquo;</a>
                     </li>
-                </ul>
+                </ul>*@
             </div>
 
 

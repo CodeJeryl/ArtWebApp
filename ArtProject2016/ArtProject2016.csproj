@@ -55,6 +55,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="PayPalCoreSDK">
       <HintPath>..\packages\PayPalCoreSDK.1.7.1\lib\net45\PayPalCoreSDK.dll</HintPath>
     </Reference>
@@ -187,6 +193,7 @@
     <Content Include="Content\img\slider3.jpg" />
     <Content Include="Content\img\slider4.jpg" />
     <Content Include="Content\jquery.steps.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="EmailTemplate\Default.html" />
     <Content Include="EmailTemplate\DefaultTemplate.html" />
@@ -433,6 +440,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ArtContext.cs" />
     <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\ContactUs.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderTracking.cs" />
@@ -543,6 +551,8 @@
     <Content Include="Views\Shared\_SearchBox.cshtml" />
     <Content Include="Views\Artist\MyGallery.cshtml" />
     <Content Include="Views\Artist\NotFound.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

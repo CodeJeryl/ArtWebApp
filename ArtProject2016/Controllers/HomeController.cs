@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ArtProject2016.Functions;
 using ArtProject2016.Migrations;
 using ArtProject2016.Models;
 
@@ -25,83 +26,56 @@ namespace ArtProject2016.Controllers
 
             return View();
         }
-        
-        // GET: /Home/Details/5
-        public ActionResult Details()
+
+        [HttpGet]
+        public ActionResult ContactUs()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult ContactUs(ContactUs model)
+        {
+            using (ArtContext db = new ArtContext())
+            {
+                if (ModelState.IsValid)
+                {
+                    db.ContactUses.Add(model);
+                    db.SaveChanges();
+                    TempData["success"] =
+                        "Your Message is successfully sent. Please give us 24-48hours to respond to your email. Thank you!";
+
+                     string subject = "We received your message =)";
+
+                          //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
+                            var controls = new EmailControls();
+                            //   string content = controls.PopulateBody(firstName, resetLink);  
+                            string body = "<strong>Thank you for contacting us. </strong> <br/> <br/> " +
+                                "Subject: " + model.Subject + "<br/> Message: "+ model.Message +
+
+                                "<br/> <br/>Please give us 24-48 hours to respond to your message. Thank you" +
+                                "<br/> <br/> While waiting for our reply, feel free to browse our Online Gallery."; ;
+                            string content = controls.PopulateBody("Message Received", model.FullName, body);
+                    
+                                EmailControls.sendEmail("jerylsuarez@gmail.com", model.EmailAdd, "", "", subject, content);
+                               
+                    return RedirectToAction("ContactUs");
+                }
+                return View(model);
+            }
+            
         }
 
         //
         // GET: /Home/Create
-        public ActionResult Create()
+        public ActionResult FAQ()
         {
             return View();
         }
 
+       
         //
         // POST: /Home/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Home/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Home/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Home/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Home/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+     
     }
 }

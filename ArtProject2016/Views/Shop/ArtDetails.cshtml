@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
         $('#wish').click(function () {
             var add = $(this).attr('data-id');
             $.ajax({
@@ -25,7 +25,7 @@
                 }
             });
         });
-        
+
         $('#removeWish').click(function () {
             var remove = $(this).attr('data-id');
             $.ajax({
@@ -84,32 +84,32 @@
                     {
                         if (!Model.ForSale.Carts.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
                         {
-                         @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
+                    @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
                         }
                         else
                         {
-                         @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
                         }
 
                         if (!Model.ForSale.WishLists.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
                         {
-                            <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
+                    <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
                         }
                         else
                         {
-                         <span href="#" class="btn btn-danger" id="removeWish" data-id="@Model.ForSale.Id">Remove to Wishlist?</span>
+                    <span href="#" class="btn btn-danger" id="removeWish" data-id="@Model.ForSale.Id">Remove to Wishlist?</span>
                         }
                     }
                     else
                     {
-                         <a href="@Url.Action("Gallery","Shop")" class="btn btn-danger">Art not Available, Go back to Gallery</a>
+                    <a href="@Url.Action("Gallery", "Shop")" class="btn btn-danger">Art not Available, Go back to Gallery</a>
                     }
                 }
                 else
                 {
-                     @Html.ActionLink("Please Login to Add to Cart/Wishlist", "RegLogin", "Auth", new { returnUrl = ViewBag.ReturnUrl }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Please Login to Add to Cart/Wishlist", "RegLogin", "Auth", new { returnUrl = ViewBag.ReturnUrl }, new { @class = "btn btn-primary" })
                 }
-@*@Html.ActionLink("Add to Wishlist", "Wishlist", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-default" })*@
+                @*@Html.ActionLink("Add to Wishlist", "Wishlist", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-default" })*@
 
             </p>
         </div>

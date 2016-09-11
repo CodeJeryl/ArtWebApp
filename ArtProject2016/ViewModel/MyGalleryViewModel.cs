@@ -10,6 +10,7 @@ namespace ArtProject2016.ViewModel
     {
         public virtual UserAccount UserAccount { get; set; }
         public List<ForSale> ForSales { get; set; }
-        public List<UserAccount> ForSalesArtist { get; set; } 
+        public List<UserAccount> ForSalesArtist { get; set; }
+       // public List<UserAccount> ForSalesArtist { get; set; } 
     }
 }

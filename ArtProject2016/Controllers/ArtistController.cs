@@ -46,9 +46,11 @@ namespace ArtProject2016.Controllers
         public ActionResult NotFound(string id)
         {
             var OtherArtist = db.UserAccounts.Where(oth => oth.ForSaleSeller.Any()).Take(20).ToList();
+            var CloseEnough = db.ForSales.Where(clo => clo.SellerAccount.nickName.Contains(id)).ToList();
             ViewBag.NotFound = id; ;
             MyGalleryViewModel model = new MyGalleryViewModel();
             model.ForSalesArtist = OtherArtist;
+            model.ForSales = CloseEnough;
 
             return View(model);
         }

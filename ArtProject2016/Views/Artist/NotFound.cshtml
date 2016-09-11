@@ -32,14 +32,28 @@
                         <div class="col-md-8 col-sm-12">
                             <div class="box" id="details">
                                 <h1>We can't find artist - "@ViewBag.NotFound"</h1>
+                                <p> 
+                                    @if (Model.ForSales.Any())
+                                    { 
+                                        @:<h4>Did you mean:</h4>
+                                       <ul>
+                                        @foreach (var item in Model.ForSales)
+                                        {
+                                        <li class="text-large">
+                                            @Html.ActionLink(item.SellerAccount.nickName, "MyGallery", "Artist", new { item.SellerAccount.nickName }, new { @class = "text-center" })
+                                        </li>
+                                        }</ul>
+                                    }
+                                </p>
                                 <p>
-                                   <h4>  Suggestions:</h4>
+                                    <h4>Suggestions:</h4>
                                     <ul>
-                                       
+
                                         <li>Make sure that artist name is spelled correctly.</li>
                                         <li>Artist may use nickname or pseudo name</li>
                                     </ul>
                                 </p>
+
                             </div>
                         </div>
 
@@ -54,10 +68,11 @@
                                     <input type="text" class="form-control" placeholder="Search" name="nickName" id="nickName">
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                     </span>
+                                    </span>
                                 </div>
                             }
-                               <br/> <br/>
+                            <br />
+                            <br />
                         </div>
 
                     </div>

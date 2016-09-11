@@ -12,6 +12,7 @@ using ArtProject2016.ViewModel;
 using PayPal.PayPalAPIInterfaceService;
 using PayPal.PayPalAPIInterfaceService.Model;
 using WebMatrix.WebData;
+using PagedList;
 
 
 namespace ArtProject2016.Controllers
@@ -24,8 +25,19 @@ namespace ArtProject2016.Controllers
         // GET: /Shop/Gallery
         [AllowAnonymous]
         [HttpGet]
-        public ViewResult Gallery(string search,string artist,string category)
+        public ViewResult Gallery(string search,string artist,string category,string currentFilter,int? page)
         {
+            if(search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
+
+            ViewBag.currentFilter = search;
+
             var forSales = db.ForSales.Where(r => r.ForPosting && r.Sold == false);
 
             if(!string.IsNullOrEmpty(search))
@@ -48,8 +60,10 @@ namespace ArtProject2016.Controllers
                 forSales = forSales.Where(s => s.Category.name.ToLower().Contains(category.ToLower()));
             }
 
-
-            return View(forSales.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+          //  return View(forSales.ToPagedList(pageNumber, pageSize));
+           return View(forSales.ToList());
         }
 
         //[AllowAnonymous]

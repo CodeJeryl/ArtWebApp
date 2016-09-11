@@ -43,21 +43,23 @@
                 <li><a href="#">Search Artist</a>
                 </li>
                 <li>@ViewBag.Title</li>
-
             </ul>
         </div>
-
-
-
-
-
-
+        
         <div class="col-md-3">
             <!-- *** CUSTOMER MENU ***
                 _________________________________________________________ -->
             <div class="panel panel-default sidebar-menu">
                
-              
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">Share Profile to Social media</h3>
+                </div>
+                  <div class="panel-body">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                    </ul>
+                </div>
                 <div class="panel-heading">
                     <h3 class="panel-title text-center">Search Artist here</h3>
                 </div>
@@ -70,8 +72,6 @@
                             <button type="submit" class="btn btn-primary" id="nickSearch"><i class="fa fa-search"></i></button>
                         </span>
                     </div>
-
-
                 </li>
                     </ul>
                 </div>
@@ -100,12 +100,26 @@
             <!-- *** CUSTOMER MENU END *** -->
         </div>
 
-
-
         <div class="col-md-9">
             <div class="box" id="details">
-                <h1>Artist: @Model.UserAccount.nickName</h1>
-                <p>We offer wide selection of the best artworks and uploaded by local artist.</p>
+               
+                <h1>@Model.UserAccount.nickName</h1>
+                <p>Welcome to my Gallery =) Feel free to view my masterpieces.</p>
+                
+                <hr/>
+                <h4>
+                    From the province of @Model.UserAccount.UserProfiles.SingleOrDefault().province
+                </h4><br/>
+              
+                <h4>Artist description</h4> 
+                <blockquote>
+                    @Model.UserAccount.UserProfiles.SingleOrDefault().profileDesc
+                </blockquote>
+                
+              
+                <h4>Exhibits attended:</h4>
+                <p>@Model.UserAccount.UserProfiles.SingleOrDefault().Exhibitions</p>  
+              
             </div>
 
             <div class="row products">
@@ -195,7 +209,6 @@
                             <li>Search for Artist Name or even the province where the artwork originated</li>
                             <li>Search for the materials used in the artwork like oil, water color, pencil,etc..</li>
                         </ul>
-
                     </div>
                 }
             </div>
