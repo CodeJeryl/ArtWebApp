@@ -27,7 +27,11 @@ namespace ArtProject2016.ViewModel
         [Required]
         public string nickName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please choose your Account type.")]
         public string userType { get; set; }
+
+        [Required(ErrorMessage = "You need to accept terms and agreements, Thank you!")]
+        [Display(Name = "Check if you accept terms & Agreements")]
+        public bool AcceptTerms { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace ArtProject2016.Controllers
             {
                 if (Functions.Membership.UserLogin(model.userName, model.password))
                 {
-                    if(!string.IsNullOrEmpty(returnUrl))
+                    if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return RedirectToLocal(returnUrl);
                     }
@@ -76,7 +76,7 @@ namespace ArtProject2016.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult _Register(registerViewModel model,string returnUrl)
+        public ActionResult _Register(registerViewModel model, string returnUrl)
         {
             try
             {
@@ -86,36 +86,43 @@ namespace ArtProject2016.Controllers
 
                     if (!user.Any())
                     {
-                        if(Functions.Membership.UniqueNickname(model.nickName))
+                        if (Functions.Membership.UniqueNickname(model.nickName))
                         {
-                        if (Functions.Membership.RegisterIsValid(model))
-                        {
-                            //send mail
-                            string subject = "Account Registration Successful";
-
-                          //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
-                            var controls = new EmailControls();
-                            //   string content = controls.PopulateBody(firstName, resetLink);  
-                            string voucher = "Use this voucher on your first purchase:  <strong><voucherName></strong>";
-                            string body = "<strong>Thank you for registration in <website>. </strong> <br/> <br/> " + voucher +
-                                "<br/> <br/> feel free to see our Online Gallery!";
-                            string content = controls.PopulateBody("Registration Successful", model.firstName, body);
-
-                            try
+                            if (model.AcceptTerms)
                             {
-                                EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, content);
-                               
-                                if (!string.IsNullOrEmpty(returnUrl))
+                                if (Functions.Membership.RegisterIsValid(model))
                                 {
-                                    return RedirectToLocal(returnUrl);
+                                    //send mail
+                                    string subject = "Account Registration Successful";
+
+                                    //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
+                                    var controls = new EmailControls();
+                                    //   string content = controls.PopulateBody(firstName, resetLink);  
+                                    string voucher = "Use this voucher on your first purchase:  <strong><voucherName></strong>";
+                                    string body = "<strong>Thank you for joining us in blankwebsite. </strong> <br/> <br/> " + voucher +
+                                        "<br/> <br/> feel free to see our Online Gallery!";
+                                    string content = controls.PopulateBody("Registration Successful", model.firstName, body);
+
+                                    try
+                                    {
+                                        EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, content);
+                                        TempData["success"] = "Account successfully created. Thank you!";
+                                        if (!string.IsNullOrEmpty(returnUrl))
+                                        {
+                                            return RedirectToLocal(returnUrl);
+                                        }
+                                        return RedirectToAction("Index", "Account");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        // TempData["error"] = "Error occured while sending email." + ex.Message;
+                                    }
                                 }
-                                return RedirectToAction("Index", "Account");
                             }
-                            catch (Exception ex)
+                            else
                             {
-                               // TempData["error"] = "Error occured while sending email." + ex.Message;
+                                ModelState.AddModelError("AcceptTerms", "You need to accept term and agreements, Thank you!");
                             }
-                        }
                         }
                         else
                         {
@@ -128,9 +135,9 @@ namespace ArtProject2016.Controllers
                     }
 
                 }
-                
+
                 return View(model);
-            } 
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
@@ -151,9 +158,9 @@ namespace ArtProject2016.Controllers
             // Username is also the Email Address
             var user = Membership.GetUser(model.userName);
 
-            if(user == null)
+            if (user == null)
             {
-                ModelState.AddModelError("","User/Email not exist");
+                ModelState.AddModelError("", "User/Email not exist");
                 TempData["error"] = "User/Email not exist, Please try again";
             }
             else
@@ -164,15 +171,15 @@ namespace ArtProject2016.Controllers
 
                 //send mail
                 string subject = "Art: Password Reset Token";
-                
+
                 var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
                 var controls = new EmailControls();
                 //   string content = controls.PopulateBody(firstName, resetLink);  
 
                 string body = "<b>Please click the link below to change your password. </b> <br/> <br/> " + resetLink +
-                    "<br/> you have 24 hours before the link expires. <br/> <br/> Thank you!"; 
-                string content = controls.PopulateBody("Password Reset",firstName,body);
-              
+                    "<br/> you have 24 hours before the link expires. <br/> <br/> Thank you!";
+                string content = controls.PopulateBody("Password Reset", firstName, body);
+
                 try
                 {
                     EmailControls.sendEmail("jerylsuarez@gmail.com", model.userName, "", "", subject, content);
@@ -183,7 +190,7 @@ namespace ArtProject2016.Controllers
                     TempData["error"] = "Error occured while sending email." + ex.Message;
                 }
                 //only for testing
-             //   TempData["Message"] = resetLink;
+                //   TempData["Message"] = resetLink;
             }
             return View("RegLogin");
         }
@@ -195,15 +202,15 @@ namespace ArtProject2016.Controllers
             model.rt = rt;
 
             return View(model);
-       }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPasswordViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(WebSecurity.ResetPassword(model.rt, model.NewPassword))
+                if (WebSecurity.ResetPassword(model.rt, model.NewPassword))
                 {
                     TempData["success"] = "Password Changed. You can now login";
                 }
@@ -212,7 +219,7 @@ namespace ArtProject2016.Controllers
                     TempData["error"] = "Forgot password request token expired. Please click forgot password link below";
                 }
                 return RedirectToAction("RegLogin");
-                
+
             }
 
             return View(model);

@@ -52,9 +52,17 @@
             @Html.ValidationMessageFor(model => model.userType)
 
         </div>
+        <div class="form-group">
+          
+            @Html.CheckBoxFor(m => m.AcceptTerms, new { @style = "margin: 30px; transform: scale(3)"}) 
+                <a href="#" data-toggle="modal" data-target="#terms-modal" class="btn btn-default"> @Html.LabelFor(m => m.AcceptTerms)</a>
+        @Html.ValidationMessageFor(model => model.AcceptTerms)
+        </div>
                           
         <div class="text-center">
             <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i>Register</button>
         </div>
     }
+    
+    @Html.Partial("_TermsAgreement")
 </div>

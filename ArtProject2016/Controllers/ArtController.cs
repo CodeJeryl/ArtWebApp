@@ -129,7 +129,7 @@ namespace ArtProject2016.Controllers
             }
             //  ForSale forsale = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId || uid.Id == id);
 
-            var forsale = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
+            var forsale = db.ForSales.SingleOrDefault(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id && !uid.Sold);
             //    var album = db.ForSaleAlbums.Where(uid => uid.ForSaleId == id).ToList();
             var category = db.Categories.ToList();
 

@@ -46,7 +46,7 @@ namespace ArtProject2016.Controllers
             UpdateArtistViewModel viewModel = new UpdateArtistViewModel();
             viewModel.firstName = user.firstName;
             viewModel.lastName = user.lastName;
-          
+
             viewModel.nickName = user.nickName;
             viewModel.userType = user.userType;
             viewModel.UserProfile = artist;
@@ -55,7 +55,7 @@ namespace ArtProject2016.Controllers
             TempData["readonly"] = artist.isIdVerified;
             //a => a.UserAccountId == WebSecurity.CurrentUserId).First();
             return View(viewModel);
-            
+
         }
 
 
@@ -64,47 +64,55 @@ namespace ArtProject2016.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                var userToUpdate = context.UserAccounts.Find(WebSecurity.CurrentUserId);
+                //dapat kasi state.modified ginamit na code ko haha sorry! haba tuloy code
+                if (Functions.Membership.UniqueNickname(model.nickName) || userToUpdate.nickName.ToUpper() == model.nickName.ToUpper())
                 {
-                    var userToUpdate = context.UserAccounts.Find(WebSecurity.CurrentUserId);
-                    var artistToUpdate = context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
-
-                    ViewBag.ReadOnly = artistToUpdate.isIdVerified;
-
-                    userToUpdate.firstName = model.firstName.ToUpper();
-                    userToUpdate.lastName = model.lastName.ToUpper();
-                 
-                    string[] lastRole = Roles.GetRolesForUser(WebSecurity.CurrentUserName);
-
-                    if (!Roles.IsUserInRole(model.userType))
+                    if (ModelState.IsValid)
                     {
-                        Roles.RemoveUserFromRole(WebSecurity.CurrentUserName, lastRole[0]);
+                        var artistToUpdate =
+                           context.UserProfiles.Single(a => a.UserAccountId == WebSecurity.CurrentUserId);
 
-                        userToUpdate.userType = model.userType;
-                        Roles.AddUserToRole(WebSecurity.CurrentUserName, model.userType);
+                        ViewBag.ReadOnly = artistToUpdate.isIdVerified;
+
+                        userToUpdate.firstName = model.firstName.ToUpper();
+                        userToUpdate.lastName = model.lastName.ToUpper();
+
+                        string[] lastRole = Roles.GetRolesForUser(WebSecurity.CurrentUserName);
+
+                        if (!Roles.IsUserInRole(model.userType))
+                        {
+                            Roles.RemoveUserFromRole(WebSecurity.CurrentUserName, lastRole[0]);
+
+                            userToUpdate.userType = model.userType;
+                            Roles.AddUserToRole(WebSecurity.CurrentUserName, model.userType);
+                        }
+
+                        userToUpdate.nickName = model.nickName;
+                        //push to designated user type (section)
+
+                        artistToUpdate.birthDay = model.UserProfile.birthDay;
+                        artistToUpdate.education = model.UserProfile.education;
+                        artistToUpdate.street = model.UserProfile.street;
+                        artistToUpdate.city = model.UserProfile.city;
+                        artistToUpdate.province = model.UserProfile.province;
+                        artistToUpdate.postalCode = model.UserProfile.postalCode;
+                        artistToUpdate.mobileNo = model.UserProfile.mobileNo;
+                        artistToUpdate.landLine = model.UserProfile.landLine;
+                        artistToUpdate.profileDesc = model.UserProfile.profileDesc;
+                        artistToUpdate.Exhibitions = model.UserProfile.Exhibitions;
+
+                        context.SaveChanges();
+                        ViewBag.Success = "Profile updated!";
+                        // Roles.DeleteCookie();
+                        return View();
+                        //    return RedirectToAction("Index");
                     }
+                    return View(model);
 
-                    userToUpdate.nickName = model.nickName;
-                    //push to designated user type (section)
-
-                    artistToUpdate.birthDay = model.UserProfile.birthDay;
-                    artistToUpdate.education = model.UserProfile.education;
-                    artistToUpdate.street = model.UserProfile.street;
-                    artistToUpdate.city = model.UserProfile.city;
-                    artistToUpdate.province = model.UserProfile.province;
-                    artistToUpdate.postalCode = model.UserProfile.postalCode;
-                    artistToUpdate.mobileNo = model.UserProfile.mobileNo;
-                    artistToUpdate.landLine = model.UserProfile.landLine;
-                    artistToUpdate.profileDesc = model.UserProfile.profileDesc;
-                    artistToUpdate.Exhibitions = model.UserProfile.Exhibitions;
-
-                    context.SaveChanges();
-                    ViewBag.Success = "Profile updated!";
-                    // Roles.DeleteCookie();
-                    return View();
-                    //    return RedirectToAction("Index");
                 }
 
+                ModelState.AddModelError("nickName", "Nick Name is already taken, please choose another nickname");
                 return View(model);
             }
             catch
@@ -185,7 +193,7 @@ namespace ArtProject2016.Controllers
                 }
 
                 return RedirectToAction("UpdateProfile");
-               // return View("UpdateProfile");
+                // return View("UpdateProfile");
             }
             return View();
         }
@@ -205,44 +213,44 @@ namespace ArtProject2016.Controllers
             {
                 var tenDays = Convert.ToInt32(((date.BuyerReceivedDateTime.Value.AddDays(10) - DateTime.Now.Date).TotalDays));
 
-                if(tenDays <= 0)
+                if (tenDays <= 0)
                 {
                     date.ReadyToRedeem = true;
                     context.SaveChanges();
                 }
             }
-              
-                PayoutViewModel model = new PayoutViewModel();
-                SellControls sell = new SellControls();
 
-                model.PendingOrderDetails =context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid &&
-                                                   cash.OrderDetailStatus != "Cancelled" && cash.Returned != true && cash.ReadyToRedeem != true && cash.Redeemed != true).ToList();
+            PayoutViewModel model = new PayoutViewModel();
+            SellControls sell = new SellControls();
 
-                //cash.OrderDetailStatus == "Shipment Processing" || cash.OrderDetailStatus == "Shipped" || cash.OrderDetailStatus == "Paid" || cash.OrderDetailStatus == "Delivered"
-                model.RedeemOrderDetails =
-                    context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                                                  && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
+            model.PendingOrderDetails = context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid &&
+                                               cash.OrderDetailStatus != "Cancelled" && cash.Returned != true && cash.ReadyToRedeem != true && cash.Redeemed != true).ToList();
 
-                model.RedeemedOrderDetails = context.OrderDetails.Where(deemed => deemed.ForSale.SellerId == WebSecurity.CurrentUserId 
-                                                && deemed.Order.Paid && deemed.Redeemed).ToList();
+            //cash.OrderDetailStatus == "Shipment Processing" || cash.OrderDetailStatus == "Shipped" || cash.OrderDetailStatus == "Paid" || cash.OrderDetailStatus == "Delivered"
+            model.RedeemOrderDetails =
+                context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                              && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
 
-                model.Payouts = context.Payouts.Where(p => p.UserAccountsId == WebSecurity.CurrentUserId).ToList();
+            model.RedeemedOrderDetails = context.OrderDetails.Where(deemed => deemed.ForSale.SellerId == WebSecurity.CurrentUserId
+                                            && deemed.Order.Paid && deemed.Redeemed).ToList();
 
-                model.PendingAmt = sell.GetPending();
-                model.RedeemableAmt = sell.GetRedeemable();
-                model.RedeemedAmt = sell.GetRedemeeded();
+            model.Payouts = context.Payouts.Where(p => p.UserAccountsId == WebSecurity.CurrentUserId).ToList();
 
-                return View(model);
+            model.PendingAmt = sell.GetPending();
+            model.RedeemableAmt = sell.GetRedeemable();
+            model.RedeemedAmt = sell.GetRedemeeded();
+
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult RequestPayout(Payout model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-              var redeemed =
-                   context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
-                                                 && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
+                var redeemed =
+                     context.OrderDetails.Where(cash => cash.ForSale.SellerId == WebSecurity.CurrentUserId && cash.Order.Paid
+                                                   && cash.ReadyToRedeem && cash.BuyerReceived && cash.Redeemed != true && cash.Returned != true).ToList();
 
 
                 var payOut = new Payout()
@@ -265,17 +273,17 @@ namespace ArtProject2016.Controllers
 
                 context.SaveChanges();
 
-                  //send mail
-                            string subject = "Pay Out Request is now on process";
+                //send mail
+                string subject = "Pay Out Request is now on process";
 
-                            var controls = new EmailControls();
-                           string body = "<strong>Thank you for selling artworks in <website>. </strong> <br/> <br/> " +
-                                "<br/> <br/> You requested the amount: ₱ " + model.RedeemedPayoutAmt + "thru  " + model.PayOutMethod + "<br> <br>"
-                                +"with Payment information of - "+ model.PaymentInfo + "<br> <br> Please give us 5 working days to process your request. ";
-                           string content = controls.PopulateBody("Pay Out Request is now on process", model.FullName, body);
-                
-                             EmailControls.sendEmail("jerylsuarez@gmail.com", WebSecurity.CurrentUserName, "", "", subject, content);
-                             
+                var controls = new EmailControls();
+                string body = "<strong>Thank you for selling artworks in <website>. </strong> <br/> <br/> " +
+                     "<br/> <br/> You requested the amount: ₱ " + model.RedeemedPayoutAmt + "thru  " + model.PayOutMethod + "<br> <br>"
+                     + "with Payment information of - " + model.PaymentInfo + "<br> <br> Please give us 5 working days to process your request. ";
+                string content = controls.PopulateBody("Pay Out Request is now on process", model.FullName, body);
+
+                EmailControls.sendEmail("jerylsuarez@gmail.com", WebSecurity.CurrentUserName, "", "", subject, content);
+
                 return RedirectToAction("PayOut");
             }
             TempData["error"] = "Payout Request Incomplete, Please try again. Thank you!";
@@ -285,7 +293,7 @@ namespace ArtProject2016.Controllers
         public ActionResult Print()
         {
             return new ViewAsPdf("testPr", new { name = "jeryl" }) { FileName = "Test.pdf" };
-         //   return new ActionAsPdf("testPr", new {name ="jeryl"}) { FileName = "Test.pdf" };
+            //   return new ActionAsPdf("testPr", new {name ="jeryl"}) { FileName = "Test.pdf" };
         }
 
         public ActionResult testPr(string name)

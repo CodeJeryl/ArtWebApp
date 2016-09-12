@@ -71,7 +71,9 @@
                                     {
                                         <tr class="total">
                                         <th>Controls:</th>
-                                        <td>   @Html.ActionLink("Update Art Info", "Edit","Art", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                            <td>   @Html.ActionLink("Update Art Info", "Edit","Art", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                            </td>
+                                            <td>   @Html.ActionLink("View in Gallery", "ArtDetails","Shop", new { id = item.Id }, new { @class = "btn btn-primary" })
                                         </td>
                                         <td>   @Html.ActionLink("Delete Art", "DeleteArt","Art", new { id = item.Id }, new { @class = "btn btn-default" })
                                         </td>
