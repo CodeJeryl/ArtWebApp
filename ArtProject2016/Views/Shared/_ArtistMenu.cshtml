@@ -1,0 +1,9 @@
+﻿@model ArtProject2016.ViewModel.MenuViewModel
+ <ul>
+@foreach(var item in Model.ForSales)
+{
+   
+        <li>   @Html.ActionLink(item.SellerAccount.nickName, "Gallery", "Shop", new { Artist = @item.SellerAccount.nickName },null)
+                      </li>
+   
+} </ul>

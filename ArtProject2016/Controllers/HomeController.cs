@@ -9,18 +9,25 @@ using System.Web.Mvc;
 using ArtProject2016.Functions;
 using ArtProject2016.Migrations;
 using ArtProject2016.Models;
+using ArtProject2016.ViewModel;
 
 namespace ArtProject2016.Controllers
 {
     public class HomeController : Controller
     {
+        ArtContext db = new ArtContext();
         //
         // GET: /Home/
         public ActionResult Index()
         {
-            return View();
+            using (ArtContext context = new ArtContext())
+            {
+                var newArt = db.ForSales.Where(art => art.ForPosting).OrderByDescending(or => or.datePosted).Take(8).ToList();
+                return View(newArt);
+            }
+
         }
-        
+
         public ActionResult Gallery()
         {
 
@@ -36,34 +43,34 @@ namespace ArtProject2016.Controllers
         [HttpPost]
         public ActionResult ContactUs(ContactUs model)
         {
-            using (ArtContext db = new ArtContext())
+            using (ArtContext context = new ArtContext())
             {
                 if (ModelState.IsValid)
                 {
-                    db.ContactUses.Add(model);
-                    db.SaveChanges();
+                    context.ContactUses.Add(model);
+                    context.SaveChanges();
                     TempData["success"] =
                         "Your Message is successfully sent. Please give us 24-48hours to respond to your email. Thank you!";
 
-                     string subject = "We received your message =)";
+                    string subject = "We received your message =)";
 
-                          //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
-                            var controls = new EmailControls();
-                            //   string content = controls.PopulateBody(firstName, resetLink);  
-                            string body = "<strong>Thank you for contacting us. </strong> <br/> <br/> " +
-                                "Subject: " + model.Subject + "<br/> Message: "+ model.Message +
+                    //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
+                    var controls = new EmailControls();
+                    //   string content = controls.PopulateBody(firstName, resetLink);  
+                    string body = "<strong>Thank you for contacting us. </strong> <br/> <br/> " +
+                        "Subject: " + model.Subject + "<br/> Message: " + model.Message +
 
-                                "<br/> <br/>Please give us 24-48 hours to respond to your message. Thank you" +
-                                "<br/> <br/> While waiting for our reply, feel free to browse our Online Gallery."; ;
-                            string content = controls.PopulateBody("Message Received", model.FullName, body);
-                    
-                                EmailControls.sendEmail("jerylsuarez@gmail.com", model.EmailAdd, "", "", subject, content);
-                               
+                        "<br/> <br/>Please give us 24-48 hours to respond to your message. Thank you" +
+                        "<br/> <br/> While waiting for our reply, feel free to browse our Online Gallery."; ;
+                    string content = controls.PopulateBody("Message Received", model.FullName, body);
+
+                    EmailControls.sendEmail("jerylsuarez@gmail.com", model.EmailAdd, "", "", subject, content);
+
                     return RedirectToAction("ContactUs");
                 }
                 return View(model);
             }
-            
+
         }
 
         //
@@ -73,9 +80,27 @@ namespace ArtProject2016.Controllers
             return View();
         }
 
-       
-        //
-        // POST: /Home/Create
-     
+
+        [ChildActionOnly]
+        public PartialViewResult ArtistMenu()
+        {
+            MenuViewModel model = new MenuViewModel();
+
+            var artist = db.ForSales.GroupBy(sd => sd.SellerAccount.nickName).Take(5).Select(g => g.FirstOrDefault());
+            model.ForSales = artist.ToList();
+
+            return PartialView("_ArtistMenu", model);
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult CategoryMenu()
+        {
+            MenuViewModel model = new MenuViewModel();
+
+            var categ = db.Categories;
+            model.Categories = categ.Take(10).ToList();
+            return PartialView("_CategoryMenu", model);
+        }
+
     }
 }

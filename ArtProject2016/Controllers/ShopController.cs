@@ -57,7 +57,7 @@ namespace ArtProject2016.Controllers
             }
             else if(!string.IsNullOrEmpty(category))
             {
-                forSales = forSales.Where(s => s.Category.name.ToLower().Contains(category.ToLower()));
+               forSales = forSales.Where(s => s.Category.name.ToLower().Contains(category.ToLower()));
             }
 
             int pageSize = 3;
@@ -77,6 +77,7 @@ namespace ArtProject2016.Controllers
         //    return View(model);
         //}
 
+        [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ShopLeftPanel()
         {
@@ -108,9 +109,11 @@ namespace ArtProject2016.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var related = db.ForSales.Where(ar => ar.SellerId == forsale.SellerId && ar.Id != id && ar.ForPosting).Take(3).ToList();
-
+            var relatedCategory = db.ForSales.Where(cat => cat.Category.Id == forsale.Category.Id).Take(3).ToList();
             viewModel.ForSale = forsale;
             viewModel.relatedForSale = related;
+            viewModel.RelatedCategory = relatedCategory;
+
             ViewBag.ReturnUrl = Url.Action("ArtDetails");
             if (forsale == null)
             {
@@ -517,7 +520,7 @@ namespace ArtProject2016.Controllers
                     //send mail
                     string subject = "<website> Order Confirmation #: " + newOrder.Id;
                     //default value if not bank
-                    string bankDetails = "Please wait for another email confirmation about your payment. Thank you";
+                    string bankDetails = "Payment verification initiated, We will process shipment immediately after payment verification. Thank you";
 
                     if (viewModel.PaymentType == "Bank")
                     {

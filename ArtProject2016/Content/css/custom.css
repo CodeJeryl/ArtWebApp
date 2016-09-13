@@ -28,6 +28,14 @@ a.buttonC {
     font-size: 15px;
 }
 
+.menuH ul li a {
+  list-style-type: none;
+  border-bottom: solid 1px #eeeeee;
+  text-transform: uppercase;
+  padding: 4px 0;
+  font-size: 15px !important; 
+  Color: blue !important;
+}
 
 #content .product .text p.title {
     font-size: 20px;

@@ -463,6 +463,7 @@
     <Compile Include="ViewModel\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\MyGalleryViewModel.cs" />
     <Compile Include="ViewModel\PayoutViewModel.cs" />
     <Compile Include="ViewModel\registerViewModel.cs" />
@@ -554,6 +555,8 @@
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
     <Content Include="Views\Shared\_TermsAgreement.cshtml" />
+    <Content Include="Views\Shared\_ArtistMenu.cshtml" />
+    <Content Include="Views\Shared\_CategoryMenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

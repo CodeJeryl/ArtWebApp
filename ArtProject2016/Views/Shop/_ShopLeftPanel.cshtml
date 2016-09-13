@@ -1,26 +1,22 @@
 ﻿@model ArtProject2016.ViewModel.ShopLayoutViewModel
 
+@{
+    ViewBag.Current = Request.Params["category"];
+    ViewBag.CurrentNick = Request.Params["Artist"];
+}
+
 <div class="panel panel-default sidebar-menu">
 
     <div class="panel-heading">
-        <h3 class="panel-title">Filter</h3>
+        <h3 class="panel-title">Categories </h3>
     </div>
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked category-menu">
-
-
-            <li>
-                <a href="#">Categories <span class="badge pull-right">@Model.Categories.Count</span></a>
-
-
-                <ul>
+            
                     @foreach (var item in Model.Categories)
                     {
-                        <li class="text-center"><a href="@Url.Action("Gallery", "Shop", new { category = @item.name })">@item.name</a></li>
-                    }
-                </ul>
-            </li>
-          
+                        <li class="@(ViewBag.Current == item.name ? "active" : "") text-center"><a href="@Url.Action("Gallery", "Shop", new { category = @item.name })">@item.name</a></li>
+                    }  
             @* <li >
             <a href="category.html">Paintings  <span class="badge pull-right">123</span></a>
             <ul>
@@ -48,24 +44,12 @@
 
     <div class="panel-body">
           <ul class="nav nav-pills nav-stacked category-menu">
-        
-            <li>
-                <a href="#">Artist <span class="badge pull-right">@Model.UserAccounts.Count</span></a>
-
-
-                <ul>
-                    @foreach (var item in Model.UserAccounts)
+        @foreach (var item in Model.UserAccounts)
                     {
-                        <li class="text-center"><a href="@Url.Action("Gallery", "Shop", new { Artist = @item.nickName })">@item.nickName</a></li>
+                        <li class="@(ViewBag.CurrentNick == item.nickName ? "active" : "") text-center"><a href="@Url.Action("Gallery", "Shop", new { Artist = @item.nickName })">@item.nickName</a></li>
                     }
 
-                </ul>
-            </li>
-           
-
         </ul>
-        
-
     </div>
 </div>
 

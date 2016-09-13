@@ -1,0 +1,10 @@
+﻿@model ArtProject2016.ViewModel.MenuViewModel
+<ul>
+@foreach(var item in Model.Categories)
+{
+    
+       <li>   @Html.ActionLink(item.name, "Gallery", "Shop", new { Category = @item.name },null)
+                      </li>
+   
+}
+ </ul>

@@ -33,7 +33,7 @@
         <div id="top">
             <div class="container">
                 <div class="col-md-6 offer" data-animate="fadeInDown">
-                    <a href="#" class="btn btn-success btn-sm" data-animate-hover="shake">Offer of the day</a>  <a href="#">Get Free Shipping on orders over 5000 Pesos!</a>
+                  @*   <a href="@Url.Action("Gallery","Shop")" class="btn btn-success btn-sm" data-animate-hover="shake">Art of the Day</a>*@ <a href="@Url.Action("Gallery","Shop")" class="btn btn-success btn-sm" data-animate-hover="shake">Buy artwork with confidence!</a>
                 </div>
                 <div class="col-md-6" data-animate="fadeInDown">
                     <ul class="menu">
@@ -42,14 +42,15 @@
                             <li>@Html.ActionLink("Logout", "LogOut", "Account", null, new { @class = "text-center" })</li>
                         }
                         else
-                        {
-                            <li>@Html.ActionLink("Login", "RegLogin", "Auth")</li>
-                            <li><a href="register.html">Register</a>
+                        { 
+                            <li>@Html.ActionLink("Login", "RegLogin", "Auth")
                             </li>
-                            <li><a href="contact.html">Contact</a>
+                            <li>@Html.ActionLink("Register Account", "RegLogin", "Auth")</li>
+                           
+                            <li><a href="@Url.Action("ContactUs","Home")">Contact Us</a>
                             </li>
-                            <li><a href="#">Recently viewed</a>
-                            </li>}
+                            
+                        }
                     </ul>
                 </div>
             </div>
@@ -99,12 +100,12 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Artists <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <div class="yamm-content">
+                                    <div class="yamm-content menuH">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <h5>Emerging Artist</h5>
+                                                <h5>Featured Artist</h5>
                                                 <ul>
-                                                    <li><a href="category.html">Artist 1</a>
+                                                    <li><a href="~/Shop/Gallery?Artist=Jeryl Pogi">Jo Suarez</a>
                                                     </li>
                                                     <li><a href="category.html">Artist 2</a>
                                                     </li>
@@ -114,35 +115,20 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <h5>Blog</h5>
-                                                <ul>
-                                                    <li><a href="category.html">Art School</a>
-                                                    </li>
-                                                    <li><a href="category.html">How to Paint</a>
-                                                    </li>
-                                                    <li><a href="category.html">Artist Corner</a>
-                                                    </li>
-                                                </ul>
+                                            <div class="col-sm-3 menuH">
+                                                <h5>New Artist</h5>
+                                                @Html.Action("ArtistMenu","Home")
                                             </div>
                                             <div class="col-sm-6">
                                                 <h5>Exhibits</h5>
                                                 <ul>
-                                                    <li><a href="category.html">MOA Art Attack</a>
-                                                    </li>
-                                                    <li><a href="category.html">Lakbay Kulay 2016</a>
-                                                    </li>
-                                                    <li><a href="category.html">Sining </a>
-                                                    </li>
-                                                </ul>
-                                                <h5>Art Club</h5>
+                                                <li>Coming Soon..</li>
+                                               </ul>
+                                                <h5>Featured Club</h5>
                                                 <ul>
-                                                    <li><a href="category.html">Lakbay Kulay</a>
+                                                    <li><a href="#">Lakbay Kulay</a>
                                                     </li>
-                                                    <li><a href="category.html">Bataan Artist Society</a>
-                                                    </li>
-                                                    <li><a href="category.html">Art Club PH</a>
-                                                    </li>
+                                                    <li>Coming Soon..</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -156,54 +142,38 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Paintings <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <div class="yamm-content">
+                                    <div class="yamm-content menuH">
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <h5>Style</h5>
-                                                <ul>
-                                                    <li><a href="category.html">Fine Arts</a>
-                                                    </li>
-                                                    <li><a href="category.html">Abstract</a>
-                                                    </li>
-                                                    <li><a href="category.html">Modern</a>
-                                                    </li>
-                                                    <li><a href="category.html">Street Art</a>
-                                                    </li>
-                                                </ul>
+                                                  @Html.Action("CategoryMenu","Home")
+
                                             </div>
                                             <div class="col-sm-6">
                                                 <h5>Medium</h5>
                                                 <ul>
-                                                    <li><a href="category.html">Oil</a>
+                                                    <li><a href="@Url.Content("~/Shop/Gallery?Search=Oil")">Oil</a>
                                                     </li>
-                                                    <li><a href="category.html">Watercolor</a>
+                                                    <li><a href="@Url.Content("~/Shop/Gallery?Search=Water Color")">Watercolor</a>
                                                     </li>
-                                                    <li><a href="category.html">Acrylic</a>
+                                                    <li><a href="@Url.Content("~/Shop/Gallery?Search=Acrylic")">Acrylic</a>
                                                     </li>
-                                                    <li><a href="category.html">Air brush</a>
-                                                    </li>
-                                                </ul>
-                                                <h5>Sold Art</h5>
-                                                <ul>
-                                                    <li><a href="category.html">June</a>
-                                                    </li>
-                                                    <li><a href="category.html">July</a>
-                                                    </li>
-                                                    <li><a href="category.html">August</a>
+                                                    <li><a href="@Url.Content("~/Shop/Gallery?Search=Air Brush")">Air brush</a>
                                                     </li>
                                                 </ul>
+                                               
                                             </div>
                                             <div class="col-sm-3">
-                                                <div class="banner">
-                                                    <a href="#">
-                                                        <img src="img/banner.jpg" class="img img-responsive" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="banner">
+                                               <h5>Sold Art</h5>
+                                                <ul>
+                                                    <li>Coming Soon..
+                                                    </li>
+                                                </ul>
+                                               @* <div class="banner">
                                                     <a href="#">
                                                         <img src="img/banner2.jpg" class="img img-responsive" alt="">
                                                     </a>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -211,8 +181,10 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="dropdown yamm-fw">
+                        
+                        <li><a href="@Url.Action("ContactUs", "Home")">Contact Us</a>
+                        </li>
+                        @* <li class="dropdown yamm-fw">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Contact Us <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -287,7 +259,7 @@
                                     <!-- /.yamm-content -->
                                 </li>
                             </ul>
-                        </li>
+                        </li>*@
                     </ul>
 
                 </div>
@@ -336,17 +308,14 @@
         <!-- /#navbar -->
 
         <!-- *** NAVBAR END *** -->
-
-
-
-
+        
         <div class="container">
             @Html.Partial("_confirmation")
         </div>
 
         @RenderBody()
 
-
+          @Html.Partial("_TermsAgreement")
         <!-- *** FOOTER ***
  _________________________________________________________ -->
         <div id="footer" data-animate="fadeInUp">
@@ -356,25 +325,25 @@
                         <h4>Pages</h4>
 
                         <ul>
-                            <li><a href="text.html">About us</a>
+                             <li><a href="@Url.Action("Index", "Home")">Homepage</a>
+                        </li>
+                            <li> <a href="#" data-toggle="modal" data-target="#terms-modal">Terms and conditions</a>
                             </li>
-                            <li><a href="text.html">Terms and conditions</a>
-                            </li>
-                            <li><a href="faq.html">FAQ</a>
-                            </li>
-                            <li><a href="contact.html">Contact us</a>
-                            </li>
+                             <li><a href="@Url.Action("FAQ", "Home")">Frequently Asked Questions</a>
+                        </li>
+                             <li><a href="@Url.Action("ContactUs", "Home")">Contact Us</a>
+                        </li>
                         </ul>
 
                         <hr>
-
+                      
                         <h4>User section</h4>
 
                         <ul>
-                            <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                            </li>
-                            <li><a href="register.html">Regiter</a>
-                            </li>
+                             <li>@Html.ActionLink("Login", "RegLogin", "Auth")</li>
+                           
+                           <li>@Html.ActionLink("Register Account", "RegLogin", "Auth")</li>
+                           
                         </ul>
 
                         <hr class="hidden-md hidden-lg hidden-sm">
@@ -385,28 +354,12 @@
 
                         <h4>Top categories</h4>
 
-                        <h5>Men</h5>
+                        <h5>Art Style</h5>
 
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Shirts</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
+                        @Html.Action("CategoryMenu","Home")
 
-                        <h5>Ladies</h5>
-                        <ul>
-                            <li><a href="category.html">T-shirts</a>
-                            </li>
-                            <li><a href="category.html">Skirts</a>
-                            </li>
-                            <li><a href="category.html">Pants</a>
-                            </li>
-                            <li><a href="category.html">Accessories</a>
-                            </li>
-                        </ul>
+
+                       
 
                         <hr class="hidden-md hidden-lg">
                     </div>
@@ -417,20 +370,20 @@
                         <h4>Where to find us</h4>
 
                         <p>
-                            <strong>Obaju Ltd.</strong>
+                            <strong>Art Project</strong>
                             <br>
-                            13/25 New Avenue
+                           214 Rose St.
                             <br>
-                            New Heaven
+                           San Jose Subd.
                             <br>
-                            45Y 73J
+                           Balanga city
                             <br>
-                            England
+                           Bataan, 2100
                             <br>
-                            <strong>Great Britain</strong>
+                            <strong>Philippines</strong>
                         </p>
 
-                        <a href="contact.html">Go to contact page</a>
+                        <a href="@Url.Action("ContactUs","Home")">Go to Contact Us page</a>
 
                         <hr class="hidden-md hidden-lg">
                     </div>

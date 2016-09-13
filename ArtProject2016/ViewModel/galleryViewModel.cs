@@ -10,5 +10,6 @@ namespace ArtProject2016.ViewModel
     {
         public virtual ForSale ForSale { get; set; }
         public virtual IEnumerable<ForSale> relatedForSale  { get; set; }
+        public virtual IEnumerable<ForSale> RelatedCategory { get; set; }
     }
 }
