@@ -20,7 +20,7 @@ namespace ArtProject2016.Controllers
         {
             return View();
         }
-        
+
         //
         // POST: /Admin/Create
         [AllowAnonymous]
@@ -29,14 +29,14 @@ namespace ArtProject2016.Controllers
         {
             try
             {
-              if(ModelState.IsValid)
-              {
-                  if(Functions.Membership.UserLogin(model.userName,model.password))
-                  {
-                      return RedirectToAction("Index");
-                  }
-                  TempData["error"] = "Incorrect Username/Password.";
-              }
+                if (ModelState.IsValid)
+                {
+                    if (Functions.Membership.UserLogin(model.userName, model.password))
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    TempData["error"] = "Incorrect Username/Password.";
+                }
                 return View(model);
             }
             catch
@@ -52,11 +52,41 @@ namespace ArtProject2016.Controllers
             return View(orders);
         }
 
-       
+
         public ActionResult OrderDetails(int Id)
         {
             var details = db.OrderDetails.Where(det => det.OrderId == Id).OrderBy(de => de.UnitPrice).ToList();
             return View(details);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateOrder(int Id)
+        {
+            var order = db.Orders.Find(Id);
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateOrder(Order model)
+        {
+            using (db)
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var entry = db.Entry(model);
+
+                        entry.State = EntityState.Modified;
+                        entry.Property(e => e.VoucherCodeId).IsModified = false;
+                        entry.Property(e => e.UserAccountId).IsModified = false;
+
+                    db.SaveChanges();
+                    TempData["success"] = "Order no. " + model.Id + " is successfully updated!";
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
         }
 
 
@@ -83,15 +113,18 @@ namespace ArtProject2016.Controllers
         {
             try
             {
-                db.OrderDetails.Attach(model);
-                db.Entry(model).State = EntityState.Modified;
+              //  db.OrderDetails.Attach(model);
+               // db.Entry(model).State = EntityState.Modified;
 
                 var entry = db.Entry(model);
+                entry.State = EntityState.Modified;
                 entry.Property(e => e.ForSaleId).IsModified = false;
                 entry.Property(e => e.OrderId).IsModified = false;
-              
+
+                TempData["success"] = "Order Detail no. " + model.Id + " is successfully updated!";
+                   
                 db.SaveChanges();
-                return RedirectToAction("OrderDetails", new { Id = model.OrderId});
+                return RedirectToAction("OrderDetails", new { Id = model.OrderId });
             }
             catch
             {
@@ -100,27 +133,33 @@ namespace ArtProject2016.Controllers
         }
 
         //
-        // GET: /Admin/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult ProfileVerification()
         {
-            return View();
+            var model = db.UserProfiles.OrderByDescending(id => id.isIdVerified == false).ToList();
+            return View(model);
         }
 
-        //
-        // POST: /Admin/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+       
+        [HttpGet]
+        public ActionResult Payout()
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                var model = db.Payouts.OrderByDescending(asc => asc.Status == "Processing").ToList();
+                return View(model);
             }
             catch
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public ActionResult UpdatePayout(int Id)
+        {
+            var model = db.Payouts.Find(Id);
+            return View(model);
         }
     }
 }

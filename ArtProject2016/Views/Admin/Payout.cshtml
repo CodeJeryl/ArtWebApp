@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ArtProject2016.Models.Payout>
+
+@{
+    ViewBag.Title = "Payout";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+    ViewBag.Current = "Payout";
+}
+
+<h2>Payout</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayOutMethod)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RedeemedPayoutAmt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentInfo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAccountsId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayOutMethod)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RedeemedPayoutAmt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentInfo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAccountsId)
+        </td>
+        <td>
+            @Html.ActionLink("Update Payout","UpdatePayout","Admin", new { Id = item.Id },null) 
+        </td>
+    </tr>
+}
+
+</table>

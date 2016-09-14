@@ -557,6 +557,10 @@
     <Content Include="Views\Shared\_TermsAgreement.cshtml" />
     <Content Include="Views\Shared\_ArtistMenu.cshtml" />
     <Content Include="Views\Shared\_CategoryMenu.cshtml" />
+    <Content Include="Views\Admin\UpdateOrder.cshtml" />
+    <Content Include="Views\Admin\UpdatePayout.cshtml" />
+    <Content Include="Views\Admin\ProfileVerification.cshtml" />
+    <Content Include="Views\Admin\Payout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

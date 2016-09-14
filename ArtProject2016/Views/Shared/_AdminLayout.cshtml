@@ -32,15 +32,15 @@
                         @*<li>
                             <a href="customer-account.html"><i class="fa fa-user"></i>My account</a>
                         </li>*@
-                        <li class="@(ViewBag.Current == "updateProfile" ? "active" : "")">
-                            @Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "text-center" })
+                        <li class="@(ViewBag.Current == "Orders" ? "active" : "")">
+                            @Html.ActionLink("Order Processing", "Index", "Admin", null, new { @class = "text-center" })
                         </li>
-                        <li  class="@(ViewBag.Current == "Collections" ? "active" : "")">
-                            @Html.ActionLink("My Collections", "Index", "Art", null, new { @class = "text-center" })
+                        <li  class="@(ViewBag.Current == "ProfileVerification" ? "active" : "")">
+                            @Html.ActionLink("Profile Verfication", "ProfileVerification", "Admin", null, new { @class = "text-center" })
                         </li>
                         
-                        <li  class="@(ViewBag.Current == "Orders" ? "active" : "")">
-                            @Html.ActionLink("My Orders", "Orders", "Art", null, new { @class = "text-center" })
+                        <li  class="@(ViewBag.Current == "Payout" ? "active" : "")">
+                            @Html.ActionLink("Payout Processing", "Payout", "Admin", null, new { @class = "text-center" })
                         </li>
 
                         <li  class="@(ViewBag.Current == "Wishlist" ? "active" : "")">
@@ -61,8 +61,13 @@
             <!-- *** CUSTOMER MENU END *** -->
         </div>
 
+        
 
-        @RenderBody()
+        <div class="col-md-9" id="customer-order">
+            <div class="box">
+                @RenderBody()
+            </div>
+        </div>
 
     </div>
     <!-- /.container -->

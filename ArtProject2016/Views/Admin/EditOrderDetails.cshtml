@@ -63,6 +63,16 @@
                     @Html.ValidationMessageFor(model => model.OrderDetailStatus)
                 </div>
             </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShippingCompanyId, new { @class = "control-label col-md-4" }) 
+                <label style="color: red">Code # lng ilagay. 1 -LBC, 2 -Air21, 3 -Xend, if mgdagdag message-Jeryl</label>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ShippingCompanyId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingCompanyId)
+                </div>
+            </div>
+            
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shipped, new { @class = "control-label col-md-4" })
@@ -89,8 +99,8 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.RetrunShippingCompany, new { @class = "control-label col-md-4" })
-                <div class="col-md-8">
+               @Html.LabelFor(model => model.RetrunShippingCompany, new { @class = "control-label col-md-4" })
+                <label style="color: red">Hindi CODE lng ilalagay,Buong shipping name ex. LBC/Air21..</label><div class="col-md-8">
                     @Html.EditorFor(model => model.RetrunShippingCompany, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.RetrunShippingCompany)
                 </div>

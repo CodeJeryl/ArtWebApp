@@ -7,9 +7,6 @@
 }
 
 
-
-<div class="col-md-9" id="customer-order">
-    <div class="box">
         <h1>Order #@Model.First().OrderId</h1>
 
         <p class="lead">Order #@Model.First().OrderId was placed on <strong>@Model.First().Order.OrderDate.ToShortDateString()</strong> and is currently <strong>@Model.First().Order.OrderStatus</strong>.</p>
@@ -96,20 +93,20 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="7" class="text-right">Order subtotal</th>
+                        <th colspan="8" class="text-right">Order subtotal</th>
                         <th>@Model.First().Order.SubTotal</th>
                     </tr>
                     <tr>
-                        <th colspan="7" class="text-right">Shipping and handling</th>
+                        <th colspan="8" class="text-right">Shipping and handling</th>
                         <th>Free</th>
                     </tr>
                     <tr>
-                        <th colspan="7" class="text-right">Voucher Discount</th>
+                        <th colspan="8" class="text-right">Voucher Discount</th>
                         <th>@Model.First().Order.VoucherDeduction</th>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-right">Total</th>
+                        <th colspan="8" class="text-right">Total</th>
                         <th>@Model.First().Order.Total</th>
                     </tr>
                 </tfoot>
@@ -176,9 +173,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Order.Username)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ShippingCompany.Name)
-                </th>
+              
                 <th>
                     @Html.DisplayNameFor(model => model.Quantity)
                 </th>
@@ -194,6 +189,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Shipped)
                 </th>
+                  <th>
+                    @Html.DisplayNameFor(model => model.ShippingCompany.Name)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.TrackingNumber)
                 </th>
@@ -201,7 +199,7 @@
                     @Html.DisplayNameFor(model => model.Returned)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RetrunShippingCompany)
+                  Return  @Html.DisplayNameFor(model => model.RetrunShippingCompany)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ReturnedTrackingNumber)
@@ -230,9 +228,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Order.Username)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ShippingCompany.Name)
-                    </td>
+                   
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
@@ -247,6 +243,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Shipped)
+                    </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.ShippingCompany.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TrackingNumber)
@@ -277,9 +276,5 @@
 
         </table>
 
-
-
-    </div>
-</div>
 
 

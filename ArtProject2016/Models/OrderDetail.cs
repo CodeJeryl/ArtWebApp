@@ -24,7 +24,7 @@ namespace ArtProject2016.Models
         public string TrackingNumber { get; set; }
         public bool Returned { get; set; }
 
-        [Display(Name = "Shipping Company")]
+        [Display(Name = "Return Shipping Company")]
         public string RetrunShippingCompany { get; set; }
         [Display(Name = "Return Tracking Number")]
         public string ReturnedTrackingNumber { get; set; }
