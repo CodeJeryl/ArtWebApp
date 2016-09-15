@@ -6,6 +6,26 @@
     ViewBag.Current = "Payout";
 }
 
+
+<script>
+    $(document).ready(function() {
+        $('#Paid').click(function () {
+            if ($(this).is(':checked')) {
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                $("#DateGiven").val(today);
+            } else {
+                $("#DateGiven").val(null);
+            }
+        });
+
+    });
+
+
+</script>
+
 <h2>Payout</h2>
 
 @using (Html.BeginForm())
@@ -19,69 +39,77 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PayOutMethod, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PayOutMethod)
+            @Html.LabelFor(model => model.PayOutMethod, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PayOutMethod, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PayOutMethod)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RedeemedPayoutAmt, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RedeemedPayoutAmt)
+            @Html.LabelFor(model => model.RedeemedPayoutAmt, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.RedeemedPayoutAmt, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.RedeemedPayoutAmt)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FullName)
+            @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FullName)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PaymentInfo, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PaymentInfo)
+            @Html.LabelFor(model => model.PaymentInfo, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PaymentInfo, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PaymentInfo)
             </div>
         </div>
-
+         <div class="form-group">
+            @Html.LabelFor(model => model.DateRequested, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.DateRequested, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateRequested)
+            </div>
+        </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Status, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status)
+            @Html.LabelFor(model => model.Status, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Status)
             </div>
         </div>
-
+          <div class="form-group">
+                @Html.LabelFor(model => model.Paid, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Paid, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Paid)
+                </div>
+            </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.DateTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateTime)
-                @Html.ValidationMessageFor(model => model.DateTime)
+            @Html.LabelFor(model => model.DateGiven, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.DateGiven, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateGiven)
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserAccountsId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAccountsId)
-                @Html.ValidationMessageFor(model => model.UserAccountsId)
-            </div>
-        </div>
+       
+                @Html.HiddenFor(model => model.UserAccountId)
+            
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-offset-8 col-md-4">
+                <input type="submit" value="Update Info" class="btn btn-info" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Payout")
 </div>

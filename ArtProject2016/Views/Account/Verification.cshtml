@@ -18,22 +18,22 @@
 <div class="col-md-9">
     <div class="box">
         <h1>Account Verification</h1>
-        <p class="lead">Upload ONE valid ID to start selling</p>
+        <p class="lead">Upload ONE valid ID to start selling. Just take a picture or scanned copy of your ID</p>
+        
+        @if(Model.Path != null)
+        {  
+            <p class="lead">Verification Status - <span class="label label-success"> Pending </span> - please visit our gallery while waiting to be verified.</p>
+        }
+        else
+        {
+            <p class="lead text-warning">Verification Status - <span class="label label-warning"> Upload ID now :) </span></p>
+        }
+
         <p class="text-muted">Example: Passport / Drivers license / Voter's Id</p>
-
-        @if (ViewBag.Error != null)
-        {
-            <div class="alert alert-danger" role="alert">@ViewBag.Error </div>
-        }
-        @if (ViewBag.Success != null)
-        {
-            <div class="alert alert-success" role="alert">@ViewBag.Success </div>
-        }
-
-
+         <p class="text-muted">We don't share your confidential info to others.</p>
+        
         @if (!Model.isIdVerified)
         {
-
             using (Html.BeginForm("Verification", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
             { 
             @Html.AntiForgeryToken()
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="col-sm-6 col-md-6">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Upload ID</button>
 
 
                 </div>
@@ -65,7 +65,8 @@
         }
         else
         {
-            <h2>Account Status: Already Verified. You can now start posting art for sale.</h2>
+            <h2>Account Status: Already Verified. You can now start posting art for sale. @Html.ActionLink("Click Here to Post Art","Upload","Art") </h2>
+            
         }
     </div>
 </div>

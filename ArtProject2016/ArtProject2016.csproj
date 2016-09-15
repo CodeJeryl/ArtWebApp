@@ -460,6 +460,7 @@
     <Compile Include="ViewModel\ChangePassViewModel.cs" />
     <Compile Include="ViewModel\checkoutDetailsViewModel.cs" />
     <Compile Include="ViewModel\CheckoutViewModel.cs" />
+    <Compile Include="ViewModel\Class1.cs" />
     <Compile Include="ViewModel\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\galleryViewModel.cs" />
     <Compile Include="ViewModel\loginViewModel.cs" />
@@ -547,7 +548,7 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\OrderDetails.cshtml" />
-    <Content Include="Views\Admin\EditOrderDetails.cshtml" />
+    <Content Include="Views\Admin\UpdateOrderDetails.cshtml" />
     <Content Include="Views\Shop\_ShopLeftPanel.cshtml" />
     <Content Include="Views\Shared\_SearchBox.cshtml" />
     <Content Include="Views\Artist\MyGallery.cshtml" />
@@ -561,6 +562,7 @@
     <Content Include="Views\Admin\UpdatePayout.cshtml" />
     <Content Include="Views\Admin\ProfileVerification.cshtml" />
     <Content Include="Views\Admin\Payout.cshtml" />
+    <Content Include="Views\Admin\VerifyID.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

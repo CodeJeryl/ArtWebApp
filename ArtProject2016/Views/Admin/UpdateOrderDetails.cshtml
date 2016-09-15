@@ -1,7 +1,7 @@
 ﻿@model ArtProject2016.Models.OrderDetail
 
 @{
-    ViewBag.Title = "EditOrderDetails";
+    ViewBag.Title = "UpdateOrderDetails";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -24,10 +24,8 @@
 
 </script>
 
-<div class="col-md-9">
-<div class="box">
    
-    <h2>EditOrderDetails</h2>
+    <h2>Update OrderDetails</h2>
 
     @using (Html.BeginForm())
     {
@@ -166,5 +164,3 @@
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
-        </div>
-</div>

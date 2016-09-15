@@ -11,6 +11,7 @@ namespace ArtProject2016.Models
         public Payout()
         {
             Status = "Processing Payout";
+            Paid = false;
         }
 
         public int Id { get; set; }
@@ -27,9 +28,12 @@ namespace ArtProject2016.Models
         public string PaymentInfo { get; set; } //bank info,etc.
 
         public string Status { get; set; } //Processing or Paid
-        public DateTime DateTime { get; set; }
+        public DateTime DateRequested { get; set; }
 
-        public int UserAccountsId { get; set; }
+        public DateTime? DateGiven { get; set; }
+        public bool Paid { get; set; }
+
+        public int UserAccountId { get; set; }
         public virtual UserAccount UserAccount { get; set; }
     }
 }

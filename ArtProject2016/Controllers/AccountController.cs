@@ -140,37 +140,38 @@ namespace ArtProject2016.Controllers
                 //  ViewBag.Error = null;
                 if (file != null)
                 {
-                    if (Functions.ArtControls.IsImage(file))
+                    if (ArtControls.IsImage(file))
                     {
                         if (file.ContentLength < 4000000)
                         {
-                            if (Functions.AccountControls.UploadID(file))
+                            if (AccountControls.UploadID(file))
                             {
-                                ViewBag.Success = "Successfully uploaded ID. Please Wait within 24hours for approval to start selling art.";
+                               TempData["success"] =
+                                    "ID successfully uploaded, Please Wait within 24hours for approval to start selling art. Thank you!";
                             }
                         }
                         else
                         {
-                            ViewBag.Error = "Image file exceed 4mb.";
+                            TempData["error"] = "Image file exceed 4mb.";
                         }
                     }
                     else
                     {
-                        ViewBag.Error = ".jpg / .jpeg / .png file extensions only.";
+                        TempData["error"] = ".jpg / .jpeg / .png file extensions only.";
                     }
                 }
                 else
                 {
-                    ViewBag.Error = "Please choose a Picture of your Valid ID to be uploaded.";
+                    TempData["error"] = "Please choose a Picture of your Valid ID to be uploaded.";
                 }
 
-                return View();
-
+                var model = context.UserProfiles.Single(user => user.Id == WebSecurity.CurrentUserId);
+                return View(model);
                 //    return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ViewBag.Error = ex.Message;
+               
                 return View();
             }
         }
@@ -234,7 +235,7 @@ namespace ArtProject2016.Controllers
             model.RedeemedOrderDetails = context.OrderDetails.Where(deemed => deemed.ForSale.SellerId == WebSecurity.CurrentUserId
                                             && deemed.Order.Paid && deemed.Redeemed).ToList();
 
-            model.Payouts = context.Payouts.Where(p => p.UserAccountsId == WebSecurity.CurrentUserId).ToList();
+            model.Payouts = context.Payouts.Where(p => p.UserAccountId == WebSecurity.CurrentUserId).ToList();
 
             model.PendingAmt = sell.GetPending();
             model.RedeemableAmt = sell.GetRedeemable();
@@ -259,9 +260,9 @@ namespace ArtProject2016.Controllers
                                      PaymentInfo = model.PaymentInfo,
                                      PayOutMethod = model.PayOutMethod,
                                      Status = "Payout Processing",
-                                     DateTime = DateTime.Now,
+                                     DateRequested = DateTime.Now,
                                      RedeemedPayoutAmt = model.RedeemedPayoutAmt,
-                                     UserAccountsId = WebSecurity.CurrentUserId
+                                     UserAccountId = WebSecurity.CurrentUserId
                                  };
 
                 context.Payouts.Add(payOut);
@@ -278,12 +279,14 @@ namespace ArtProject2016.Controllers
 
                 var controls = new EmailControls();
                 string body = "<strong>Thank you for selling artworks in <website>. </strong> <br/> <br/> " +
-                     "<br/> <br/> You requested the amount: ₱ " + model.RedeemedPayoutAmt + "thru  " + model.PayOutMethod + "<br> <br>"
-                     + "with Payment information of - " + model.PaymentInfo + "<br> <br> Please give us 5 working days to process your request. ";
+                     "<br/> <br/> You requested the amount: ₱ " + model.RedeemedPayoutAmt + " thru  " + model.PayOutMethod + "<br> <br>"
+                     + "with Payment information of - " + model.PaymentInfo + "<br> <br> Please give us 5 working days to process your request. "
+                    +"<br> <br> Thank you! :)";
                 string content = controls.PopulateBody("Pay Out Request is now on process", model.FullName, body);
 
                 EmailControls.sendEmail("jerylsuarez@gmail.com", WebSecurity.CurrentUserName, "", "", subject, content);
-
+                TempData["success"] = "Payout Request Complete, Please give us 5 working days to process your request. Thank you!";
+           
                 return RedirectToAction("PayOut");
             }
             TempData["error"] = "Payout Request Incomplete, Please try again. Thank you!";

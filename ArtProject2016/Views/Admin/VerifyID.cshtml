@@ -1,0 +1,150 @@
+﻿@model ArtProject2016.Models.UserProfile
+
+@{
+    ViewBag.Title = "VerifyID";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>VerifyID</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+     <img src="@(Model.Path == null ? null : Url.Content(Model.Path))" width="300px"/> 
+                          
+    @: <div style="float:right">
+         @Html.ActionLink("Back to PayOut Page","Payout",null, new { @class = "btn btn-warning"})
+ @:<h3>Verify this name to uploaded ID</h3><p class="h3"> First Name: @Html.DisplayFor(model => model.UserAccount.firstName) </p>   <p class="h3"> Last Name:@Html.DisplayFor(model => model.UserAccount.lastName) </p>
+       @: </div>
+    <div class="form-horizontal">
+        <h4>UserProfile</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+     
+        <div class="form-group">
+            @Html.LabelFor(model => model.birthDay, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.birthDay)
+                @Html.ValidationMessageFor(model => model.birthDay)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.education, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.education)
+                @Html.ValidationMessageFor(model => model.education)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.street, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.street)
+                @Html.ValidationMessageFor(model => model.street)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.city, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.city)
+                @Html.ValidationMessageFor(model => model.city)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.province, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.province)
+                @Html.ValidationMessageFor(model => model.province)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.postalCode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.postalCode)
+                @Html.ValidationMessageFor(model => model.postalCode)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.mobileNo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.mobileNo)
+                @Html.ValidationMessageFor(model => model.mobileNo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.landLine, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.landLine)
+                @Html.ValidationMessageFor(model => model.landLine)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.profileDesc, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.profileDesc)
+                @Html.ValidationMessageFor(model => model.profileDesc)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Exhibitions, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Exhibitions)
+                @Html.ValidationMessageFor(model => model.Exhibitions)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.isEmailVerified, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.isEmailVerified)
+                @Html.ValidationMessageFor(model => model.isEmailVerified)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.isIdVerified, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.isIdVerified)
+                @Html.ValidationMessageFor(model => model.isIdVerified)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fileName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fileName)
+                @Html.ValidationMessageFor(model => model.fileName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Path, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Path)
+                @Html.ValidationMessageFor(model => model.Path)
+            </div>
+        </div>
+                @Html.HiddenFor(model => model.UserAccountId)
+          
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ProfileVerification")
+</div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using ArtProject2016.Models;
@@ -21,7 +22,7 @@ namespace ArtProject2016.Functions
                 {
                     var idUpload = context.UserProfiles.Single(user => user.Id == WebSecurity.CurrentUserId);
 
-                    string fileName = WebSecurity.CurrentUserId + "-";// +DateTime.Now.ToShortDateString();
+                    string fileName = WebSecurity.CurrentUserId + "-" +DateTime.Now.Ticks + Path.GetExtension(file.FileName); ;// +DateTime.Now.ToShortDateString();
 
                     file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/VerificationID/" + fileName));
                     idUpload.fileName = fileName;

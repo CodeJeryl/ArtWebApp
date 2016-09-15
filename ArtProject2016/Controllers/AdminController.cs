@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ArtProject2016.Functions;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
 
@@ -77,9 +78,9 @@ namespace ArtProject2016.Controllers
 
                     var entry = db.Entry(model);
 
-                        entry.State = EntityState.Modified;
-                        entry.Property(e => e.VoucherCodeId).IsModified = false;
-                        entry.Property(e => e.UserAccountId).IsModified = false;
+                    entry.State = EntityState.Modified;
+                    entry.Property(e => e.VoucherCodeId).IsModified = false;
+                    entry.Property(e => e.UserAccountId).IsModified = false;
 
                     db.SaveChanges();
                     TempData["success"] = "Order no. " + model.Id + " is successfully updated!";
@@ -92,7 +93,7 @@ namespace ArtProject2016.Controllers
 
 
         [HttpGet]
-        public ActionResult EditOrderDetails(int Id)
+        public ActionResult UpdateOrderDetails(int Id)
         {
             try
             {
@@ -109,12 +110,13 @@ namespace ArtProject2016.Controllers
         //
         // POST: /Admin/Edit/5
         [HttpPost]
-        public ActionResult EditOrderDetails(OrderDetail model)
+        public ActionResult UpdateOrderDetails(OrderDetail model)
         {
             try
             {
-              //  db.OrderDetails.Attach(model);
-               // db.Entry(model).State = EntityState.Modified;
+                //  db.OrderDetails.Attach(model);
+                // db.Entry(model).State = EntityState.Modified;
+                //  Class1 sd = new Class1();
 
                 var entry = db.Entry(model);
                 entry.State = EntityState.Modified;
@@ -122,7 +124,7 @@ namespace ArtProject2016.Controllers
                 entry.Property(e => e.OrderId).IsModified = false;
 
                 TempData["success"] = "Order Detail no. " + model.Id + " is successfully updated!";
-                   
+
                 db.SaveChanges();
                 return RedirectToAction("OrderDetails", new { Id = model.OrderId });
             }
@@ -140,13 +142,44 @@ namespace ArtProject2016.Controllers
             return View(model);
         }
 
-       
+        [HttpGet]
+        public ActionResult VerifyID(int Id)
+        {
+            var model = db.UserProfiles.Find(Id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult VerifyID(UserProfile model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                using (db)
+                {
+                    var entry = db.Entry(model);
+                    entry.State = EntityState.Modified;
+
+                    entry.Property(up => up.UserAccountId).IsModified = false;
+                    TempData["success"] = "Profile successfully updated of userID: " + model.Id;
+
+                    db.SaveChanges();
+
+                    return RedirectToAction("ProfileVerification");
+                }
+            }
+
+            return View(model);
+
+        }
+
+
         [HttpGet]
         public ActionResult Payout()
         {
             try
             {
-                var model = db.Payouts.OrderByDescending(asc => asc.Status == "Processing").ToList();
+                var model = db.Payouts.OrderByDescending(asc => asc.Status == "Payout Processing").ToList();
                 return View(model);
             }
             catch
@@ -159,6 +192,26 @@ namespace ArtProject2016.Controllers
         public ActionResult UpdatePayout(int Id)
         {
             var model = db.Payouts.Find(Id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePayout(Payout model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (db)
+                {
+                    var entry = db.Entry(model);
+                    entry.State = EntityState.Modified;
+
+                    entry.Property(up => up.UserAccountId).IsModified = false;
+                    TempData["success"] = "Payout Request updated of userID: " + model.UserAccountId;
+
+                    db.SaveChanges();
+                    return RedirectToAction("Payout");
+                }
+            }
             return View(model);
         }
     }

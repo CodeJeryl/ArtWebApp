@@ -29,12 +29,13 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateTime)
+            @Html.DisplayNameFor(model => model.DateRequested)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserAccountsId)
+            @Html.DisplayNameFor(model => model.DateGiven)
         </th>
-        <th></th>
+       
+        <th>Controls</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -55,13 +56,14 @@
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateTime)
+           @String.Format("{0:d}", item.DateRequested)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserAccountsId)
+          @String.Format("{0:d}", item.DateGiven) 
         </td>
         <td>
-            @Html.ActionLink("Update Payout","UpdatePayout","Admin", new { Id = item.Id },null) 
+            @Html.ActionLink("Update Payout","UpdatePayout","Admin", new { Id = item.Id },null) |
+              @Html.ActionLink("View Requesting Account","VerifyID","Admin", new { Id = item.UserAccountId },null) 
         </td>
     </tr>
 }
