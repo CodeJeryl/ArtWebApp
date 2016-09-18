@@ -10,7 +10,7 @@
         <h1>Order #@Model.First().OrderId</h1>
 
         <p class="lead">Order #@Model.First().OrderId was placed on <strong>@Model.First().Order.OrderDate.ToShortDateString()</strong> and is currently <strong>@Model.First().Order.OrderStatus</strong>.</p>
-        <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p>
+        <p class="text-muted">If you have any questions, please feel free to @Html.ActionLink("Contact Us", "ContactUs","Home"), our customer service center is working for you 24/7.</p>
         
           <a  href="@Url.Action("Index")" class="btn btn-warning right"> Back to Order list</a> 
 

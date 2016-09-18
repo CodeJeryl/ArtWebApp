@@ -86,7 +86,7 @@ namespace ArtProject2016.Controllers
         {
             MenuViewModel model = new MenuViewModel();
 
-            var artist = db.ForSales.GroupBy(sd => sd.SellerAccount.nickName).Take(5).Select(g => g.FirstOrDefault());
+            var artist = db.ForSales.Where(art => art.Sold != true).GroupBy(sd => sd.SellerAccount.nickName).Take(5).Select(g => g.FirstOrDefault());
             model.ForSales = artist.ToList();
 
             return PartialView("_ArtistMenu", model);

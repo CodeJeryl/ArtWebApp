@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ArtProject2016.Functions
@@ -36,13 +37,16 @@ namespace ArtProject2016.Functions
             email.Body = body;
             email.IsBodyHtml = true;
             email.Priority = MailPriority.Normal;
-            SmtpClient client = new SmtpClient();
+            using (var client = new SmtpClient())
+            {
             client.EnableSsl = true;
             client.Credentials = new System.Net.NetworkCredential(sender, "qwerqwer321");
             client.Port = 587;
             client.Host = "smtp.gmail.com";
             client.Send(email);
-            
+           // client.SendMailAsync(email);
+           //  client.SendAsync(email, null);
+            }
             //client.Credentials = new System.Net.NetworkCredential(sender, "");
             //client.Port = 587;
             //client.Host = "smtp.gmail.com";

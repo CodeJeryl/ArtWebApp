@@ -373,6 +373,8 @@ namespace ArtProject2016.Controllers
                 {
                     orderDetail.OrderDetailStatus = "Payment Cancelled.";
                     orderDetail.BuyerReceived = false;
+                    orderDetail.ForSale.Sold = false;
+                    orderDetail.ForSale.BuyerId = null;
 
                     var orderTrack = new OrderTracking()
                                          {
@@ -383,6 +385,8 @@ namespace ArtProject2016.Controllers
                                          };
                     db.OrderTrackings.Add(orderTrack);
                 }
+
+              
 
                 db.SaveChanges();
             }
@@ -409,14 +413,7 @@ namespace ArtProject2016.Controllers
             viewModel.CartItems = cartItems;
             viewModel.UserAccount = userAccount;
             viewModel.UserProfile = userProfile;
-            //userprofile
-            //viewModel.City = userProfile.city;
-            //viewModel.LandLine = userProfile.landLine;
-            //viewModel.MobileNo = userProfile.mobileNo;
-            //viewModel.PostalCode = userProfile.postalCode;
-            //viewModel.Province = userProfile.province;
-            //viewModel.Street = userProfile.street;
-
+         
             viewModel.SubTotal = controls.GetTotal();
 
             if (TempData["vDeduction"] != null)
@@ -428,11 +425,7 @@ namespace ArtProject2016.Controllers
             {
                 viewModel.Total = controls.GetTotal();
             }
-            //ForSale forsale = db.ForSales.Find(id);
-            //if (forsale == null)
-            //{
-            //    return HttpNotFound();
-            //}
+          
             return View(viewModel);
         }
 
@@ -450,11 +443,6 @@ namespace ArtProject2016.Controllers
                 viewModel.UserProfile = userProfile;
                 viewModel.CartItems = cartItems;
 
-
-                //if(viewModel.VoucherCodeId == 0)
-                //{
-                //    viewModel.VoucherCodeId = null;
-                //}
                 if (ModelState.IsValid)
                 {
                     var newOrder = new Order()
@@ -470,8 +458,6 @@ namespace ArtProject2016.Controllers
                                            PostalCode = userProfile.postalCode,
                                            MobileNo = userProfile.mobileNo,
                                            LandLine = userProfile.landLine,
-
-
                                            VoucherCodeId = viewModel.VoucherCodeId,
                                            VoucherDeduction = viewModel.VoucherDeduction,
 
@@ -489,7 +475,7 @@ namespace ArtProject2016.Controllers
                                        };
 
                     db.Orders.Add(newOrder);
-
+                    string HtmlOrderDetails = "";
                     foreach (Cart cartItem in cartItems)
                     {
                         var newOrderDetails = new OrderDetail()
@@ -503,20 +489,29 @@ namespace ArtProject2016.Controllers
                                                       OrderId = newOrder.Id
                                                   };
 
+                      
                         db.OrderDetails.Add(newOrderDetails);
 
                         var updateArt = db.ForSales.Find(cartItem.ForSaleId);
                         updateArt.Sold = true;
                         updateArt.BuyerId = WebSecurity.CurrentUserId;
+
+                        HtmlOrderDetails += "<tr><td style='text-align: center; border: 2px solid black'><a href='http://localhost:60817/Shop/ArtDetails/" + cartItem.ForSale.Id + "'><img src='" + cartItem.ForSale.Path + " ' style='width: 120px'></a></td>" +
+                                            "<td style='text-align: center; border: 2px solid black'>" + cartItem.ForSale.Title + "</td>" +
+                                            "<td style='text-align: center; border: 2px solid black'>" + cartItem.ForSale.Price + "</td></tr>";
                     }
 
                     db.SaveChanges();
                     dbContextTransaction.Commit();
-                    //  TempData["s"] = viewModel.SubTotal;
-                    //  TempData["d"] = viewModel.Total;
-                    //        var delCart = new CartControls();
-                    //     delCart.EmptyCart();
+                   
+                    //table Footer for order details
 
+                    string tableF =   "<tr><td colspan='2' style='text-align: right'>Order subtotal</th><th>"+ viewModel.SubTotal+"</td>" +
+                                     "</tr><tr><td colspan='2' style='text-align: right'>Shipping and handling</th><th>Free</td></tr>" +
+                                  "<tr><td colspan='2' style='text-align: right'>Voucher Discount</th><th>"+viewModel.VoucherDeduction+"</td>" +
+                             "</tr><tr><th colspan='2' style='text-align: right'>Total</th><th>"+viewModel.Total+"</th></tr>";
+                    string address = viewModel.UserProfile.street + " " + viewModel.UserProfile.city + " " +
+                                     viewModel.UserProfile.province + ", " + viewModel.UserProfile.postalCode +" - "+ viewModel.UserProfile.mobileNo;
                     //send mail
                     string subject = "<website> Order Confirmation #: " + newOrder.Id;
                     //default value if not bank
@@ -524,17 +519,22 @@ namespace ArtProject2016.Controllers
 
                     if (viewModel.PaymentType == "Bank")
                     {
-                        bankDetails = "Total Amount to be paid:" + viewModel.Total;
+                        bankDetails = "Total Amount to be paid: <strong> " + viewModel.Total + "</strong>";
                     }
 
                     var controls = new EmailControls();
                     string body = "<strong>Thank you for supporting local artist from <website>. </strong> <br/> <br/> " +
                                   "<br/> <br/>Your Order #" + newOrder.Id + " <br/> <br/> has been placed on " + DateTime.Now.ToShortDateString() + " via " + viewModel.PaymentType + " Payment." +
-                                  "<br/> <br/> " + bankDetails + "<br/> <br/> orderDetails here <br/> <br/> <em><small>Note: If you cancelled your order thru Paypal/Credit card payment, please disregard this email. </small> </em>";
+                                  "<br/> <br/> " + bankDetails + "<br/> <br/>" +
+                                  " <table style='width:100%'> <tr><th style='background-color: #4CAF50;color: white;text-align: center; border: 2px solid black'> Art Image </th> " +
+                                  "<th style='background-color: #4CAF50;color: white;text-align: center; border: 2px solid black'> Title </th>" +
+                                  "<th style='background-color: #4CAF50;color: white;text-align: center; border: 2px solid black'> Price </th></tr> " + HtmlOrderDetails +
+                                 tableF +"</table> " + "<br/> <br/> <em>Orders will be delivered to: <strong>" + viewModel.UserAccount.firstName +"&nbsp;"+ viewModel.UserAccount.lastName +"</strong> - "+
+                                  address + "</em><br/> <br/><em><small>Note: If you ordered two or more art with different sellers expect to receive it in different shipping. If you cancelled your order thru Paypal/Credit card payment, please disregard this email. </small> </em>";
 
                     string content = controls.PopulateBody("Website Order Confirmation", viewModel.UserAccount.firstName, body);
                     EmailControls.sendEmail("jerylsuarez@gmail.com", viewModel.UserAccount.userName, "", "", subject, content);
-
+                    
 
                     if (viewModel.PaymentType == "PayPal" || viewModel.PaymentType == "CreditCard")
                     {
@@ -548,7 +548,7 @@ namespace ArtProject2016.Controllers
                     else
                     {
                         CartControls cart = new CartControls();
-                        cart.EmptyCart();
+                       cart.EmptyCart();
 
                         TempData["PayPal"] = "False";
                         TempData["email"] = viewModel.UserAccount.userName;
@@ -630,11 +630,8 @@ namespace ArtProject2016.Controllers
                         return RedirectToAction("Gallery", "Shop");
                     }
 
-
-
                     NewPaypalOrder.TransactionId = result;
                     db.SaveChanges();
-
 
                     TempData["orderId"] = OrderId;
                     return RedirectToAction("OrdersComplete");
@@ -752,7 +749,7 @@ namespace ArtProject2016.Controllers
                                           "<br/> <br/> We already received your payment thru Paypal! <br/> <br/> We will start to process your orders.";
                             string content = controls.PopulateBody("Paypal Payment Successful", trans.FirstName, body);
                             EmailControls.sendEmail("jerylsuarez@gmail.com", trans.Username, "", "", subject, content);
-
+                            
                         }
                         else
                         {
