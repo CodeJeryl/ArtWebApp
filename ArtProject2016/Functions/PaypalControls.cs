@@ -33,7 +33,7 @@ namespace ArtProject2016.Functions
                 var userProfile = db.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
 
                 viewModel.UserAccount = userAccount;
-                viewModel.UserProfile = userProfile;
+                viewModel.UserProfile =  userProfile;
                 viewModel.CartItems = cartItems;
 
 

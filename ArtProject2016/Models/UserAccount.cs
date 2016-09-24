@@ -36,7 +36,7 @@ namespace ArtProject2016.Models
         public string userType { get; set; }
 
 
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
 
         [InverseProperty("BuyerAccount")]
         public virtual ICollection<ForSale> ForSaleBuyer { get; set; }

@@ -76,48 +76,60 @@ namespace ArtProject2016.Migrations
                                 });
 
 
-                WebSecurity.CreateUserAndAccount("jcsx99@yahoo.com", "321", new
-                {
-                    firstName = "Jeryl",
-                    lastName = "Suarez",
-                    userType = "Artist",
-                    nickName = "Jeryl Pogi"
-                });
+                //WebSecurity.CreateUserAndAccount("jcsx99@yahoo.com", "321", new
+                //{
+                //    firstName = "Jeryl",
+                //    lastName = "Suarez",
+                //    userType = "Artist",
+                //    nickName = "Jeryl Pogi"
+                //});
 
-                WebSecurity.CreateUserAndAccount("jcs990@yahoo.com", "321", new
-                {
-                    firstName = "Colec",
-                    lastName = "tor",
-                    userType = "Collector",
-                    nickName = "Coleklek"
-                });
+                //WebSecurity.CreateUserAndAccount("jcs990@yahoo.com", "321", new
+                //{
+                //    firstName = "Colec",
+                //    lastName = "tor",
+                //    userType = "Collector",
+                //    nickName = "Coleklek"
+                //});
 
+                WebSecurity.CreateUserAndAccount("jerylsuarez@gmail.com", "321", new
+                                                                                     {
+                                                                                         firstName = "Admin",
+                                                                                         lastName = "Account",
+                                                                                         userType = "Admin",
+                                                                                         nickName = "AdminNickname"
+                                                                                     });
+                var Admin = new UserProfile()
+                                {
+                                    UserAccount = context.UserAccounts.First(a => a.userName == "jerylsuarez@gmail.com")
+                                };
+                context.UserProfiles.Add(Admin);
+                Roles.AddUserToRole("jerylsuarez@gmail.com","Admin");
 
-                var artist = new UserProfile()
-                {
-                    profileDesc = "A realist/impressionist artist who loves landscape, everyday scene, still-life florals and butterflies for his painting subjects. He took his fine arts studies in Manila, Philippines. And transform his paintings into lively, lovely atmosphere.",
-                    UserAccount = context.UserAccounts.First(a => a.userName == "jcsx99@yahoo.com"),
-                    isIdVerified = true
-                };
-                var collector = new UserProfile()
-                {
-                    UserAccount = context.UserAccounts.First(a => a.userName == "jcs990@yahoo.com"),
-                    isIdVerified = true
-                };
+                //var artist = new UserProfile()
+                //{
+                //    profileDesc = "A realist/impressionist artist who loves landscape, everyday scene, still-life florals and butterflies for his painting subjects. He took his fine arts studies in Manila, Philippines. And transform his paintings into lively, lovely atmosphere.",
+                //    UserAccount = context.UserAccounts.First(a => a.userName == "jcsx99@yahoo.com")
+                   
+                //};
+                //var collector = new UserProfile()
+                //{
+                //    UserAccount = context.UserAccounts.First(a => a.userName == "jcs990@yahoo.com")
+                //};
 
-                context.UserProfiles.Add(artist);
-                context.UserProfiles.Add(collector);
+                //context.UserProfiles.Add(artist);
+                //context.UserProfiles.Add(collector);
 
-                Roles.AddUserToRole("jcsx99@yahoo.com", "Artist");
+                //Roles.AddUserToRole("jcsx99@yahoo.com", "Artist");
 
-                Roles.AddUserToRole("jcs990@yahoo.com", "Collector");
+                //Roles.AddUserToRole("jcs990@yahoo.com", "Collector");
 
                 context.VoucherCodes.AddOrUpdate(
                     v => v.Id, new VoucherCode()
                                    {
-                                       VoucherName = "test",
+                                       VoucherName = "Welcome",
                                        VoucherDeduction = 500,
-                                       VoucherCount = 10,
+                                       VoucherCount = 99,
                                        VoucherMinOrder = 5000,
                                        VoucherEnabled = true
                                    }

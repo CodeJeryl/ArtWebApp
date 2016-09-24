@@ -43,7 +43,7 @@ namespace ArtProject2016.Controllers
         // GET: Upload Picture
         public ActionResult Upload()
         {
-            var model = db.UserProfiles.Any(user => user.Id == WebSecurity.CurrentUserId && user.isIdVerified == false);
+            var model = db.UserProfiles.Any(user => user.UserAccountId == WebSecurity.CurrentUserId && user.isIdVerified == false);
 
             if (model)
             {
@@ -80,7 +80,7 @@ namespace ArtProject2016.Controllers
                                 {
                                     if (Functions.ArtControls.UploadArt(model, files))
                                     {
-                                        ViewBag.Success = "Art Uploaded Successfully!";
+                                        TempData["success"] = "Art '"+ model.ForSale.Title +"' Uploaded Successfully!";
                                         return RedirectToAction("Index");
                                     }
                                 }
@@ -101,7 +101,7 @@ namespace ArtProject2016.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Add Image of your artwork on the bottom of the upload page to proceed");
+                        ModelState.AddModelError("", "Add Image of your artwork at the bottom of the upload page to proceed");
                         return View(model);
                     }
 
@@ -233,7 +233,7 @@ namespace ArtProject2016.Controllers
 
                 //   db.Entry(forsale).State = EntityState.Modified;
                 db.SaveChanges();
-                TempData["Success"] = "Successfuly Updated!";
+                TempData["Success"] = "Art - "+ model.ForSale.Title +"Successfuly Updated!";
                 return RedirectToAction("Index");
             }
             //      ModelState.AddModelError("Edit Errors", "some error occured");

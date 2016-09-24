@@ -15,9 +15,8 @@ namespace ArtProject2016.Models
         //    emailVerified = false;
         //}
 
-        public int Id { get; set; }
-
-     
+        [Key, ForeignKey("UserAccount")]
+        public int UserAccountId { get; set; }
         
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -49,7 +48,6 @@ namespace ArtProject2016.Models
         public string Path { get; set; }
 
         //FK
-        public int UserAccountId { get; set; }
         public virtual UserAccount UserAccount { get; set; }
 
     }

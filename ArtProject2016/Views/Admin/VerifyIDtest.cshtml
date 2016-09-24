@@ -1,28 +1,22 @@
 ﻿@model ArtProject2016.Models.UserProfile
 
 @{
-    ViewBag.Title = "VerifyID";
+    ViewBag.Title = "VerifyIDtest";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>VerifyID</h2>
+<h2>VerifyIDtest</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-     <img src="@(Model.Path == null ? null : Url.Content(Model.Path))" width="300px"/> 
-                          
-    @: <div style="float:right">
-         @Html.ActionLink("Back to PayOut Page","Payout",null, new { @class = "btn btn-warning"})
- @:<h3>Verify this name to uploaded ID</h3><p class="h3"> First Name: @Html.DisplayFor(model => model.UserAccount.firstName) </p>   <p class="h3"> Last Name:@Html.DisplayFor(model => model.UserAccount.lastName) </p>
-       @: </div>
     <div class="form-horizontal">
         <h4>UserProfile</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.UserAccountId)
-     
+
         <div class="form-group">
             @Html.LabelFor(model => model.birthDay, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -134,8 +128,6 @@
                 @Html.ValidationMessageFor(model => model.Path)
             </div>
         </div>
-                @Html.HiddenFor(model => model.UserAccountId)
-          
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -146,5 +138,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "ProfileVerification")
+    @Html.ActionLink("Back to List", "Index")
 </div>

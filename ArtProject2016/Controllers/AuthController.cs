@@ -63,7 +63,6 @@ namespace ArtProject2016.Controllers
                 TempData["error"] = "Incorrect Username/Password.";
             }
             return View(model);
-
         }
 
         public ActionResult _Register(string returnUrl)
@@ -98,7 +97,7 @@ namespace ArtProject2016.Controllers
                                     //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
                                     var controls = new EmailControls();
                                     //   string content = controls.PopulateBody(firstName, resetLink);  
-                                    string voucher = "Use this voucher on your first purchase:  <strong><voucherName></strong>";
+                                    string voucher = "Use this voucher on your first purchase:  <strong>Welcome</strong> <br> Note: <small> Minimum of 5000php single purchase </small>";
                                     string body = "<strong>Thank you for joining us in blankwebsite. </strong> <br/> <br/> " + voucher +
                                         "<br/> <br/> feel free to see our Online Gallery!";
                                     string content = controls.PopulateBody("Registration Successful", model.firstName, body);

@@ -157,14 +157,14 @@
     {
         <ul>
             <li>
-                <p class="name">@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.nickName) from <em>@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)</em></p>
+                <p class="name">@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.nickName) from <em>@Html.DisplayFor(modelItem => modelItem.ForSale.SellerAccount.UserProfile.province)</em></p>
             </li>
 
         </ul>
        
         <blockquote>
             <p>
-                <em>@Model.ForSale.SellerAccount.UserProfiles.SingleOrDefault().profileDesc</em>
+                <em>@Model.ForSale.SellerAccount.UserProfile.profileDesc</em>
             </p>
         </blockquote>
     }

@@ -126,7 +126,7 @@ namespace ArtProject2016.Controllers
         // GET: /Artist/Delete/5
         public ActionResult Verification()
         {
-            var model = context.UserProfiles.Single(user => user.Id == WebSecurity.CurrentUserId);
+            var model = context.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
             return View(model);
         }
 
@@ -165,7 +165,7 @@ namespace ArtProject2016.Controllers
                     TempData["error"] = "Please choose a Picture of your Valid ID to be uploaded.";
                 }
 
-                var model = context.UserProfiles.Single(user => user.Id == WebSecurity.CurrentUserId);
+                var model = context.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
                 return View(model);
                 //    return RedirectToAction("Index");
             }

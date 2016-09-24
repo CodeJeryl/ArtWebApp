@@ -42,7 +42,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.PendingOrderDetails.Count > 0)
+                            @if (Model.PendingOrderDetails.Any())
                             {
                                 foreach (var item in Model.PendingOrderDetails)
                                 {
@@ -62,7 +62,7 @@
                                         <td class="titletd">
                                             @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                             <br />
-                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
                                         </td>
                                     }
 
@@ -125,7 +125,7 @@
                              </tr>
                         </thead>
                         <tbody>
-                            @if (Model.RedeemOrderDetails.Count > 0)
+                            @if (Model.RedeemOrderDetails.Any())
                             {
 
                                 foreach (var item in Model.RedeemOrderDetails)
@@ -149,7 +149,7 @@
                                         <td class="titletd">
                                             @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                             <br />
-                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
                                         </td>
                                     }
 
@@ -211,7 +211,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.RedeemedOrderDetails.Count > 0)
+                            @if (Model.RedeemedOrderDetails.Any())
                             {
                                 foreach (var item in Model.RedeemedOrderDetails)
                                 {
@@ -233,7 +233,7 @@
                                         <td class="titletd">
                                             @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                             <br />
-                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
                                         </td>
                                     }
 
@@ -286,7 +286,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Payouts.Count > 0)
+                            @if (Model.Payouts.Any())
                             {
                                 foreach (var item in Model.Payouts)
                                 {

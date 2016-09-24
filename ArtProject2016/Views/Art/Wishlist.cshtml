@@ -17,80 +17,90 @@
                         <p>Buy it now :)</p>
                     </div>
                     
-                     <div class="row products">
-                @foreach (var item in Model)
-                {
-                    <div class="col-md-4 col-sm-6">
+                    <div class="row products">
+                        
+                        @if(Model.Any())
+                        {
+                        foreach (var item in Model)
+                        {
+                            <div class="col-md-4 col-sm-6">
 
-                        <div class="product">
+                                <div class="product">
                            
-                                <div class="flip-container">
-                                    <div class="flipper">
+                                    <div class="flip-container">
+                                        <div class="flipper">
 
-                                        <div class="front">
+                                            <div class="front">
 
-                                            <a href="@Url.Content("/Shop/ArtDetails/" + @item.Id)">
-                                                <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="back">
-                                            <a href="@Url.Content("/Shop/ArtDetails/" + @item.Id)">
-                                                <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
-                                            </a>
+                                                <a href="@Url.Content("/Shop/ArtDetails/" + @item.Id)">
+                                                    <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
+                                                </a>
+                                            </div>
+                                            <div class="back">
+                                                <a href="@Url.Content("/Shop/ArtDetails/" + @item.Id)">
+                                                    <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
+                                                </a>
+
+                                            </div>
 
                                         </div>
 
                                     </div>
-
-                                </div>
-                                <a href="/Shop/ArtDetails/@item.Id" class="invisible">
-                                    <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
-                                </a>  
+                                    <a href="/Shop/ArtDetails/@item.Id" class="invisible">
+                                        <img src="@Url.Content(item.ForSale.Path)" alt="" class="img-responsive">
+                                    </a>  
                            
-                            <div class="text">
-                                <p class="title"><a href="/Shop/ArtDetails/@item.Id">@Html.DisplayFor(modelItem => item.ForSale.Title)</a></p>
-                                <p class="subtitle">@Html.DisplayFor(modelItem => item.ForSale.hSize)" Height x @Html.DisplayFor(modelItem => item.ForSale.wSize)" Width </p>
-                                <br />
-                                <div class="col-md-6 col-sm-6">
+                                    <div class="text">
+                                        <p class="title"><a href="/Shop/ArtDetails/@item.Id">@Html.DisplayFor(modelItem => item.ForSale.Title)</a></p>
+                                        <p class="subtitle">@Html.DisplayFor(modelItem => item.ForSale.hSize)" Height x @Html.DisplayFor(modelItem => item.ForSale.wSize)" Width </p>
+                                        <br />
+                                        <div class="col-md-6 col-sm-6">
 
-                                    @if (item.ForSale.otherArtist)
-                                    {
-                                        <p class="name">@Html.DisplayFor(modelItem => item.ForSale.otherArtistName)</p>
-                                        <p class="name">@Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="name">@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)</p>
-                                         <p class="sub">@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault().province)</p>
-                                    }
+                                            @if (item.ForSale.otherArtist)
+                                            {
+                                                <p class="name">@Html.DisplayFor(modelItem => item.ForSale.otherArtistName)</p>
+                                                <p class="name">@Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="name">@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)</p>
+                                                <p class="sub">@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)</p>
+                                            }
                                    
-                                </div>
+                                        </div>
 
-                                <div class="col-md-6 col-sm-6">
+                                        <div class="col-md-6 col-sm-6">
 
-                                    <p class="price">@Html.DisplayFor(modelItem => item.ForSale.Price)</p>
-                                </div>
+                                            <p class="price">@Html.DisplayFor(modelItem => item.ForSale.Price)</p>
+                                        </div>
 
                           
-                                <p class="buttons">
-                                    <hr/>
-                                        @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.ForSaleId }, new { @class = "btn-lg btn-primary buttonC"})
-                                 </p>
-                            </div>
-                            <!-- /.text -->
-                            @if (item.ForSale.Sold)
-                            {
-                                <div class="ribbon new">
-                                    <div class="theribbon">SOLD!</div>
-                                    <div class="ribbon-background"></div>
+                                        <p class="buttons">
+                                            <hr/>
+                                            @Html.ActionLink("View Art Details", "ArtDetails", "Shop", new { Id = item.ForSaleId }, new { @class = "btn-lg btn-primary buttonC"})
+                                        </p>
+                                    </div>
+                                    <!-- /.text -->
+                                    @if (item.ForSale.Sold)
+                                    {
+                                        <div class="ribbon new">
+                                            <div class="theribbon">SOLD!</div>
+                                            <div class="ribbon-background"></div>
+                                        </div>
+                                    }
                                 </div>
-                            }
-                        </div>
 
-                        <!-- /.product -->
-                    </div>
-                }
+                                <!-- /.product -->
+                            </div>
+                        }
+                          }
+    else
+    {
+        <div class="row product box">
+            <h2 class="text-center">No Art Wishlist found, @Html.ActionLink("Search for Art now :)","Gallery","Shop")</h2>
             </div>
+    }
+                    </div>
 
                     @*   
                     <div class="row products">

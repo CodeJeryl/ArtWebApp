@@ -9,8 +9,8 @@
 <div class="col-md-9" id="customer-orders">
     <div class="box">
         <h1>My orders</h1>
-
         <p class="lead">Your orders on one place.</p>
+        <p class="lead">You can buy artworks of other artist. </p>
         <p class="text-muted">If you have any questions, please feel free to @Html.ActionLink("Contact Us", "ContactUs","Home"), our customer service center is working for you 24/7.</p>
 
         <hr>
@@ -27,11 +27,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    
+                    @if(Model.Any())
+                    {
+                    foreach (var item in Model)
                     {
                         <tr>
                             <th>
-                               # @Html.DisplayFor(modelItem => item.Id)</th>
+                                # @Html.DisplayFor(modelItem => item.Id)</th>
                             <td>
                                 @String.Format("{0:d}", item.OrderDate)</td>
                             <td>
@@ -42,7 +45,13 @@
                                 @Html.ActionLink("View Order", "OrderDetails", new { id = item.Id}, new {  @class = "btn btn-primary btn-sm" })
                             </td>
                         </tr>
-                    }
+                    }  }
+    else
+    {
+          <th colspan="4">
+                <h2 class="text-center">Buy Art from other artist, @Html.ActionLink("Buy now :)","Gallery","Shop")</h2>
+            </th>
+    }
                 </tbody>
             </table>
         </div>

@@ -20,13 +20,14 @@ namespace ArtProject2016.Functions
             {
                 using (var context = new ArtContext())
                 {
-                    var idUpload = context.UserProfiles.Single(user => user.Id == WebSecurity.CurrentUserId);
+                    var idUpload = context.UserProfiles.Single(user => user.UserAccountId == WebSecurity.CurrentUserId);
 
                     string fileName = WebSecurity.CurrentUserId + "-" +DateTime.Now.Ticks + Path.GetExtension(file.FileName); ;// +DateTime.Now.ToShortDateString();
 
                     file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/VerificationID/" + fileName));
                     idUpload.fileName = fileName;
                     idUpload.Path = "~/Upload/VerificationID/" + fileName;
+                  //  idUpload.UserAccount = idUpload.UserAccount;
                     context.SaveChanges();
                     return true;
                 }

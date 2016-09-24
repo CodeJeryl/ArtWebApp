@@ -26,8 +26,10 @@
 
         </div>
 
-        </div>
-        @foreach (var item in Model)
+    </div>
+    @if(Model.Any())
+    {
+        foreach (var item in Model)
         {
             <div class="row products box">
                 
@@ -57,7 +59,7 @@
                                             <td>Artist Name:  </td>
                                             <th>@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)</th>
                                             <td>From: </td>
-                                            <th>@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)</th>
+                                            <th>@Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)</th>
                                    
                                         }
                                     </tr>
@@ -142,7 +144,14 @@
            
             <!-- /.products buttonsR -->   
         }
-    
+      }
+    else
+    {
+         <div class="row products box">
+       <h2 class="text-center">Start to sell artwork, @Html.ActionLink("Post it now :)","Upload","Art")</h2>
+             </div>
+       
+    }
 
     </div>
 

@@ -160,8 +160,8 @@ namespace ArtProject2016.Controllers
                     var entry = db.Entry(model);
                     entry.State = EntityState.Modified;
 
-                    entry.Property(up => up.UserAccountId).IsModified = false;
-                    TempData["success"] = "Profile successfully updated of userID: " + model.Id;
+              //      entry.Property(up => up.UserAccountId).IsModified = false;
+                    TempData["success"] = "Profile successfully updated of userID: " + model.UserAccountId;
 
                     db.SaveChanges();
 

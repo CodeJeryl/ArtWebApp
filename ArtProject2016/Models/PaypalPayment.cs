@@ -9,7 +9,8 @@ namespace ArtProject2016.Models
 {
     public class PaypalPayment
     {
-        public int Id { get; set; }
+        [Key]
+        public int OrderId { get; set; }
         public string Token { get; set; }
         public string PayerId { get; set; }
         public string TransactionId { get; set; }

@@ -49,7 +49,7 @@ namespace ArtProject2016.Controllers
                                 s.otherArtistAddress.ToLower().Contains(search.ToLower()) ||
                                 s.SellerAccount.nickName.ToLower().Contains(search.ToLower()) ||
                                 s.Category.name.ToLower().Contains(search.ToLower()) ||
-                                s.SellerAccount.UserProfiles.FirstOrDefault().province.ToLower().Contains(search.ToLower()));
+                                s.SellerAccount.UserProfile.province.ToLower().Contains(search.ToLower()));
 
             }else if(!string.IsNullOrEmpty(artist))
             {

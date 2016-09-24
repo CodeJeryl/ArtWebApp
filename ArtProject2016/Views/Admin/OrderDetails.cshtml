@@ -57,7 +57,7 @@
                                                 <br />
                                         by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
                                         <br />
-                                        from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfiles.SingleOrDefault(u => u.Id == item.ForSale.SellerId).province)
+                                        from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
                                     </td>
                                 }
                             </td>

@@ -9,13 +9,13 @@
 
     <div class="box">
         <h1>My Art Collections</h1>
-        <p class="lead">Update your Art Collections information.</p>
+        <p class="lead">Add or Update your Art Collections information.</p>
         <p>
-        @*  Hide this action link if collector - brb*@
+            @*  Hide this action link if collector - brb*@
             @Html.ActionLink("Add new Art for sale", "Upload", null, new { @class = "btn btn-primary" })
-       </p>
-        
-       @* @if(ViewBag.Success != null)
+        </p>
+
+        @* @if(ViewBag.Success != null)
         {
             <div class="alert alert-success" role="alert"> @ViewBag.Success </div>
         }
@@ -24,70 +24,91 @@
             <div class="alert alert-danger" role="alert"> @ViewBag.Error </div>
         }*@
     </div>
-    @foreach (var item in Model)
+    @if (Model.Any())
     {
+        foreach (var item in Model)
+        {
         <div class="row products">
-            <div class="col-md-12 col-sm-12 box"> 
-              
-                
+            <div class="col-md-12 col-sm-12 box">
+
+
                 <div class="col-md-5" id="text-page">
-                   
-                        <span style="margin-left: 20px">
-                            <img src="@Url.Content(item.Path)"  width="240px" class="img-responsive"/></span>
-                    
+
+                    <span style="margin-left: 20px">
+                        <img src="@Url.Content(item.Path)"  width="240px" class="img-responsive"/></span>
+
                 </div>
                 <div class="col-md-5" id="order-summary">
                     <h3>Title:   @Html.DisplayFor(modelItem => item.Title)</h3>
-                    
-                       <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>Size: </td>
-                                        <th>@Html.DisplayFor(modelItem => item.wSize) x @Html.DisplayFor(modelItem => item.hSize)</th>
-                                         <td>Medium Used: </td>
-                                        <th>@Html.DisplayFor(modelItem => item.mediumUsed)</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Price:</td>
-                                        <th>@Html.DisplayFor(modelItem => item.Price)</th>
-                                        <td>free:</td>
-                                        <th>space</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Date Posted:</td>
-                                        <th>@Html.DisplayFor(modelItem => item.datePosted)</th>
-                                        <td>For Posting?</td>
-                                        <th>@Html.DisplayTextFor(modelItem => item.ForPosting)</th>
-                                    </tr>
-                                    @if(item.Sold)
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Size: </td>
+                                    <th>@Html.DisplayFor(modelItem => item.wSize) x @Html.DisplayFor(modelItem => item.hSize)</th>
+                                    <td>Medium Used: </td>
+                                    <th>@Html.DisplayFor(modelItem => item.mediumUsed)</th>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                    <th>@Html.DisplayFor(modelItem => item.Price)</th>
+                                    <td>Artist:</td>
+                                    @if (item.otherArtist)
                                     {
-                                        <tr class="total">
-                                            <td colspan="4">
-                                            <span class="label label-success">Art already sold! =)</span></td>
-                                        </tr>
+                                        <th><em>@Html.DisplayFor(modelItem => item.otherArtistName)  </em></th>
+        
                                     }
                                     else
                                     {
-                                        <tr class="total">
+                                        <th><em>@Html.DisplayFor(modelItem => item.SellerAccount.nickName) </em></th>
+                                            
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>Date Posted:</td>
+                                    <th>@Html.DisplayFor(modelItem => item.datePosted)</th>
+                                    <td>For Posting?</td>
+                                    <th>@Html.DisplayTextFor(modelItem => item.ForPosting)</th>
+                                </tr>
+                                @if (item.Sold)
+                                {
+                                    <tr class="total">
+                                        <td colspan="4">
+                                            <span class="label label-success">Art already sold! =)</span></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="total">
                                         <th>Controls:</th>
-                                            <td>   @Html.ActionLink("Update Art Info", "Edit","Art", new { id = item.Id }, new { @class = "btn btn-primary" })
-                                            </td>
-                                            <td>   @Html.ActionLink("View in Gallery", "ArtDetails","Shop", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                        <td>@Html.ActionLink("Update Art Info", "Edit", "Art", new { id = item.Id }, new { @class = "btn btn-primary" })
                                         </td>
-                                        <td>   @Html.ActionLink("Delete Art", "DeleteArt","Art", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        <td>@Html.ActionLink("View in Gallery", "ArtDetails", "Shop", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                        </td>
+                                        <td>@Html.ActionLink("Delete Art", "DeleteArt", "Art", new { id = item.Id }, new { @class = "btn btn-default" })
                                         </td>
                                     </tr>
-                                    }
-                                    
-                                </tbody>
-                            </table>
-                        </div>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                
-            </div> 
+
+            </div>
         </div>
         <!-- /.products buttonsR -->   
+        }
+    }
+    else
+    {
+        <div class="row products">
+            <div class="col-md-12 col-sm-12 box">
+                <h2 class="text-center">No Art Collection found, @Html.ActionLink("Post it now :)", "Upload", "Art")</h2>
+
+            </div>
+        </div>
     }
 
 </div>

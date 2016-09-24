@@ -17,7 +17,7 @@ namespace ArtProject2016.Models
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             
-
+          //  modelBuilder.Entity<UserProfile>().HasRequired(m => m.UserAccountId).
         //    modelBuilder.Entity<ForSale>()
         //                .HasOptional(m => m.BuyerAccount)
         //                .WithMany(t => t.ForSaleBuyer)

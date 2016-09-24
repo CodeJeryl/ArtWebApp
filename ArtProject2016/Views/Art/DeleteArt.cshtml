@@ -36,6 +36,17 @@
                                 <tr>
                                     <td>Price:</td>
                                     <th>@Html.DisplayFor(model => model.Price)</th>
+                                     <td>Artist:</td>
+                                    @if (Model.otherArtist)
+                                    {
+                                        <th><em>@Html.DisplayFor(model => Model.otherArtistName)  </em></th>
+        
+                                    }
+                                    else
+                                    {
+                                        <th><em>@Html.DisplayFor(model => Model.SellerAccount.nickName) </em></th>
+                                            
+                                    }
                                     </tr>
                                 <tr>
                                     <td>Date Posted:</td>

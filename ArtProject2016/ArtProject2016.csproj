@@ -563,6 +563,7 @@
     <Content Include="Views\Admin\ProfileVerification.cshtml" />
     <Content Include="Views\Admin\Payout.cshtml" />
     <Content Include="Views\Admin\VerifyID.cshtml" />
+    <Content Include="Views\Admin\VerifyIDtest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
