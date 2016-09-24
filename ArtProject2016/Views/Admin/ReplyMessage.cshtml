@@ -1,0 +1,107 @@
+﻿@model ArtProject2016.ViewModel.AdminReplyMessage
+
+@{
+    ViewBag.Title = "ReplyMessage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>ReplyMessage</h2>
+
+<div>
+    <h4>Message</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.OrderId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Message.OrderId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.EmailAdd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.EmailAdd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.MobileNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.MobileNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.Subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.Subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.Body)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.Body)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.Responded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.Responded)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message.DateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message.DateTime)
+        </dd>
+
+    </dl>
+</div>
+
+    <hr>
+                        <h2>Reply!</h2>
+
+                      @using(Html.BeginForm())
+                      {
+                          @Html.AntiForgeryToken()
+                          @Html.ValidationSummary()
+                         <div class="row">
+                              @Html.HiddenFor(item => item.Message.Id)
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                     <label>Message</label>
+                                        @Html.TextBoxFor(item => item.MessageReply.BodyReply, new { @class = "form-control"})
+                                        @Html.ValidationMessageFor(item => item.MessageReply.BodyReply)
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 text-center">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i>Send message</button>
+
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                      }
+<p>
+   
+    @Html.ActionLink("Back to Messages", "Messages")
+</p>

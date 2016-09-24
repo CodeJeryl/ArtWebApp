@@ -1,7 +1,8 @@
-﻿@model ArtProject2016.Models.ContactUs
+﻿@model ArtProject2016.Models.Message
 @{
     ViewBag.Title = "ContactUs";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Layout = "ContactUs";
 }
 <div id="content">
             <div class="container">
@@ -21,17 +22,17 @@
                     <div class="panel panel-default sidebar-menu">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title">Support Pages</h3>
+                            <h3 class="panel-title text-center">Support Pages</h3>
                         </div>
 
                         <div class="panel-body">
-                            <ul class="nav nav-pills nav-stacked">
+                            <ul class="nav nav-pills nav-stacked category-menu">
                                
-                                <li class="active">
+                                <li class="active text-center">
                                     <a href="#">Contact Us page</a>
                                 </li>
-                                <li>
-                                    <a href="@Url.Action("FAQ")">FAQ</a>
+                                <li class="text-center">
+                                    <a href="@Url.Action("FAQ")">Frequently Asked Questions</a>
                                 </li>
 
                             </ul>
@@ -144,9 +145,9 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        @Html.LabelFor(item => item.Message)
-                                        @Html.TextBoxFor(item => item.Message, new { @class = "form-control"})
-                                        @Html.ValidationMessageFor(item => item.Message)
+                                        @Html.LabelFor(item => item.Body)
+                                        @Html.TextBoxFor(item => item.Body, new { @class = "form-control"})
+                                        @Html.ValidationMessageFor(item => item.Body)
                                     </div>
                                 </div>
 

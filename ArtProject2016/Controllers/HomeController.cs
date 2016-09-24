@@ -41,13 +41,13 @@ namespace ArtProject2016.Controllers
         }
 
         [HttpPost]
-        public ActionResult ContactUs(ContactUs model)
+        public ActionResult ContactUs(Message model)
         {
             using (ArtContext context = new ArtContext())
             {
                 if (ModelState.IsValid)
                 {
-                    context.ContactUses.Add(model);
+                    context.Messages.Add(model);
                     context.SaveChanges();
                     TempData["success"] =
                         "Your Message is successfully sent. Please give us 24-48hours to respond to your email. Thank you!";
@@ -57,8 +57,8 @@ namespace ArtProject2016.Controllers
                     //  var firstName = db.UserAccounts.First(acc => acc.userName == model.userName).firstName;
                     var controls = new EmailControls();
                     //   string content = controls.PopulateBody(firstName, resetLink);  
-                    string body = "<strong>Thank you for contacting us. </strong> <br/> <br/> " +
-                        "Subject: " + model.Subject + "<br/> Message: " + model.Message +
+                    string body = "<strong>Thank you for reaching us. </strong> <br/> <br/> " +
+                        "Subject: " + model.Subject + "<br/> Message: " + model.Body +
 
                         "<br/> <br/>Please give us 24-48 hours to respond to your message. Thank you" +
                         "<br/> <br/> While waiting for our reply, feel free to browse our Online Gallery."; ;

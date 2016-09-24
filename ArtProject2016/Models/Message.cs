@@ -6,8 +6,12 @@ using System.Web;
 
 namespace ArtProject2016.Models
 {
-    public class ContactUs
+    public class Message
     {
+        public Message()
+        {
+            DateTime = DateTime.Now;
+        }
         public int Id { get; set; }
 
         [Display(Name = "Order ID (If Applicable)")]
@@ -34,7 +38,12 @@ namespace ArtProject2016.Models
         [Required]
         [DataType(DataType.MultilineText)]
         [MinLength(20,ErrorMessage = "Please elaborate your message, Thank you! Minimum of 20 characters =)")]
-        public string Message { get; set; }
+        public string Body { get; set; }
+
+        public bool Responded { get; set; }
+        public DateTime DateTime { get; set; }
+
+        public virtual ICollection<MessageReply> MessageReplies { get; set; }
 
     }
 }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ArtProject2016.Models.MessageReply>
+
+@{
+    ViewBag.Title = "RepliedMessage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>RepliedMessage</h2>
+
+<p>
+    @Html.ActionLink("Back to Messages", "Messages")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Message.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAccount.userName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BodyReply)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAccount.userName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BodyReply)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+    </tr>
+}
+
+</table>

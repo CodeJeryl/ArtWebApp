@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ArtProject2016.Functions;
 using ArtProject2016.Models;
 using ArtProject2016.ViewModel;
+using WebMatrix.WebData;
 
 namespace ArtProject2016.Controllers
 {
@@ -213,6 +215,64 @@ namespace ArtProject2016.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Messages()
+        {
+            var model = db.Messages.OrderByDescending(des => des.DateTime);
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ReplyMessage(int id)
+        {
+            AdminReplyMessage ViewModel = new AdminReplyMessage();
+
+            var message = db.Messages.Find(id);
+
+            ViewModel.Message = message;
+            if(message == null)
+            { 
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            
+            return View(ViewModel);
+
+        }
+
+        [HttpPost]
+        public ActionResult ReplyMessage(AdminReplyMessage viewModel)
+        {
+            var updateMessage = db.Messages.Find(viewModel.Message.Id);
+          if(viewModel.MessageReply.BodyReply !=null)
+          {
+                var Reply = new MessageReply()
+                                {
+                                    AdminAccountId = WebSecurity.CurrentUserId,
+                                    BodyReply = viewModel.MessageReply.BodyReply,
+                                    DateTime = DateTime.Now,
+                                    MessageId = viewModel.Message.Id
+                                };
+               
+                updateMessage.Responded = true;
+
+                db.MessageReplies.Add(Reply);
+                db.SaveChanges();
+
+              TempData["success"] = "Reply sent!";
+                return RedirectToAction("Messages");
+          }
+            ModelState.AddModelError("BodyReply","Dont leave your Reply Textbox blank!");
+            viewModel.Message = updateMessage;
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult RepliedMessage(int id)
+        {
+            var Model = db.MessageReplies.Where(rep => rep.MessageId == id);
+            return View(Model.ToList());
         }
     }
 }

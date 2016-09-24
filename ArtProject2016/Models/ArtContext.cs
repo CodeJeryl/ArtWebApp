@@ -58,7 +58,8 @@ namespace ArtProject2016.Models
         public DbSet<PaypalPayment> PaypalPayments { get; set; }
         public DbSet<Payout> Payouts { get; set; }
 
-        public DbSet<ContactUs> ContactUses { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageReply> MessageReplies { get; set; }
       // For multiple picture table
       //  public DbSet<ForSaleAlbum> ForSaleAlbums { get; set; }
 

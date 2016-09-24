@@ -94,10 +94,12 @@
                 <div class="navbar-collapse collapse" id="navigation">
 
                     <ul class="nav navbar-nav navbar-left">
-                        <li class="active"><a href="@Url.Action("Index", "Home")">Home</a>
+                        <li class="@(ViewBag.Layout == "Home" ? "active" : "")"><a href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="@(ViewBag.Layout == "Gallery" ? "active" : "")"><a href="@Url.Action("Gallery", "Shop")">Gallery</a>
                         </li>
                         <li class="dropdown yamm-fw">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Artists <b class="caret"></b></a>
+                            <a href="#" class="@(ViewBag.Layout == "Artist" ? "active" : "") dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Artists <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <div class="yamm-content menuH">
@@ -139,7 +141,7 @@
                         </li>
 
                         <li class="dropdown yamm-fw">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Paintings <b class="caret"></b></a>
+                            <a href="#" class="@(ViewBag.Layout == "Paintings" ? "active" : "") dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Paintings <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <div class="yamm-content menuH">
@@ -182,7 +184,7 @@
                             </ul>
                         </li>
                         
-                        <li><a href="@Url.Action("ContactUs", "Home")">Contact Us</a>
+                        <li class="@(ViewBag.Layout == "ContactUs" ? "active" : "")"><a href="@Url.Action("ContactUs", "Home")">Contact Us</a>
                         </li>
                     </ul>
 
