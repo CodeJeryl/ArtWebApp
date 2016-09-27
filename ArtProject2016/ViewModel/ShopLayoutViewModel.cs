@@ -8,7 +8,7 @@ namespace ArtProject2016.ViewModel
 {
     public class ShopLayoutViewModel
     {
-        public List<Category>  Categories { get; set; }
+        public List<Style>  Styles { get; set; }
         public List<UserAccount> UserAccounts { get; set; }
     }
 }

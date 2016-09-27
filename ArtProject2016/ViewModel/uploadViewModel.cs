@@ -28,14 +28,14 @@ namespace ArtProject2016.ViewModel
 
         }
 
-        public List<Category> _Categories { get; set; }
-        public int selectedCategoryId { get; set; }
+        public List<Style> _Styles { get; set; }
+        public int selectedStyleId { get; set; }
 
-        public IEnumerable<SelectListItem> Categories
+        public IEnumerable<SelectListItem> Styles
         {
             get
             {
-                return new SelectList(_Categories, "Id", "name");
+                return new SelectList(_Styles, "Id", "name");
             }
 
         }

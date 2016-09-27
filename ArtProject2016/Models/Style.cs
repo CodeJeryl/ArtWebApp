@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ArtProject2016.Models
 {
-    public class Category
+    public class Style
     {
         public int Id { get; set; }
         public string name { get; set; }

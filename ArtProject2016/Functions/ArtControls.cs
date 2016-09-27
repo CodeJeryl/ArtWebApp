@@ -52,7 +52,7 @@ namespace ArtProject2016.Functions
                         artDescription = model.ForSale.artDescription,
                         datePosted = DateTime.Now,
                         SellerId = WebSecurity.CurrentUserId,
-                        CategoryID = model.selectedCategoryId
+                        StyleID = model.selectedStyleId
 
                     });
 

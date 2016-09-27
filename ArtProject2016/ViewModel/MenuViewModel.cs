@@ -9,6 +9,6 @@ namespace ArtProject2016.ViewModel
     public class MenuViewModel
     {
         public List<ForSale> ForSales { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<Style> Styles { get; set; }
     }
 }

@@ -137,9 +137,9 @@
         <li>@Html.DisplayFor(model => model.ForSale.mediumUsed)</li>
 
     </ul>
-     <h4>Category</h4>
+     <h4>Style</h4>
     <ul>
-        <li>@Html.DisplayFor(model => model.ForSale.Category.name)</li>
+        <li>@Html.DisplayFor(model => model.ForSale.Style.name)</li>
 
     </ul>
 
@@ -200,15 +200,15 @@
 <div class="row same-height-row">
     <div class="col-md-3 col-sm-6">
         <div class="box same-height">
-            <h3>Arts<br/> with  the same<br/> Category
+            <h3>Arts<br/> with  the same<br/> Style
                 <br/> <hr/>
-                <em style="color: darkcyan">@Model.ForSale.Category.name.ToUpper()</em>
+                <em style="color: darkcyan">@Model.ForSale.Style.name.ToUpper()</em>
             </h3>
         </div>
     </div>
 
 
-   @Html.Partial("_RelatedArt", Model.RelatedCategory)
+   @Html.Partial("_RelatedArt", Model.RelatedStyle)
     
   
 

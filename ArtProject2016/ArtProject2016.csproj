@@ -360,7 +360,7 @@
     <Compile Include="Models\ShippingCompany.cs" />
     <Compile Include="Models\VoucherCode.cs" />
     <Compile Include="Models\UserProfile.cs" />
-    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Style.cs" />
     <Compile Include="Models\ForSale.cs" />
     <Compile Include="Models\ForSaleAlbum.cs" />
     <Compile Include="Models\UserAccount.cs" />
@@ -460,7 +460,7 @@
     <Content Include="Views\Home\FAQ.cshtml" />
     <Content Include="Views\Shared\_TermsAgreement.cshtml" />
     <Content Include="Views\Shared\_ArtistMenu.cshtml" />
-    <Content Include="Views\Shared\_CategoryMenu.cshtml" />
+    <Content Include="Views\Shared\_StyleMenu.cshtml" />
     <Content Include="Views\Admin\UpdateOrder.cshtml" />
     <Content Include="Views\Admin\UpdatePayout.cshtml" />
     <Content Include="Views\Admin\ProfileVerification.cshtml" />

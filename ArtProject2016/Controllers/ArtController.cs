@@ -52,7 +52,7 @@ namespace ArtProject2016.Controllers
             else
             {
                 uploadViewModel viewModel = new uploadViewModel();
-                viewModel._Categories = db.Categories.ToList();
+                viewModel._Styles = db.Styles.ToList();
                 //  viewModel.ForSale.Profit = 0;
                 //  viewModel.ForSale.ShippingFee = 0;
                 return View(viewModel);
@@ -67,7 +67,7 @@ namespace ArtProject2016.Controllers
         {
             try
             {
-                model._Categories = db.Categories.ToList();
+                model._Styles = db.Styles.ToList();
                 if (ModelState.IsValid)
                 {
                     if (files.Count(file => file != null && file.ContentLength > 0) > 0)
@@ -131,7 +131,7 @@ namespace ArtProject2016.Controllers
 
             var forsale = db.ForSales.SingleOrDefault(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id && !uid.Sold);
             //    var album = db.ForSaleAlbums.Where(uid => uid.ForSaleId == id).ToList();
-            var category = db.Categories.ToList();
+            var style = db.Styles.ToList();
 
             if (forsale == null)
             {
@@ -146,9 +146,9 @@ namespace ArtProject2016.Controllers
             uploadViewModel viewModel = new uploadViewModel();
             viewModel.ForSale = forsale;
             //    viewModel.ForSaleAlbumCollection = album;
-            viewModel._Categories = category;
+            viewModel._Styles = style;
 
-            viewModel.selectedCategoryId = forsale.CategoryID;
+            viewModel.selectedStyleId = forsale.StyleID;
             viewModel.selectedYear = forsale.yearCreated;
 
 
@@ -171,8 +171,8 @@ namespace ArtProject2016.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, uploadViewModel model, IEnumerable<HttpPostedFileBase> files)
         {
-            var category = db.Categories.ToList();
-            model._Categories = category;
+            var style = db.Styles.ToList();
+            model._Styles = style;
             var artUpdate = db.ForSales.Single(uid => uid.SellerId == WebSecurity.CurrentUserId && uid.Id == id);
            
            
@@ -198,7 +198,7 @@ namespace ArtProject2016.Controllers
                 artUpdate.otherArtistAddress = model.ForSale.otherArtistAddress;
                 artUpdate.otherArtistName = model.ForSale.otherArtistName;
                 artUpdate.dateUpdated = DateTime.Now;
-                artUpdate.CategoryID = model.selectedCategoryId;
+                artUpdate.StyleID = model.selectedStyleId;
 
                 if (files.Count(file => file != null && file.ContentLength > 0) > 0)
                 {

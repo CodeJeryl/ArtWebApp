@@ -48,7 +48,7 @@ namespace ArtProject2016.Migrations
                 if (!WebSecurity.Initialized)
                 {
                     WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserAccounts", "Id", "userName", true);
-                   
+
                     if (!Roles.RoleExists("Admin"))
                     {
                         Roles.CreateRole("Admin");
@@ -63,17 +63,58 @@ namespace ArtProject2016.Migrations
                     }
                 }
 
-                context.Categories.AddOrUpdate(
-                    c => c.name, new Category()
+                //categories == style
+                context.Styles.AddOrUpdate(
+                    c => c.name, new Style()
                     {
-                        name = "Painting",
+                        name = "Abstract",
                         dateAdded = DateTime.Now
                     },
-                                new Category()
-                                {
-                                    name = "Drawing",
-                                    dateAdded = DateTime.Now
-                                });
+                    new Style()
+                    {
+                        name = "Conceptual",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Fauvism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Futurism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Hyperrealism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Impressionism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Minimalism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Pop",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Photorealism",
+                        dateAdded = DateTime.Now
+                    },
+                    new Style()
+                    {
+                        name = "Surrealism",
+                        dateAdded = DateTime.Now
+                    });
 
 
                 //WebSecurity.CreateUserAndAccount("jcsx99@yahoo.com", "321", new
@@ -104,13 +145,13 @@ namespace ArtProject2016.Migrations
                                     UserAccount = context.UserAccounts.First(a => a.userName == "jerylsuarez@gmail.com")
                                 };
                 context.UserProfiles.Add(Admin);
-                Roles.AddUserToRole("jerylsuarez@gmail.com","Admin");
+                Roles.AddUserToRole("jerylsuarez@gmail.com", "Admin");
 
                 //var artist = new UserProfile()
                 //{
                 //    profileDesc = "A realist/impressionist artist who loves landscape, everyday scene, still-life florals and butterflies for his painting subjects. He took his fine arts studies in Manila, Philippines. And transform his paintings into lively, lovely atmosphere.",
                 //    UserAccount = context.UserAccounts.First(a => a.userName == "jcsx99@yahoo.com")
-                   
+
                 //};
                 //var collector = new UserProfile()
                 //{
@@ -143,12 +184,12 @@ namespace ArtProject2016.Migrations
                                            },
                                            new ShippingCompany()
                                             {
-                                             Name = "Air21"
-                                           },
+                                                Name = "Air21"
+                                            },
                                          new ShippingCompany()
                                            {
-                                           Name = "Xend"
-                                            });
+                                               Name = "Xend"
+                                           });
 
                 context.SaveChanges();
 

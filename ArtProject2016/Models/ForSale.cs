@@ -92,8 +92,8 @@ namespace ArtProject2016.Models
         public virtual UserAccount SellerAccount { get; set; }
 
        // [Display(Name = "Art Category")]
-        public int CategoryID { get; set; }
-        public virtual Category Category { get; set; }
+        public int StyleID { get; set; }
+        public virtual Style Style { get; set; }
 
         public virtual ICollection<WishList> WishLists { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }

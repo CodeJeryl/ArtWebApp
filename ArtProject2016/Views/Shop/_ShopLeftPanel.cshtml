@@ -1,21 +1,21 @@
 ﻿@model ArtProject2016.ViewModel.ShopLayoutViewModel
 
 @{
-    ViewBag.Current = Request.Params["category"];
+    ViewBag.Current = Request.Params["style"];
     ViewBag.CurrentNick = Request.Params["Artist"];
 }
 
 <div class="panel panel-default sidebar-menu">
 
     <div class="panel-heading">
-        <h3 class="panel-title">Categories </h3>
+        <h3 class="panel-title">Styles </h3>
     </div>
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked category-menu">
             
-                    @foreach (var item in Model.Categories)
+                    @foreach (var item in Model.Styles)
                     {
-                        <li class="@(ViewBag.Current == item.name ? "active" : "") text-center"><a href="@Url.Action("Gallery", "Shop", new { category = @item.name })">@item.name</a></li>
+                        <li class="@(ViewBag.Current == item.name ? "active" : "") text-center"><a href="@Url.Action("Gallery", "Shop", new { style = @item.name })">@item.name</a></li>
                     }  
             @* <li >
             <a href="category.html">Paintings  <span class="badge pull-right">123</span></a>

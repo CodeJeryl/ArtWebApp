@@ -43,7 +43,7 @@ namespace ArtProject2016.Models
 
         public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Style> Styles { get; set; }
       
         public DbSet<ForSale> ForSales { get; set; }
         public DbSet<WishList> WishLists { get; set; }

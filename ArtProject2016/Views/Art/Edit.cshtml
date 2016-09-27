@@ -119,9 +119,9 @@
 
                 <div class="col-sm-6 col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.ForSale.CategoryID, "Change Art Category", new { @class = "formlabel" })
-                        @Html.DropDownListFor(model => model.selectedCategoryId, Model.Categories, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.selectedCategoryId)
+                        @Html.LabelFor(model => model.ForSale.StyleID, "Change Art Style", new { @class = "formlabel" })
+                        @Html.DropDownListFor(model => model.selectedStyleId, Model.Styles, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedStyleId)
 
                         @*@Html.DropDownList("CategoryID", string.Empty, "Choose Category", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ForSale.CategoryID)*@

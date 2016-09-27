@@ -76,9 +76,9 @@
                 </div>
                 <div class="col-sm-6 col-md-6">
                     <div class="form-group">
-                        <label for="city">Category</label>
-                        @Html.DropDownListFor(model => model.selectedCategoryId, Model.Categories, "Choose Category", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.selectedCategoryId)
+                        <label for="city">Style</label>
+                        @Html.DropDownListFor(model => model.selectedStyleId, Model.Styles, "Choose Style", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.selectedStyleId)
                     </div>
                 </div>
             </div>

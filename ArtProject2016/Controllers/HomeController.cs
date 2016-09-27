@@ -93,13 +93,13 @@ namespace ArtProject2016.Controllers
         }
 
         [ChildActionOnly]
-        public PartialViewResult CategoryMenu()
+        public PartialViewResult StyleMenu()
         {
             MenuViewModel model = new MenuViewModel();
 
-            var categ = db.Categories;
-            model.Categories = categ.Take(10).ToList();
-            return PartialView("_CategoryMenu", model);
+            var categ = db.Styles;
+            model.Styles = categ.Take(10).ToList();
+            return PartialView("_StyleMenu", model);
         }
 
     }

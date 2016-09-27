@@ -25,7 +25,7 @@ namespace ArtProject2016.Controllers
         // GET: /Shop/Gallery
         [AllowAnonymous]
         [HttpGet]
-        public ViewResult Gallery(string search,string artist,string category,string currentFilter,int? page)
+        public ViewResult Gallery(string search,string artist,string style,string currentFilter,int? page)
         {
             if(search != null)
             {
@@ -48,16 +48,16 @@ namespace ArtProject2016.Controllers
                                 s.otherArtistName.ToLower().Contains(search.ToLower()) ||
                                 s.otherArtistAddress.ToLower().Contains(search.ToLower()) ||
                                 s.SellerAccount.nickName.ToLower().Contains(search.ToLower()) ||
-                                s.Category.name.ToLower().Contains(search.ToLower()) ||
+                                s.Style.name.ToLower().Contains(search.ToLower()) ||
                                 s.SellerAccount.UserProfile.province.ToLower().Contains(search.ToLower()));
 
             }else if(!string.IsNullOrEmpty(artist))
             {
                 forSales = forSales.Where(s => s.SellerAccount.nickName.ToLower().Contains(artist.ToLower()));
             }
-            else if(!string.IsNullOrEmpty(category))
+            else if(!string.IsNullOrEmpty(style))
             {
-               forSales = forSales.Where(s => s.Category.name.ToLower().Contains(category.ToLower()));
+               forSales = forSales.Where(s => s.Style.name.ToLower().Contains(style.ToLower()));
             }
 
             int pageSize = 3;
@@ -82,10 +82,10 @@ namespace ArtProject2016.Controllers
         public ActionResult ShopLeftPanel()
         {
             ShopLayoutViewModel model = new ShopLayoutViewModel();
-            var categ = db.Categories.ToList();
+            var categ = db.Styles.ToList();
             var artist = db.UserAccounts.Where(art => art.ForSaleSeller.Count >= 1).Take(10).OrderBy(n => n.ForSaleSeller.Count).ToList();
 
-            model.Categories = categ;
+            model.Styles = categ;
             model.UserAccounts = artist;
 
             return PartialView("_ShopLeftPanel", model);
@@ -109,10 +109,10 @@ namespace ArtProject2016.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var related = db.ForSales.Where(ar => ar.SellerId == forsale.SellerId && ar.Id != id && ar.ForPosting).Take(3).ToList();
-            var relatedCategory = db.ForSales.Where(cat => cat.Category.Id == forsale.Category.Id).Take(3).ToList();
+            var relatedStyle = db.ForSales.Where(cat => cat.Style.Id == forsale.Style.Id).Take(3).ToList();
             viewModel.ForSale = forsale;
             viewModel.relatedForSale = related;
-            viewModel.RelatedCategory = relatedCategory;
+            viewModel.RelatedStyle = relatedStyle;
 
             ViewBag.ReturnUrl = Url.Action("ArtDetails");
             if (forsale == null)
