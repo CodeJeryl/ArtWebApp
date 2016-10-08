@@ -6,6 +6,7 @@
 @{
     ViewBag.Title = "Shop Gallery";
     ViewBag.Layout = "Gallery";
+    TempData["urlParameter"] = HttpContext.Current.Request.QueryString.ToString();
 }
 
 <div class="box">

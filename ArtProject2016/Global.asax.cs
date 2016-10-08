@@ -18,14 +18,14 @@ namespace ArtProject2016
     {
         protected void Application_Start()
         {
-            using(var context = new ArtContext())
-            {
-                if(!Database.Exists("DefaultConnection"))
-                {
-                    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ArtContext>());
-                    context.Database.Initialize(false);
-                }
-            }
+            //using(var context = new ArtContext())
+            //{
+            //    if (!Database.Exists("Sql2016"))
+            //    {
+            //        Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ArtContext>());
+            //        context.Database.Initialize(false);
+            //    }
+            //}
 
             if (!WebSecurity.Initialized)
             {

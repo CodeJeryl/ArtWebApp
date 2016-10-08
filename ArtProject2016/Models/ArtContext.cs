@@ -31,7 +31,8 @@ namespace ArtProject2016.Models
         //                .WillCascadeOnDelete(false);
         }
 
-        public ArtContext(): base("DefaultConnection")
+        public ArtContext()
+            : base("DefaultConnection")//base("DefaultConnection")
         {
             
         }

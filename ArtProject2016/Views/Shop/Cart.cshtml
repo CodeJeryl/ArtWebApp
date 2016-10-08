@@ -12,7 +12,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("RemoveFromCart","Shop")',
+                url: '@Url.Action("RemoveFromCart", "Shop")',
                 data: { id: del },
                 success: function (data) {
                     $('#row-' + data.DeleteId).fadeOut('slow');
@@ -65,43 +65,53 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.CartItems)
+                            @if(Model.CartItems.Any())
                             {
-                                <tr id="row-@item.Id">
-                                    <td>
-                                        <a href="#">
-                                            <img src="@Url.Content(item.ForSale.Path)" style="width: 200px">
-                                        </a>
-                                    </td>
-                                    @if (item.ForSale.otherArtist)
-                                    {
-                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                                 <br />
-                                            by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
-                                            from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
-                                                <br />
-                                            by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                             foreach (var item in Model.CartItems)
+                             {
+                                 <tr id="row-@item.Id">
+                                     <td>
+                                         <a href="#">
+                                             <img src="@Url.Content(item.ForSale.Path)" style="width: 200px">
+                                         </a>
+                                     </td>
+                                     @if (item.ForSale.otherArtist)
+                                     {
+                                         <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
                                             <br />
-                                            from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
-                                        </td>
+                                             by @Html.DisplayFor(modelItem => item.ForSale.otherArtistName)
+                                             from  @Html.DisplayFor(modelItem => item.ForSale.otherArtistAddress)
+                                         </td>
+                                     }
+                                     else
+                                     {
+                                         <td class="titletd">"@Html.DisplayFor(modelItem => item.ForSale.Title)"
+                                            <br />
+                                             by  @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.nickName)
+                                             <br />
+                                             from @Html.DisplayFor(modelItem => item.ForSale.SellerAccount.UserProfile.province)
+                                         </td>
 
-                                    }
+                                     }
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Qty)
-                                    </td>
-                                    <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
-                                    <td> @Html.DisplayFor(modelItem => item.ForSale.wSize)" W X @Html.DisplayFor(modelItem => item.ForSale.hSize)" H</td>
-                                    <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
-                                    <td><a href="#" data-id="@item.Id" class="removeItem"><i class="fa fa-trash-o"></i></a>
-                                    </td>
-                                </tr>
+                                     <td>
+                                         @Html.DisplayFor(modelItem => item.Qty)
+                                     </td>
+                                     <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
+                                     <td>@Html.DisplayFor(modelItem => item.ForSale.wSize)" W X @Html.DisplayFor(modelItem => item.ForSale.hSize)" H</td>
+                                     <td>@Html.DisplayFor(modelItem => item.ForSale.Price)</td>
+                                     <td><a href="#" data-id="@item.Id" class="removeItem"><i class="fa fa-trash-o"></i></a>
+                                     </td>
+                                 </tr>
+                             }
                             }
+                            else
+                            {
+                            <tr>
+                                <td colspan="6"> <h2>No Items in Cart yet! See <a href="@Url.Action("Gallery")">Art Gallery</a></h2> </td>
+                            </tr>
+                            }
+
                         </tbody>
                         <tfoot>
                             <tr>
@@ -115,7 +125,7 @@
                 <!-- /.table-responsive -->
                 <div class="box-footer">
                     <div class="pull-left">
-                        <a href="@Url.Action("Gallery","Shop")" class="btn btn-default"><i class="fa fa-chevron-left"></i>Continue shopping</a>
+                        <a href="@Url.Action("Gallery", "Shop")" class="btn btn-default"><i class="fa fa-chevron-left"></i>Continue shopping</a>
                     </div>
                 </div>
 
@@ -160,7 +170,7 @@
                             <a href="@Url.Action("CheckoutDetails", "Shop")" class="btn btn-primary">Proceed to Checkout 
                              <i class="fa fa-chevron-right" aria-hidden="true"></i>
                             </a>
-                         </div>
+                        </div>
                     </div>
                 </div>
 

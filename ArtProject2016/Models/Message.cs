@@ -36,6 +36,7 @@ namespace ArtProject2016.Models
 
 
         [Required]
+        [Display(Name = "Your Message")]
         [DataType(DataType.MultilineText)]
         [MinLength(20,ErrorMessage = "Please elaborate your message, Thank you! Minimum of 20 characters =)")]
         public string Body { get; set; }

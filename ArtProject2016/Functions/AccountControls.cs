@@ -11,9 +11,6 @@ namespace ArtProject2016.Functions
 {
     public class AccountControls
     {
-       
-
-
         public static bool UploadID(HttpPostedFileBase file)
         {
             try
@@ -26,6 +23,7 @@ namespace ArtProject2016.Functions
 
                     file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/VerificationID/" + fileName));
                     idUpload.fileName = fileName;
+                    idUpload.isIdVerified = true;
                     idUpload.Path = "~/Upload/VerificationID/" + fileName;
                   //  idUpload.UserAccount = idUpload.UserAccount;
                     context.SaveChanges();

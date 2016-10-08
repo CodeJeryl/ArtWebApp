@@ -33,8 +33,6 @@ namespace ArtProject2016.Controllers
             return View();
         }
 
-
-
         public ActionResult UpdateProfile()
         {
             UserAccount user = new UserAccount();
@@ -55,7 +53,6 @@ namespace ArtProject2016.Controllers
             TempData["readonly"] = artist.isIdVerified;
             //a => a.UserAccountId == WebSecurity.CurrentUserId).First();
             return View(viewModel);
-
         }
 
 
@@ -147,7 +144,8 @@ namespace ArtProject2016.Controllers
                             if (AccountControls.UploadID(file))
                             {
                                TempData["success"] =
-                                    "ID successfully uploaded, Please Wait within 24hours for approval to start selling art. Thank you!";
+                                    "ID successfully uploaded, You can initially upload Art while we verify your account. Thank you!";
+                                return RedirectToAction("Upload", "Art");
                             }
                         }
                         else
@@ -157,7 +155,7 @@ namespace ArtProject2016.Controllers
                     }
                     else
                     {
-                        TempData["error"] = ".jpg / .jpeg / .png file extensions only.";
+                        TempData["error"] = "Image File only! .jpg / .jpeg / .png file extensions.";
                     }
                 }
                 else

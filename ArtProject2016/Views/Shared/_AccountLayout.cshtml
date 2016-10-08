@@ -35,12 +35,12 @@
                         <li class="@(ViewBag.Current == "updateProfile" ? "active" : "")">
                             @Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "text-center" })
                         </li>
-                        <li  class="@(ViewBag.Current == "Collections" ? "active" : "")">
-                            @Html.ActionLink("My Collections", "Index", "Art", null, new { @class = "text-center" })
-                        </li>
 
                         @if (User.IsInRole("Artist"))
                         {
+                            <li  class="@(ViewBag.Current == "Collections" ? "active" : "")">
+                            @Html.ActionLink("My Collections", "Index", "Art", null, new { @class = "text-center" })
+                          </li>
                             <li  class="@(ViewBag.Current == "Sell" ? "active" : "")">
                                 @Html.ActionLink("Sales transaction", "Index", "Sell", null, new { @class = "text-center" })
                             </li>
@@ -58,8 +58,6 @@
                         <li  class="@(ViewBag.Current == "Wishlist" ? "active" : "")">
                             @Html.ActionLink("Wish List", "Wishlist", "Art", null, new { @class = "text-center" })
                         </li>
-
-
                         <li>
                             @Html.ActionLink("Logout", "LogOut", "Account", null, new { @class = "text-center" })
                             @*  <a href="index.html"><i class="fa fa-sign-out"></i> Logout</a>*@

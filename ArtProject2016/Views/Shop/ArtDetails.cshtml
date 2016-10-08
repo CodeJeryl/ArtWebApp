@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "ArtDetails";
+    ViewBag.GalleryPar = TempData["urlParameter"].ToString();
 }
 
 <script type="text/javascript">
@@ -86,31 +87,31 @@
                         {
                             if (!Model.ForSale.Carts.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
                             {
-                            @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
+                                @Html.ActionLink("Add to Cart", "AddtoCart", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-primary", @id = "Save" })
                             }
                             else
                             {
-                             @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("Already in Cart, Proceed to Checkout now?", "Cart", "Shop", null, new { @class = "btn btn-primary" })
                             }
 
                             if (!Model.ForSale.WishLists.Any(se => se.ForSaleId == Model.ForSale.Id && se.UserAccountId == WebSecurity.CurrentUserId))
                             {
-                             <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
+                                <a href="#" id="wish" data-id="@Model.ForSale.Id" class="btn btn-default">Add to Wish List</a>
                             }
                             else
                             {
-                             <span href="#" class="btn btn-danger" id="removeWish" data-id="@Model.ForSale.Id">Remove to Wishlist?</span>
+                                <span href="#" class="btn btn-danger" id="removeWish" data-id="@Model.ForSale.Id">Remove to Wishlist?</span>
                             }
                         }
                         else
                         {
-                             @Html.ActionLink("Update your Art Details?", "Edit", "Art", new {id = Model.ForSale.Id }, new { @class = "btn btn-primary" })<br />
+                            @Html.ActionLink("Update your Art Details?", "Edit", "Art", new {id = Model.ForSale.Id }, new { @class = "btn btn-primary" })<br />
                     
                         }
                     }
                     else
                     {
-                    <a href="@Url.Action("Gallery", "Shop")" class="btn btn-danger">Art not Available, Go back to Gallery</a>
+                        <a href="@Url.Action("Gallery", "Shop")" class="btn btn-danger">Art not Available, Go back to Gallery</a>
                     }
                 }
                 else
@@ -121,6 +122,11 @@
                 @*@Html.ActionLink("Add to Wishlist", "Wishlist", "Shop", new { Id = Model.ForSale.Id }, new { @class = "btn btn-default" })*@
 
             </p>
+        </div>
+        
+        <div class="center-block">
+            <a href='~/Shop/Gallery?@ViewBag.GalleryPar' class="btn btn-info">test parameter</a>
+            @Html.ActionLink("Back to Gallery", "Gallery", "Shop",null, new { @class = "btn btn-primary" })
         </div>
     </div>
 </div>

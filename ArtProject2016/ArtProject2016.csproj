@@ -48,6 +48,15 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Delegation">
+      <HintPath>..\packages\Microsoft.Web.Deployment.3.6.0\lib\Net40\Microsoft.Web.Delegation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Deployment">
+      <HintPath>..\packages\Microsoft.Web.Deployment.3.6.0\lib\Net40\Microsoft.Web.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Deployment.Tracing">
+      <HintPath>..\packages\Microsoft.Web.Deployment.3.6.0\lib\Net40\Microsoft.Web.Deployment.Tracing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Helpers">
       <HintPath>..\packages\Microsoft.AspNet.WebHelpers.3.2.3\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
@@ -233,6 +242,7 @@
     <Content Include="Scripts\jquery.steps.js" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\ArtProjectFTP.pubxml" />
+    <None Include="Properties\PublishProfiles\WebDep.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
