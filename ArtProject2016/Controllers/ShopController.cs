@@ -60,6 +60,8 @@ namespace ArtProject2016.Controllers
                forSales = forSales.Where(s => s.Style.name.ToLower().Contains(style.ToLower()));
             }
 
+            TempData["qUrl"] = System.Web.HttpContext.Current.Request.QueryString.ToString();
+           
             int pageSize = 3;
             int pageNumber = (page ?? 1);
           //  return View(forSales.ToPagedList(pageNumber, pageSize));
@@ -114,7 +116,7 @@ namespace ArtProject2016.Controllers
             viewModel.relatedForSale = related;
             viewModel.RelatedStyle = relatedStyle;
 
-            ViewBag.ReturnUrl = Url.Action("ArtDetails");
+           ViewBag.ReturnUrl = Url.Action("ArtDetails");
             if (forsale == null)
             {
                 return HttpNotFound();

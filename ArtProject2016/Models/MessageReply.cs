@@ -15,12 +15,12 @@ namespace ArtProject2016.Models
         [DataType(DataType.MultilineText)]
         public string BodyReply { get; set; }
         public DateTime DateTime { get; set; }
-
-    
+       
         public int AdminAccountId { get; set; }
-        public int MessageId { get; set; }
         [ForeignKey("AdminAccountId")]
         public virtual UserAccount UserAccount { get; set; }
+
+        public int MessageId { get; set; }
         public virtual Message Message { get; set; } 
 
     }

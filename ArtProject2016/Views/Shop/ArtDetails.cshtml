@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "ArtDetails";
-    ViewBag.GalleryPar = TempData["urlParameter"].ToString();
+    //ViewBag.GalleryPar = TempData["urlParameter"].ToString();
 }
 
 <script type="text/javascript">
@@ -50,6 +50,11 @@
     });
 </script>
 
+
+<div class="row">
+  <a href='~/Shop/Gallery?@TempData["qUrl"]' class="btn btn-info">Back to Gallery</a>  
+    <hr/>
+</div>
 <div class="row" id="productMain">
     <div class="col-sm-6">
 
@@ -124,10 +129,10 @@
             </p>
         </div>
         
-        <div class="center-block">
-            <a href='~/Shop/Gallery?@ViewBag.GalleryPar' class="btn btn-info">test parameter</a>
+       @* <div class="center-block">
+           
             @Html.ActionLink("Back to Gallery", "Gallery", "Shop",null, new { @class = "btn btn-primary" })
-        </div>
+        </div>*@
     </div>
 </div>
 

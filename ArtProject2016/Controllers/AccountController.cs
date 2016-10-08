@@ -276,7 +276,7 @@ namespace ArtProject2016.Controllers
                 string subject = "Pay Out Request is now on process";
 
                 var controls = new EmailControls();
-                string body = "<strong>Thank you for selling artworks in <website>. </strong> <br/> <br/> " +
+                string body = "<strong>Thank you for selling artworks in ArtExchange.com.ph </strong> <br/> <br/> " +
                      "<br/> <br/> You requested the amount: ₱ " + model.RedeemedPayoutAmt + " thru  " + model.PayOutMethod + "<br> <br>"
                      + "with Payment information of - " + model.PaymentInfo + "<br> <br> Please give us 5 working days to process your request. "
                     +"<br> <br> Thank you! :)";

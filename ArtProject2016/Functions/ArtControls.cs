@@ -64,12 +64,12 @@ namespace ArtProject2016.Functions
                         foreach (var file in files)
                         {
                             FileName = DateTime.Now.ToString("yyyyMMdd")+model.ForSale.Title+DateTime.Now.Ticks+Path.GetExtension(file.FileName);
-                            path = HttpContext.Current.Server.MapPath("~/Upload/Pics/" + FileName);
+                            path = HttpContext.Current.Server.MapPath("~/Upload/ArtPictures/" + FileName);
                             art.ResizeStream(600,file.InputStream, path);
-                            
-                            //file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/Pics/" + file.FileName));
+
+                            //file.SaveAs(HttpContext.Current.Server.MapPath("~/Upload/ArtPictures/" + file.FileName));
                             artUpload.fileName = FileName;
-                            artUpload.Path = "~/Upload/Pics/" + FileName;
+                            artUpload.Path = "~/Upload/ArtPictures/" + FileName;
                         }
                     }
 

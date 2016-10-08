@@ -208,9 +208,9 @@ namespace ArtProject2016.Controllers
                         {
                             if (file.ContentLength < 4000000)
                             {
-                                file.SaveAs(System.Web.HttpContext.Current.Server.MapPath("~/Upload/Pics/" + file.FileName));
+                                file.SaveAs(System.Web.HttpContext.Current.Server.MapPath("~/Upload/ArtPictures/" + file.FileName));
                                 artUpdate.fileName = file.FileName;
-                                artUpdate.Path = "~/Upload/Pics/" + file.FileName;
+                                artUpdate.Path = "~/Upload/ArtPictures/" + file.FileName;
                             }
                             else
                             {

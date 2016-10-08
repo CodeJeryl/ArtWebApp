@@ -489,7 +489,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Upload\Pics\" />
+    <Folder Include="Upload\ArtPictures\" />
     <Folder Include="Upload\VerificationID\" />
   </ItemGroup>
   <PropertyGroup>

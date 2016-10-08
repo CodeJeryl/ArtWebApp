@@ -98,7 +98,7 @@ namespace ArtProject2016.Controllers
                                     var controls = new EmailControls();
                                     //   string content = controls.PopulateBody(firstName, resetLink);  
                                     string voucher = "Use this voucher on your first purchase:  <strong>Welcome</strong> <br> Note: <small> Minimum of 5000php single purchase </small>";
-                                    string body = "<strong>Thank you for joining us in blankwebsite. </strong> <br/> <br/> " + voucher +
+                                    string body = "<strong>Thank you for joining us in ArtExchange.com.ph </strong> <br/> <br/> " + voucher +
                                         "<br/> <br/> feel free to see our Online Gallery!";
                                     string content = controls.PopulateBody("Registration Successful", model.firstName, body);
 
